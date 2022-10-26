@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"composite": true,
+		"noEmit": true,
+		"types": ["jest", "node"]
+	},
+	"include": ["**/*.spec.ts"],
+	"references": [{ "path": "./tsconfig.app.json" }]
+}

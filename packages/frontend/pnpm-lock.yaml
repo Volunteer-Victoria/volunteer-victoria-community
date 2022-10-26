@@ -1,0 +1,13 @@
+lockfileVersion: 5.4
+
+specifiers:
+  '@types/web': ^0.0.76
+
+devDependencies:
+  '@types/web': 0.0.76
+
+packages:
+
+  /@types/web/0.0.76:
+    resolution: {integrity: sha512-IuhJV22vw751K6M3tqXwVp16w5YlZqDUdNOJJRVg3cdu1y4eXcqX8JQ1mFC8A3KbiWorU5LTPT2OLUPkGxwmsw==}
+    dev: true

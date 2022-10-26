@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"composite": true,
+		"types": ["jest"],
+		"noEmit": true
+	},
+	"include": ["**/*.spec.ts", "src/max/max.ts"],
+	"references": [{ "path": "./tsconfig.lib.json" }]
+}
