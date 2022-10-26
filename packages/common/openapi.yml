@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: Volunteer Victoria - Community
+  version: "1.0"
+paths:
+  /opportunity:
+    get:
+      responses:
+        '200':
+          description: Summary of opportunities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OpportunitySummary"
+                  
+  /opportunity/{opportunityId}:
+    get:
+      parameters:
+      - name: opportunityId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description:  Opportunity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Opportunity"
+  
+components:
+  schemas:
+    OpportunitySummary:
+      type: object
+      properties:
+        title:
+          type: string
+        postedBy:
+          $ref: "#/components/schemas/UserSummary"
+        volunteerRequirements:
+          type: object
+          properties:
+            peopleCount: 
+              type: number
+            criminalRecordCheckRequired:
+              type: boolean
+        startTime:
+          type: number
+          example: 1666817899
+        endTime:
+          type: number
+          example: 1666817900
+     
+    Opportunity:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/OpportunitySummary"
+      - properties:
+          description:
+            type: string
+          location:
+            type: object
+            properties:
+              name: 
+                type: string
+              type:
+                type: string
+                enum: [indoors, outdoors]
+          
+    UserSummary:
+      type: object
+      properties:
+        displayName:
+          type: string
+        userId:
+          type: string
+     
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
