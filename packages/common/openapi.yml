@@ -15,6 +15,22 @@ paths:
                 items:
                   $ref: "#/components/schemas/OpportunitySummary"
                   
+    post:
+      requestBody:
+        description: Create a new pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Opportunity"
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Opportunity"
+        
+    
   /opportunity/{opportunityId}:
     get:
       parameters:
@@ -36,17 +52,20 @@ components:
     OpportunitySummary:
       type: object
       properties:
+        opportunityId:
+          type: string
         title:
           type: string
-        postedBy:
-          $ref: "#/components/schemas/UserSummary"
+        contactDetails:
+          type: object
+          properties:
+            name: 
+              type: string
         volunteerRequirements:
           type: object
           properties:
             peopleCount: 
               type: number
-            criminalRecordCheckRequired:
-              type: boolean
         startTime:
           type: number
           example: 1666817899
@@ -69,7 +88,22 @@ components:
               type:
                 type: string
                 enum: [indoors, outdoors]
-          
+          contactDetails:
+            type: object
+            properties:
+              name: 
+                type: string
+              email:
+                type: string
+                format: email
+              phoneNumber:
+                type: string
+          volunteerRequirements:
+            type: object
+            properties:
+              criminalRecordCheckRequired:
+                type: boolean
+       
     UserSummary:
       type: object
       properties:
