@@ -2,11 +2,27 @@
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"composite": true,
-		"rootDir": ".",
-		"types": ["node"]
+		"outDir": "dist",
+		"module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
 	},
+	"exclude": ["dist"],
+	"include": ["**/*.ts"],
 	"references": [
-        { "path": "./tsconfig.app.json" }, 
-        { "path": "./tsconfig.spec.json" }
-    ]
+		{ "path": "../common" },
+	]
 }
