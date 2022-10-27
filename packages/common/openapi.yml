@@ -17,7 +17,7 @@ paths:
                   
     post:
       requestBody:
-        description: Create a new pet in the store
+        description: Create a new opportunity
         content:
           application/json:
             schema:
@@ -30,7 +30,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Opportunity"
         
-    
   /opportunity/{opportunityId}:
     get:
       parameters:
@@ -41,11 +40,42 @@ paths:
           type: string
       responses:
         '200':
-          description:  Opportunity
+          description: Opportunity
+          content:
+            application/json:
+              schema: 
+                $ref: "#/components/schemas/Opportunity"
+
+    put:
+      parameters:
+      - name: opportunityId
+        in: path
+        required: true
+        schema:
+          type: string 
+      requestBody:
+        description: Update an existing opportunity
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Opportunity"
+      responses:
+        '200':
+          description: Opportunity
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Opportunity"
+
+  /user:
+    get:
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
   
 components:
   schemas:
@@ -56,22 +86,19 @@ components:
           type: string
         title:
           type: string
-        contactDetails:
-          type: object
-          properties:
-            name: 
-              type: string
-        volunteerRequirements:
-          type: object
-          properties:
-            peopleCount: 
-              type: number
+        contactName:
+          type: string
+        requiredPeopleCount:
+            type: number
         startTime:
           type: number
           example: 1666817899
         endTime:
           type: number
           example: 1666817900
+        postedTime:
+          type: number
+          example: 1666817898
      
     Opportunity:
       type: object
@@ -80,40 +107,26 @@ components:
       - properties:
           description:
             type: string
-          location:
+          locationName:
             type: object
-            properties:
-              name: 
-                type: string
-              type:
-                type: string
-                enum: [indoors, outdoors]
-          contactDetails:
-            type: object
-            properties:
-              name: 
-                type: string
-              email:
-                type: string
-                format: email
-              phoneNumber:
-                type: string
-          volunteerRequirements:
-            type: object
-            properties:
-              criminalRecordCheckRequired:
-                type: boolean
-       
-    UserSummary:
+          indoorsOrOutdoors:
+            type: string
+            enum: [indoors, outdoors]
+          contactEmail:
+            type: string
+          contactPhone:
+            type: string
+          postedByUserId:
+            type: string
+          criminalRecordCheckRequired:
+            type: boolean
+          idealVolunteer:
+            type: string
+          additionalInformation:
+            type: string
+
+    User:
       type: object
       properties:
-        displayName:
-          type: string
         userId:
-          type: string
-     
-    Error:
-      type: object
-      properties:
-        message:
           type: string
