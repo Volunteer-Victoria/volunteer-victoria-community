@@ -25,3 +25,12 @@ pnpm test
 ```
 pnpm -r test
 ```
+
+
+# Infrastructure
+
+All deployment is controlled via `Makefile` commands. If you wish to run them locally please install terraform and run `terraform login` to set up the connection to Terraform Cloud - this requires that you have been invited to our Terraform Cloud organization.
+
+
+
+
