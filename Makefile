@@ -10,6 +10,9 @@ project_name = "$(PROJECT_NAME)"
 endef
 export TFVARS_DATA
 
+backend-package:
+	cd packages/backend && make package
+
 tf-write-config:
 	@echo "$$TFVARS_DATA" > $(TF_DIR)/.auto.tfvars
 
