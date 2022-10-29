@@ -1,3 +1,3 @@
 export const getTz = () => {
-    return process.env.TZ
-}
+  return process.env.TZ;
+};
