@@ -1,5 +1,5 @@
 locals {
-  api_name  = "${local.namespace}-api"
+  api_name = "${local.namespace}-api"
 }
 
 resource "aws_lambda_function" "api" {
