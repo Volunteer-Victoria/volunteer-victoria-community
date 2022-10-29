@@ -1,12 +1,12 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"compilerOptions": {
-		"composite": true,
-		"rootDir": ".",
-		"types": ["node"]
-	},
-	"references": [
-        { "path": "./tsconfig.app.json" }, 
-        { "path": "./tsconfig.spec.json" }
-    ]
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" }
+  ]
 }

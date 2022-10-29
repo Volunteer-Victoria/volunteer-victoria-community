@@ -2,7 +2,7 @@
 
 # Bootstrapping the repository
 
-1. Ensure you have [pnpm installed](https://pnpm.io/installation) 
+1. Ensure you have [pnpm installed](https://pnpm.io/installation)
 2. Install the project `pnpm i`
 3. (optional) transpile all packages `pnpm -r build`
 

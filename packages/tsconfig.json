@@ -1,11 +1,11 @@
 {
-	"extends": "../tsconfig.base.json",
-	"compilerOptions": {
-		"composite": true
-	},
-	"references": [
-		{ "path": "backend" },
-		{ "path": "common" },
-		{ "path": "frontend" }
-	]
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    { "path": "backend" },
+    { "path": "common" },
+    { "path": "frontend" }
+  ]
 }

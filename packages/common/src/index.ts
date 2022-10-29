@@ -1,1 +1,1 @@
-export const SAMPLE_EXPORT = 'SAMPLE_EXPORT'
+export const SAMPLE_EXPORT = "SAMPLE_EXPORT";
