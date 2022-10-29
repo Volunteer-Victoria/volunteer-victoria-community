@@ -1,5 +1,11 @@
 variable "env_name" {}
 variable "project_name" {}
+variable "domain" {}
+
+// Not the same as domain as we might use a wildcard
+variable "cert_domain" {}
+
+variable "app_sources_bucket" {}
 
 variable "region" {
   default = "ca-central-1"

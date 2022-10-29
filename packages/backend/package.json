@@ -23,7 +23,8 @@
     "@nestjs/platform-express": "^9.1.6",
     "@vendia/serverless-express": "^4.10.1",
     "express": "^4.18.2",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

@@ -2,13 +2,18 @@ export ENV_NAME ?= dev
 export PROJECT_NAME ?= vvc
 export TF_WORKSPACE ?= $(PROJECT_NAME)-$(ENV_NAME)
 
+NAMESPACE = $(ENV_NAME)-$(PROJECT_NAME)
 TF_DIR = terraform
 BACKEND_WORKSPACE = "@volunteer-victoria/community-backend"
 BACKEND_DIR = "./packages/backend"
+APP_SRC_BUCKET = $(NAMESPACE)-app-dist
 
 define TFVARS_DATA
 env_name = "$(ENV_NAME)"
 project_name = "$(PROJECT_NAME)"
+domain = "$(ENV_NAME).vvc.sonnex.name"
+cert_domain = "vvc.sonnex.name"
+app_sources_bucket = "$(APP_SRC_BUCKET)"
 endef
 export TFVARS_DATA
 
