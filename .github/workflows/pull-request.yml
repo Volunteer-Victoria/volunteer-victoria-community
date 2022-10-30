@@ -23,6 +23,15 @@ jobs:
       - uses: actions/checkout@v2
         name: Checkout
 
+      - uses: actions/cache@v3
+        name: Cache yarn
+        with:
+          path: ./.yarn/cache
+          key: ${{ runner.os }}-yarn
+
+      - name: Install dependencies
+        run: yarn
+
       - name: Check API schema
         run: |
           mv packages/frontend/src/schema.ts packages/frontend/src/schema.backup.ts
