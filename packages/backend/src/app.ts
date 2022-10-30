@@ -4,7 +4,7 @@ import {
   ExpressAdapter,
   NestExpressApplication,
 } from "@nestjs/platform-express";
-import { AppModule } from "./app.module";
+import { AppModule } from "./modules/app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 
 const API_PREFIX = "/api/v1";
@@ -24,7 +24,7 @@ export async function createNestApp(): Promise<express.Express> {
     .setVersion("1.0")
     .build();
   const document = SwaggerModule.createDocument(nestApp, config);
-  SwaggerModule.setup("api", nestApp, document);
+  SwaggerModule.setup(API_PREFIX, nestApp, document);
 
   await nestApp.init();
   return app;
