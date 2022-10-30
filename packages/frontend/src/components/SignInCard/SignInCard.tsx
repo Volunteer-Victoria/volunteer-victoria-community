@@ -1,7 +1,9 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { Box, Button, Card, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
 
 export const SignInCard = () => {
+  const { loginWithRedirect } = useAuth0();
+
   return (
     <Card
       sx={{
@@ -10,15 +12,25 @@ export const SignInCard = () => {
       }}
     >
       <Typography variant="h2" textAlign="center">
-        Sign In With Facebook
+        Sign In With Whatever You Want
       </Typography>
       <Typography textAlign="center">
-        We use Facebook sign in to make signing into our community fast and
-        secure.
+        Some text about our sign up system?
       </Typography>
       <Box mt={4} textAlign="center">
-        <Button component={Link} to="../opportunities" variant="contained">
+        <Button
+          variant="contained"
+          onClick={() => loginWithRedirect({ screen_hint: "login" })}
+        >
           Sign In
+        </Button>
+        <br />
+        <br />
+        <Button
+          variant="contained"
+          onClick={() => loginWithRedirect({ screen_hint: "signup" })}
+        >
+          Create Account
         </Button>
       </Box>
     </Card>

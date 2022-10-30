@@ -7,7 +7,6 @@ import {
   OpportunitiesPage,
   OpportunityPage,
   ParticipantsPage,
-  SignupPage,
 } from "../pages";
 import { theme } from "../theme";
 
@@ -18,8 +17,7 @@ function App() {
       <BrowserRouter>
         <AppBar />
         <Routes>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignupPage />} />
+          <Route path="/" element={<LoginPage />} />
           <Route
             path="opportunities/create"
             element={<CreateOpportunityPage />}
@@ -33,10 +31,7 @@ function App() {
             path="opportunity/:opportunityId"
             element={<OpportunityPage />}
           />
-          <Route
-            path="*"
-            element={<Navigate to="opportunities" replace={true} />}
-          />
+          <Route path="*" element={<Navigate to="/" replace={true} />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

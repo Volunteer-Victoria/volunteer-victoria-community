@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   AppBar as MaterialAppBar,
   Avatar,
@@ -9,11 +10,11 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useUser } from "../../hooks/use-user/use-user";
 
 export const AppBar = () => {
   const theme = useTheme();
-  const { user } = useUser();
+  const { logout, user } = useAuth0();
+
   return (
     <MaterialAppBar
       position="static"
@@ -36,7 +37,9 @@ export const AppBar = () => {
               }}
             >
               {user.name && user.name.length > 0 && (
-                <Avatar>{user.name[0]}</Avatar>
+                <Avatar src={user.picture} aria-label="">
+                  {user.name[0]}
+                </Avatar>
               )}
               <Button
                 variant="outlined"
@@ -48,6 +51,15 @@ export const AppBar = () => {
                 }}
               >
                 Post an opportunity
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => logout({ returnTo: window.location.origin })}
+                sx={{
+                  ml: 2,
+                }}
+              >
+                Log out
               </Button>
             </Box>
           )}
