@@ -2,6 +2,10 @@ variable "env_name" {}
 variable "project_name" {}
 variable "domain" {}
 
+variable "target_arch" {
+  default = "arm64"
+}
+
 // Not the same as domain as we might use a wildcard
 variable "cert_domain" {}
 
