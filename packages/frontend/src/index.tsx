@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { App } from "./App";
-import { UserContextProvider } from "./hooks/use-user/UserContext";
+import { AuthProvider } from "./components/AuthProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <UserContextProvider>
+    <AuthProvider>
       <App />
-    </UserContextProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
