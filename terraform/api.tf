@@ -12,7 +12,7 @@ resource "aws_lambda_function" "api" {
   handler          = "lambda.handler"
   memory_size      = 1024
   timeout          = 10
-  architectures    = ["arm64"]
+  architectures    = [var.target_arch]
 
   depends_on = [
     aws_cloudwatch_log_group.api_lambda,

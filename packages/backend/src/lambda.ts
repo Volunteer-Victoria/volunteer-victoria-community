@@ -12,8 +12,8 @@ let cachedServer: Handler;
 
 async function bootstrap() {
   if (!cachedServer) {
-    const app = await createNestApp();
-    cachedServer = serverlessExpress({ app });
+    const { expressApp } = await createNestApp();
+    cachedServer = serverlessExpress({ app: expressApp });
   }
   return cachedServer;
 }

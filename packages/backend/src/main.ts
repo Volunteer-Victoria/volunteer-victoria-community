@@ -1,7 +1,7 @@
 import { createNestApp } from "./app";
 
 async function bootstrap() {
-  const app = await createNestApp();
-  app.listen(3000);
+  const { nestApp } = await createNestApp();
+  nestApp.listen(3000);
 }
 bootstrap();
