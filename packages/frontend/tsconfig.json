@@ -1,10 +1,20 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES5",
     "composite": true,
-    "lib": ["DOM", "ES2015"],
+    "lib": ["DOM", "DOM.Iterable", "ES2015"],
     "rootDir": ".",
-    "types": []
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "jsx": "react-jsx"
   },
   "references": [
     { "path": "./tsconfig.app.json" },
