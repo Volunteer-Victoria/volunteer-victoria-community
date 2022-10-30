@@ -2,8 +2,8 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsEmail } from "class-validator";
 
 enum IndoorsOrOutdoors {
-  Indoors,
-  Outdoors,
+  Indoors = "indoors",
+  Outdoors = "outdoors",
 }
 
 class OpportunitySummaryBase {
