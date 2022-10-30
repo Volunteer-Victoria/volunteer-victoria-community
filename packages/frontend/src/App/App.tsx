@@ -1,24 +1,40 @@
-import logo from "../assets/logo.svg";
-import "./App.css";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
+import { AppBar } from "../components/AppBar/AppBar";
+import {
+  CreateOpportunityPage,
+  LoginPage,
+  OpportunitiesPage,
+  OpportunityPage,
+  ParticipantsPage,
+  SignupPage,
+} from "../pages";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <AppBar />
+      <Routes>
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignupPage />} />
+        <Route
+          path="opportunities/create"
+          element={<CreateOpportunityPage />}
+        />
+        <Route path="opportunities" element={<OpportunitiesPage />} />
+        <Route
+          path="opportunity/:opportunityId/participants"
+          element={<ParticipantsPage />}
+        />
+        <Route
+          path="opportunity/:opportunityId"
+          element={<OpportunityPage />}
+        />
+        <Route
+          path="*"
+          element={<Navigate to="opportunities" replace={true} />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
