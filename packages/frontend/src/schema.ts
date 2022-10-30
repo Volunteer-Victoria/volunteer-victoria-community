@@ -42,7 +42,7 @@ export interface components {
       description: string;
       locationName: string;
       /** @enum {string} */
-      indoorsOrOutdoors: "Indoors" | "Outdoors";
+      indoorsOrOutdoors: "indoors" | "outdoors";
       contactEmail: string;
       contactPhone: string;
       criminalRecordCheckRequired: boolean;
@@ -62,7 +62,7 @@ export interface components {
       description: string;
       locationName: string;
       /** @enum {string} */
-      indoorsOrOutdoors: "Indoors" | "Outdoors";
+      indoorsOrOutdoors: "indoors" | "outdoors";
       contactEmail: string;
       contactPhone: string;
       criminalRecordCheckRequired: boolean;
@@ -84,7 +84,7 @@ export interface components {
       description: string;
       locationName: string;
       /** @enum {string} */
-      indoorsOrOutdoors: "Indoors" | "Outdoors";
+      indoorsOrOutdoors: "indoors" | "outdoors";
       contactEmail: string;
       contactPhone: string;
       criminalRecordCheckRequired: boolean;
