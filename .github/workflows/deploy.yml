@@ -11,6 +11,7 @@ env:
 
 jobs:
   build-and-deploy:
+    name: Build and Deploy
     runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
@@ -33,6 +34,7 @@ jobs:
         run: make backend-build
 
       - uses: hashicorp/setup-terraform@v1
+        name: Set-up terraform
         with:
           terraform_version: ${{ env.TF_VERSION }}
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN }}
