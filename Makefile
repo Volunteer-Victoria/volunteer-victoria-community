@@ -5,7 +5,9 @@ export TF_WORKSPACE ?= $(PROJECT_NAME)-$(ENV_NAME)
 NAMESPACE = $(ENV_NAME)-$(PROJECT_NAME)
 TF_DIR = terraform
 BACKEND_WORKSPACE = "@volunteer-victoria/community-backend"
-BACKEND_DIR = "./packages/backend"
+BACKEND_BUILD_DIR = "./packages/backend/dist"
+FRONTEND_WORKSPACE = "@volunteer-victoria/community-frontend"
+FRONTEND_BUILD_DIR = "./packages/frontend/dist"
 APP_SRC_BUCKET = $(NAMESPACE)-app-dist
 
 define TFVARS_DATA
@@ -17,13 +19,21 @@ app_sources_bucket = "$(APP_SRC_BUCKET)"
 endef
 export TFVARS_DATA
 
-backend-package:
-	rm -r $(BACKEND_DIR)/dist || true
+backend-build:
+	rm -r $(BACKEND_BUILD_DIR) || true
 	yarn workspace $(BACKEND_WORKSPACE) build
 	yarn workspaces focus $(BACKEND_WORKSPACE) --production 
-	mv node_modules $(BACKEND_DIR)/dist/.
-	cd $(BACKEND_DIR)/dist && zip -qr api-lambda.zip *
-	mv $(BACKEND_DIR)/dist/api-lambda.zip ./terraform/.
+	mv node_modules $(BACKEND_BUILD_DIR)/.
+	cd $(BACKEND_BUILD_DIR) && zip -qr api-lambda.zip *
+	mv $(BACKEND_BUILD_DIR)/api-lambda.zip ./terraform/.
+
+frontend-build:
+	rm -r $(FRONTEND_BUILD_DIR) || true
+	yarn workspace $(FRONTEND_WORKSPACE) build
+	mv $(FRONTEND_BUILD_DIR) ./terraform/app-dist
+
+frontend-deploy:
+	aws s3 sync ./terraform/app-dist s3://$(APP_SRC_BUCKET) --delete
 
 tf-write-config:
 	@echo "$$TFVARS_DATA" > $(TF_DIR)/.auto.tfvars
