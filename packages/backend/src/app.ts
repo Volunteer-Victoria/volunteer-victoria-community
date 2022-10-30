@@ -5,27 +5,41 @@ import {
   NestExpressApplication,
 } from "@nestjs/platform-express";
 import { AppModule } from "./modules/app.module";
-import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { SwaggerModule, DocumentBuilder, OpenAPIObject } from "@nestjs/swagger";
+import { ValidationPipe } from "@nestjs/common";
 
 const API_PREFIX = "/api/v1";
 
-export async function createNestApp(): Promise<express.Express> {
-  const app = express();
+interface App {
+  expressApp: express.Express;
+  nestApp: NestExpressApplication;
+  openapiDocument: OpenAPIObject;
+}
+
+export async function createNestApp(): Promise<App> {
+  const expressApp = express();
 
   const nestApp = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new ExpressAdapter(app)
+    new ExpressAdapter(expressApp)
   );
 
   nestApp.setGlobalPrefix(API_PREFIX);
+
+  nestApp.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    })
+  );
 
   const config = new DocumentBuilder()
     .setTitle("Volunteer Victoria - Community")
     .setVersion("1.0")
     .build();
-  const document = SwaggerModule.createDocument(nestApp, config);
-  SwaggerModule.setup(API_PREFIX, nestApp, document);
+  const openapiDocument = SwaggerModule.createDocument(nestApp, config);
+  SwaggerModule.setup(API_PREFIX, nestApp, openapiDocument);
 
   await nestApp.init();
-  return app;
+  return { expressApp, nestApp, openapiDocument };
 }
