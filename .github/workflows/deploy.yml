@@ -39,18 +39,18 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
           cli_config_credentials_token: ${{ secrets.TFC_TOKEN }}
 
-      - name: Init terraform
-        run: make tf-init
-
-      - name: Deploy infra and backend
-        run: make tf-apply
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: AKIARPNKKEIOBRA6KVOH
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_ID }}
           aws-region: ca-central-1
+
+      - name: Init terraform
+        run: make tf-init
+
+      - name: Deploy infra and backend
+        run: make tf-apply
 
       - name: Deploy frontend
         run: make frontend-deploy
