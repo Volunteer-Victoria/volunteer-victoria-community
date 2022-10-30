@@ -1,14 +1,19 @@
 import {
   AppBar as MaterialAppBar,
+  Avatar,
+  Box,
+  Button,
   Container,
   Toolbar,
   useTheme,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { useUser } from "../../hooks/use-user/use-user";
 
 export const AppBar = () => {
   const theme = useTheme();
-  console.log(theme);
+  const { user } = useUser();
   return (
     <MaterialAppBar
       position="static"
@@ -20,7 +25,32 @@ export const AppBar = () => {
     >
       <Container maxWidth="xl">
         <Toolbar>
-          <img src={logo} height="45px" alt="Volunteer Victoria" />
+          <Box sx={{ flexGrow: 1 }}>
+            <img src={logo} height="45px" alt="Volunteer Victoria" />
+          </Box>
+          {user && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              {user.name && user.name.length > 0 && (
+                <Avatar>{user.name[0]}</Avatar>
+              )}
+              <Button
+                variant="outlined"
+                component={Link}
+                to="opportunities/create"
+                relative="route"
+                sx={{
+                  ml: 2,
+                }}
+              >
+                Post an opportunity
+              </Button>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </MaterialAppBar>
