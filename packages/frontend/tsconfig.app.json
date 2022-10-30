@@ -5,6 +5,6 @@
     "outDir": "dist"
   },
   "exclude": ["**/*.spec.ts", "test", "dist"],
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "./react-app-env.d.ts"],
   "references": [{ "path": "../common" }]
 }
