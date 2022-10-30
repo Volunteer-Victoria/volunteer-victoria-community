@@ -16,13 +16,16 @@ import {
   OpportunitySummaryResponseDto,
   OpportunityUpdateDto,
 } from "./opportunity.dto";
+import { OpportunityService } from "./opportunity.service";
 
 @Controller("opportunity")
 export class OpportunityController {
+  constructor(private readonly service: OpportunityService) {}
+
   @Get()
   @ApiResponse({ type: [OpportunitySummaryResponseDto] })
-  findAll(): OpportunitySummaryResponseDto[] {
-    return [];
+  async findAll(): Promise<OpportunitySummaryResponseDto[]> {
+    return this.service.findAll();
   }
 
   @Post()

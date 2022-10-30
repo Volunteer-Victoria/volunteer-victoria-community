@@ -17,6 +17,12 @@ resource "aws_lambda_function" "api" {
   depends_on = [
     aws_cloudwatch_log_group.api_lambda,
   ]
+
+  environment {
+    variables = {
+      DDB_TABLE_NAME = local.api_name
+    }
+  }
 }
 
 resource "aws_cloudwatch_log_group" "api_lambda" {
