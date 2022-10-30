@@ -9,6 +9,7 @@ BACKEND_BUILD_DIR = "./packages/backend/dist"
 FRONTEND_WORKSPACE = "@volunteer-victoria/community-frontend"
 FRONTEND_BUILD_DIR = "./packages/frontend/dist"
 APP_SRC_BUCKET = $(NAMESPACE)-app-dist
+TARGET_ARCH = arm64
 
 define TFVARS_DATA
 env_name = "$(ENV_NAME)"
@@ -16,13 +17,14 @@ project_name = "$(PROJECT_NAME)"
 domain = "$(ENV_NAME).vvc.sonnex.name"
 cert_domain = "vvc.sonnex.name"
 app_sources_bucket = "$(APP_SRC_BUCKET)"
+target_arch = "$(TARGET_ARCH)"
 endef
 export TFVARS_DATA
 
 backend-build:
 	rm -r $(BACKEND_BUILD_DIR) || true
 	yarn workspace $(BACKEND_WORKSPACE) build
-	yarn workspaces focus $(BACKEND_WORKSPACE) --production 
+	npm_config_target_arch=$(TARGET_ARCH) yarn workspaces focus $(BACKEND_WORKSPACE) --production 
 	mv node_modules $(BACKEND_BUILD_DIR)/.
 	cd $(BACKEND_BUILD_DIR) && zip -qr api-lambda.zip *
 	mv $(BACKEND_BUILD_DIR)/api-lambda.zip ./terraform/.
