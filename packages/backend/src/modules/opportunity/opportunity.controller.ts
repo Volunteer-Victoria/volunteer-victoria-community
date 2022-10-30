@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+} from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
-import { uniqueId } from "src/util";
+import { uniqueId } from "../../util";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
@@ -12,13 +21,14 @@ import {
 export class OpportunityController {
   @Get()
   @ApiResponse({ type: [OpportunitySummaryResponseDto] })
-  getOpportunities(): OpportunitySummaryResponseDto[] {
+  findAll(): OpportunitySummaryResponseDto[] {
     return [];
   }
 
   @Post()
+  @HttpCode(201)
   @ApiResponse({ type: OpportunityResponseDto })
-  createOpportunity(@Body() opp: OpportunityCreateDto): OpportunityResponseDto {
+  create(@Body() opp: OpportunityCreateDto): OpportunityResponseDto {
     const id = uniqueId();
     const result = new OpportunityResponseDto();
     Object.assign(result, opp);
@@ -28,7 +38,7 @@ export class OpportunityController {
 
   @Get(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  getOpportunity(@Param("id") id: string): OpportunityResponseDto {
+  findOne(@Param("id") id: string): OpportunityResponseDto {
     const result = new OpportunityResponseDto();
     result.opportunityId = id;
     return result;
@@ -36,12 +46,20 @@ export class OpportunityController {
 
   @Put(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  updateOpportunity(
+  update(
     @Param("id") id: string,
     @Body() opp: OpportunityUpdateDto
   ): OpportunityResponseDto {
     const result = new OpportunityResponseDto();
     Object.assign(result, opp);
+    result.opportunityId = id;
+    return result;
+  }
+
+  @Delete(":id")
+  @ApiResponse({ type: OpportunityResponseDto })
+  delete(@Param("id") id: string): OpportunityResponseDto {
+    const result = new OpportunityResponseDto();
     result.opportunityId = id;
     return result;
   }

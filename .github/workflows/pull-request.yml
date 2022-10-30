@@ -15,3 +15,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  check-api-schema:
+    name: Check API schema matches
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout
+
+      - name: Check API schema
+        run: |
+          mv packages/frontend/src/schema.ts packages/frontend/src/schema.backup.ts
+          make api-schema-generate
+          cd packages/frontend/src
+          diff schema.ts schema.backup.ts

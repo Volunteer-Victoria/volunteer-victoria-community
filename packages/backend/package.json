@@ -8,6 +8,7 @@
   "scripts": {
     "build": "nest build",
     "start": "concurrently -n aws,api \"echo 'hi'\" \"nest start --watch\"",
+    "export:openapi": "ts-node src/export-openapi.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
@@ -44,13 +45,13 @@
     "@typescript-eslint/parser": "^5.0.0",
     "concurrently": "^7.5.0",
     "jest": "28.1.3",
-    "openapi-typescript": "^5.4.1",
     "supertest": "^6.1.3",
     "ts-jest": "28.0.8",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.1.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "yaml": "^2.1.3"
   },
   "jest": {
     "moduleFileExtensions": [
