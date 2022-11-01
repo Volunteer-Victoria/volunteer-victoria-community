@@ -1,18 +1,26 @@
-import { AppTable } from "../../dynamodb";
 import { Entity } from "dynamodb-toolbox";
+import { Injectable } from "@nestjs/common";
+import type { DynamoDBService } from "../ddb/ddb.service";
 
-export const OpportunityEntity = new Entity({
-  // Specify entity name
-  name: "Opportunity",
+@Injectable()
+export class OpportunityEntityProvider {
+  readonly entity;
 
-  // Define attributes
-  attributes: {
-    opportunityId: { partitionKey: true }, // flag as partitionKey
-    postedTime: { type: "number", sortKey: true }, // flag as sortKey and mark hidden
-  },
+  constructor(ddb: DynamoDBService) {
+    this.entity = new Entity({
+      // Specify entity name
+      name: "Opportunity",
 
-  // Assign it to our table
-  table: AppTable,
+      // Define attributes
+      attributes: {
+        opportunityId: { partitionKey: true }, // flag as partitionKey
+        postedTime: { type: "number", sortKey: true }, // flag as sortKey and mark hidden
+      },
 
-  // In Typescript, the "as const" statement is needed for type inference
-} as const);
+      // Assign it to our table
+      table: ddb.table,
+
+      // In Typescript, the "as const" statement is needed for type inference
+    } as const);
+  }
+}

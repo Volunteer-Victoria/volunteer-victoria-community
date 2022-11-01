@@ -25,16 +25,16 @@ class OpportunitySummaryBase {
     example: 1666666666,
   })
   endTime!: number;
-
-  @ApiProperty({
-    example: 1666666666,
-  })
-  postedTime!: number;
 }
 
 export class OpportunitySummaryResponseDto extends OpportunitySummaryBase {
   @ApiProperty()
   opportunityId!: string;
+
+  @ApiProperty({
+    example: 1666666666,
+  })
+  postedTime!: number;
 }
 
 class OpportunityBase extends OpportunitySummaryBase {
@@ -72,6 +72,11 @@ export class OpportunityUpdateDto extends OpportunityBase {}
 export class OpportunityResponseDto extends OpportunityBase {
   @ApiProperty()
   opportunityId!: string;
+
+  @ApiProperty({
+    example: 1666666666,
+  })
+  postedTime!: number;
 
   @ApiProperty()
   postedByUserId!: string;
