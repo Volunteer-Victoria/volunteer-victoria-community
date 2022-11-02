@@ -2,6 +2,8 @@ import { Module } from "@nestjs/common";
 import DynamoDB from "aws-sdk/clients/dynamodb";
 import { assert } from "console";
 import { Table } from "dynamodb-toolbox";
+import { isRunningInUnitTest, isRunningLocally } from "../../util";
+import { LocalstackModule } from "../localstack/localstack.module";
 import { DynamoDBService } from "./ddb.service";
 
 const tableName = process.env["DDB_TABLE_NAME"]!;
@@ -49,7 +51,9 @@ async function assureTableExists() {
 }
 
 async function createAppTable() {
-  await assureTableExists();
+  if (isRunningLocally) {
+    await assureTableExists();
+  }
 
   const DocumentClient = new DynamoDB.DocumentClient(awsConfig);
 
@@ -62,6 +66,7 @@ async function createAppTable() {
 }
 
 @Module({
+  imports: isRunningInUnitTest ? [LocalstackModule] : [],
   providers: [
     {
       provide: DynamoDBService,

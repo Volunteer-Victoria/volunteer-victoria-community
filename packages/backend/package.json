@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "nest build",
-    "start": "NODE_ENV=development concurrently -n aws,api \"podman-compose up\" \"nest start --watch\"",
+    "start": "NODE_ENV=development concurrently -n aws,api \"docker-compose up\" \"nest start --watch --preserveWatchOutput\"",
     "export:openapi": "ts-node src/export-openapi.ts",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -45,6 +45,7 @@
     "dotenv": "^16.0.3",
     "jest": "28.1.3",
     "supertest": "^6.1.3",
+    "testcontainers": "^9.0.0",
     "ts-jest": "28.0.8",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
