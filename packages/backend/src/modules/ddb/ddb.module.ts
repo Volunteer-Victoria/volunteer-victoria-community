@@ -1,5 +1,5 @@
-import { Injectable, Module } from "@nestjs/common";
-import DynamoDB, { CreateTableInput } from "aws-sdk/clients/dynamodb";
+import { Module } from "@nestjs/common";
+import DynamoDB from "aws-sdk/clients/dynamodb";
 import { assert } from "console";
 import { Table } from "dynamodb-toolbox";
 import { DynamoDBService } from "./ddb.service";
@@ -16,13 +16,17 @@ const awsConfig = {
     : undefined),
 };
 
-const tableSpec: CreateTableInput = {
+const updateTableSpec = {
   TableName: tableName,
   BillingMode: "PAY_PER_REQUEST",
   AttributeDefinitions: [
     { AttributeName: "pk", AttributeType: "S" },
     { AttributeName: "sk", AttributeType: "S" },
   ],
+};
+
+const createTableSpec = {
+  ...updateTableSpec,
   KeySchema: [
     { AttributeName: "pk", KeyType: "HASH" },
     { AttributeName: "sk", KeyType: "RANGE" },
@@ -31,13 +35,16 @@ const tableSpec: CreateTableInput = {
 
 async function assureTableExists() {
   const ddb = new DynamoDB(awsConfig);
-  const tableInfo = await ddb.describeTable({ TableName: tableName }).promise();
-  if (tableInfo.Table === undefined) {
-    console.info(`Creating new ddb table ${JSON.stringify(tableInfo)}`);
-    await ddb.createTable(tableSpec).promise();
-  } else {
-    console.info(`Updating ddb table ${JSON.stringify(tableInfo)}`);
-    await ddb.updateTable(tableSpec).promise();
+  try {
+    const resp = await ddb.updateTable(updateTableSpec).promise();
+    console.info(`Updated ddb table ${JSON.stringify(resp)}`);
+  } catch (ex: any) {
+    if (ex.code === "ResourceNotFoundException") {
+      const resp = await ddb.createTable(createTableSpec).promise();
+      console.info(`Created ddb table ${JSON.stringify(resp)}`);
+    } else {
+      throw ex;
+    }
   }
 }
 
@@ -48,10 +55,8 @@ async function createAppTable() {
 
   return new Table({
     name: tableName,
-
     partitionKey: "pk",
     sortKey: "sk",
-
     DocumentClient,
   });
 }
@@ -60,8 +65,9 @@ async function createAppTable() {
   providers: [
     {
       provide: DynamoDBService,
-      useFactory: () => createAppTable(),
+      useFactory: async () => new DynamoDBService(await createAppTable()),
     },
   ],
+  exports: [DynamoDBService],
 })
 export class DynamoDBModule {}

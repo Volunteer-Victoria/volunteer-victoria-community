@@ -2,14 +2,14 @@ import { Injectable } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { OpportunityResponseDto } from "./opportunity.dto";
 import type { DocumentClient } from "aws-sdk/clients/dynamodb";
-import type { OpportunityEntityProvider } from "./opportunity.entity";
+import { OpportunityEntity } from "./opportunity.entity";
 
 @Injectable()
 export class OpportunityService {
   readonly opportunities;
 
-  constructor(entityProvider: OpportunityEntityProvider) {
-    this.opportunities = entityProvider.entity;
+  constructor(entity: OpportunityEntity) {
+    this.opportunities = entity.value;
   }
 
   async findAll(): Promise<OpportunityResponseDto[]> {

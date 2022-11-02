@@ -1,13 +1,13 @@
 import { Entity } from "dynamodb-toolbox";
 import { Injectable } from "@nestjs/common";
-import type { DynamoDBService } from "../ddb/ddb.service";
+import { DynamoDBService } from "../ddb/ddb.service";
 
 @Injectable()
-export class OpportunityEntityProvider {
-  readonly entity;
+export class OpportunityEntity {
+  readonly value;
 
   constructor(ddb: DynamoDBService) {
-    this.entity = new Entity({
+    this.value = new Entity({
       // Specify entity name
       name: "Opportunity",
 
