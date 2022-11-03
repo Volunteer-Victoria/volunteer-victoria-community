@@ -9,7 +9,6 @@ import {
   Put,
 } from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
-import { uniqueId } from "../../util";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
@@ -31,12 +30,10 @@ export class OpportunityController {
   @Post()
   @HttpCode(201)
   @ApiResponse({ type: OpportunityResponseDto })
-  post(@Body() opp: OpportunityCreateDto): OpportunityResponseDto {
-    const id = uniqueId();
-    const result = new OpportunityResponseDto();
-    Object.assign(result, opp);
-    result.opportunityId = id;
-    return result;
+  async post(
+    @Body() opp: OpportunityCreateDto
+  ): Promise<OpportunityResponseDto> {
+    return this.service.create(opp);
   }
 
   @Get(":id")

@@ -2773,6 +2773,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@js-joda/core@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "@js-joda/core@npm:5.4.2"
+  checksum: 58ebcfb97fcf2bcd445370a76189a3a9852f7cb6d4e961a832892c43c562b9f1bc4ea71d962ab3532df15734d2ca2d6feb76a33f392dbddbbaf3640a5067b939
+  languageName: node
+  linkType: hard
+
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.4
   resolution: "@leichtgewicht/ip-codec@npm:2.0.4"
@@ -4312,6 +4319,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@volunteer-victoria/community-backend@workspace:packages/backend"
   dependencies:
+    "@js-joda/core": ^5.4.2
     "@nestjs/cli": ^9.0.0
     "@nestjs/common": ^9.0.0
     "@nestjs/core": ^9.0.0

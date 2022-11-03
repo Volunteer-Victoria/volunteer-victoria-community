@@ -10,8 +10,23 @@ export class OpportunityEntity {
     this.value = new Entity({
       name: "Opportunity",
       attributes: {
-        opportunityId: { partitionKey: true },
-        postedTime: { type: "number", sortKey: true },
+        opportunityId: { type: "string", partitionKey: true },
+        postedTime: { type: "string", sortKey: true },
+
+        title: { type: "string" },
+        contactName: { type: "string" },
+        requiredPeopleCount: { type: "number" },
+        startTime: { type: "number" },
+        endTime: { type: "number" },
+        description: { type: "string" },
+        locationName: { type: "string" },
+        indoorsOrOutdoors: { type: "string" },
+        contactEmail: { type: "string" },
+        contactPhone: { type: "string" },
+        criminalRecordCheckRequired: { type: "boolean" },
+        idealVolunteer: { type: "string" },
+        additionalInformation: { type: "string" },
+        postedByUserId: { type: "string" },
       },
       table: ddb.table,
     } as const);

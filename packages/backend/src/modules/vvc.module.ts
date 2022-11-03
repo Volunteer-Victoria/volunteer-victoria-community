@@ -4,4 +4,4 @@ import { OpportunityModule } from "./opportunity/opportunity.module";
 @Module({
   imports: [OpportunityModule],
 })
-export class AppModule {}
+export class VVCModule {}
