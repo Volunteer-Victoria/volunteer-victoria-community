@@ -12,7 +12,6 @@ export class OpportunityEntity {
       attributes: {
         opportunityId: { type: "string", partitionKey: true },
         sk: { sortKey: true, hidden: true },
-
         postedTime: ["sk", 0, "number"],
 
         title: "string",

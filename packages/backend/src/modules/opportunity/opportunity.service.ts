@@ -1,5 +1,6 @@
 import { Instant } from "@js-joda/core";
 import { Injectable } from "@nestjs/common";
+import assert from "assert";
 import { transformAndValidate, uniqueId } from "../../util";
 import {
   OpportunityCreateDto,
@@ -19,6 +20,16 @@ export class OpportunityService {
   async findAll(): Promise<OpportunitySummaryResponseDto[]> {
     const raw = await this.opportunities.scan();
     return transformAndValidate(OpportunitySummaryResponseDto, raw.Items!);
+  }
+
+  async findOne(id: string): Promise<OpportunityResponseDto | undefined> {
+    const opp = await this.opportunities.query(id);
+    if (opp.Items === undefined || opp.Items.length === 0) {
+      return undefined;
+    } else {
+      assert(opp.Items.length === 1);
+      return transformAndValidate(OpportunityResponseDto, opp.Items[0]);
+    }
   }
 
   async create(values: OpportunityCreateDto): Promise<OpportunityResponseDto> {

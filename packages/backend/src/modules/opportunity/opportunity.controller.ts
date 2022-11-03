@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -24,8 +25,7 @@ export class OpportunityController {
   @Get()
   @ApiResponse({ type: [OpportunitySummaryResponseDto] })
   async get(): Promise<OpportunitySummaryResponseDto[]> {
-    const resp = await this.service.findAll();
-    return resp;
+    return this.service.findAll();
   }
 
   @Post()
@@ -39,10 +39,13 @@ export class OpportunityController {
 
   @Get(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  getId(@Param("id") id: string): OpportunityResponseDto {
-    const result = new OpportunityResponseDto();
-    result.opportunityId = id;
-    return result;
+  async getId(@Param("id") id: string): Promise<OpportunityResponseDto> {
+    const opp = await this.service.findOne(id);
+    if (opp === undefined) {
+      throw new NotFoundException();
+    } else {
+      return opp;
+    }
   }
 
   @Put(":id")

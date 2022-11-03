@@ -4,7 +4,6 @@ import supertest from "supertest";
 import { createNestApp } from "../../app";
 import { DynamoDBTestModule } from "../ddb/ddb.test.module";
 import { OpportunityController } from "./opportunity.controller";
-import type { OpportunityResponseDto } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
 import { OpportunityService } from "./opportunity.service";
 
@@ -50,20 +49,29 @@ describe("/opportunity", () => {
       .post("/opportunity")
       .send(exampleOpp1)
       .expect(201);
-    const postBody = postResp.body as OpportunityResponseDto;
+    const postBody = postResp.body;
     expect(postBody.opportunityId.length).toBe(21);
     expect(postBody.postedTime).toBeDefined();
     expect(typeof postBody.postedTime).toBe("number");
     expect(postBody.postedByUserId).toBeDefined();
     for (const [k, v] of Object.entries(exampleOpp1)) {
-      expect(postBody[k as keyof OpportunityResponseDto]).toBe(v);
+      expect(postBody[k]).toBe(v);
     }
 
     const getResp = await api.get("/opportunity").expect(200);
     expect(getResp.body.length).toBe(1);
     const oppSummary = getResp.body[0];
+    expect(oppSummary.opportunityId.length).toBe(21);
     expect(oppSummary.title).toBe(exampleOpp1.title);
     expect(oppSummary["description"]).toBeUndefined();
+
+    const getIdResp = await api
+      .get(`/opportunity/${oppSummary.opportunityId}`)
+      .expect(200);
+    const opp = getIdResp.body;
+    for (const [k, v] of Object.entries(postBody)) {
+      expect(opp[k]).toBe(v);
+    }
   });
 
   afterAll(async () => {
