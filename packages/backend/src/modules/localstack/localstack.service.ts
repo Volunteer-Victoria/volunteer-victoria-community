@@ -5,14 +5,14 @@ import type { StartedTestContainer } from "testcontainers";
 
 @Injectable()
 export class LocalstackService {
-  readonly url: string;
+  readonly endpoint: string;
 
   constructor(public readonly localstack: StartedTestContainer) {
     assert(isRunningInUnitTest);
-    this.url = `http://${localstack.getHost()}:${localstack.getMappedPort(
+    this.endpoint = `http://${localstack.getHost()}:${localstack.getMappedPort(
       4566
     )}`;
-    console.info(`Localstack container started at ${this.url}`);
+    console.info(`Localstack container started at ${this.endpoint}`);
   }
 
   async stop() {

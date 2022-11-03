@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Table } from "dynamodb-toolbox";
 import DynamoDB from "aws-sdk/clients/dynamodb";
-import { isRunningLocally } from "src/util";
+import { isRunningLocally } from "../../util";
 
 async function ensureTableExists(
   tableName: string,

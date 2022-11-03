@@ -1,12 +1,6 @@
 import { Module } from "@nestjs/common";
-import DynamoDB from "aws-sdk/clients/dynamodb";
 import { assert } from "console";
-import { Table } from "dynamodb-toolbox";
-import { isRunningLocally } from "../../util";
-import { DynamoDBService } from "./ddb.service";
-
-const tableName = process.env["DDB_TABLE_NAME"]!;
-assert(tableName.length > 0);
+import { DynamoDBService, makeDynamoDBService } from "./ddb.service";
 
 const awsConfig = {
   ...(process.env["AWS_ENDPOINT"]
@@ -21,8 +15,11 @@ const awsConfig = {
   providers: [
     {
       provide: DynamoDBService,
-      useFactory: async () =>
-        new DynamoDBService(await createAppTable(awsConfig)),
+      useFactory: () => {
+        const tableName = process.env["DDB_TABLE_NAME"]!;
+        assert(tableName.length > 0);
+        return makeDynamoDBService(tableName, awsConfig);
+      },
     },
   ],
   exports: [DynamoDBService],

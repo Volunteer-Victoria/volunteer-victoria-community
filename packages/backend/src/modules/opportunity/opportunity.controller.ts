@@ -24,14 +24,14 @@ export class OpportunityController {
 
   @Get()
   @ApiResponse({ type: [OpportunitySummaryResponseDto] })
-  async findAll(): Promise<OpportunitySummaryResponseDto[]> {
+  async get(): Promise<OpportunitySummaryResponseDto[]> {
     return this.service.findAll();
   }
 
   @Post()
   @HttpCode(201)
   @ApiResponse({ type: OpportunityResponseDto })
-  create(@Body() opp: OpportunityCreateDto): OpportunityResponseDto {
+  post(@Body() opp: OpportunityCreateDto): OpportunityResponseDto {
     const id = uniqueId();
     const result = new OpportunityResponseDto();
     Object.assign(result, opp);
@@ -41,7 +41,7 @@ export class OpportunityController {
 
   @Get(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  findOne(@Param("id") id: string): OpportunityResponseDto {
+  getId(@Param("id") id: string): OpportunityResponseDto {
     const result = new OpportunityResponseDto();
     result.opportunityId = id;
     return result;
@@ -49,7 +49,7 @@ export class OpportunityController {
 
   @Put(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  update(
+  putId(
     @Param("id") id: string,
     @Body() opp: OpportunityUpdateDto
   ): OpportunityResponseDto {
@@ -61,7 +61,7 @@ export class OpportunityController {
 
   @Delete(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  delete(@Param("id") id: string): OpportunityResponseDto {
+  deleteId(@Param("id") id: string): OpportunityResponseDto {
     const result = new OpportunityResponseDto();
     result.opportunityId = id;
     return result;

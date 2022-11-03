@@ -1,23 +1,25 @@
-// import { Test, TestingModule } from "@nestjs/testing";
-// import { OpportunityController } from "./opportunity.controller";
-// import { OpportunityService } from "./opportunity.service";
+import { Test, TestingModule } from "@nestjs/testing";
+import { DynamoDBTestModule } from "../ddb/ddb.test.module";
+import { OpportunityController } from "./opportunity.controller";
+import { OpportunityEntity } from "./opportunity.entity";
+import { OpportunityService } from "./opportunity.service";
 
-// describe("OpportunityController", () => {
-//   let opportunityController: OpportunityController;
+describe("OpportunityController", () => {
+  let opportunityController: OpportunityController;
 
-//   beforeEach(async () => {
-//     const app: TestingModule = await Test.createTestingModule({
-//       controllers: [OpportunityController],
-//       providers: [OpportunityService],
-//       imports:
-//     }).compile();
+  beforeEach(async () => {
+    const app: TestingModule = await Test.createTestingModule({
+      controllers: [OpportunityController],
+      providers: [OpportunityService, OpportunityEntity],
+      imports: [DynamoDBTestModule],
+    }).compile();
 
-//     opportunityController = app.get<OpportunityController>(OpportunityController);
-//   });
+    opportunityController = app.get(OpportunityController);
+  });
 
-//   describe("root", () => {
-//     it('should return "Hello World!"', () => {
-//       expect(opportunityController.getHello()).toBe("Hello World!");
-//     });
-//   });
-// });
+  describe("get", () => {
+    it("should return the empty list at the start", async () => {
+      expect(await opportunityController.get()).toEqual([]);
+    });
+  });
+});
