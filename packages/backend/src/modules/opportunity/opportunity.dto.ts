@@ -47,8 +47,8 @@ export class OpportunitySummaryResponseDto extends OpportunitySummaryBase {
   @ApiProperty({
     example: 1666666666,
   })
-  @IsString()
-  postedTime!: string;
+  @IsNumber()
+  postedTime!: number;
 }
 
 class OpportunityBase extends OpportunitySummaryBase {
@@ -64,20 +64,23 @@ class OpportunityBase extends OpportunitySummaryBase {
   @IsEnum(IndoorsOrOutdoors)
   indoorsOrOutdoors!: string;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   @IsEmail()
-  contactEmail!: string;
+  @IsOptional()
+  contactEmail?: string;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   @IsString()
-  contactPhone!: string;
+  @IsOptional()
+  contactPhone?: string;
 
   @ApiProperty()
   @IsBoolean()
   criminalRecordCheckRequired!: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   @IsString()
+  @IsOptional()
   idealVolunteer!: string;
 
   @ApiProperty({ nullable: true })
@@ -98,8 +101,8 @@ export class OpportunityResponseDto extends OpportunityBase {
   @ApiProperty({
     example: 1666666666,
   })
-  @IsString()
-  postedTime!: string;
+  @IsNumber()
+  postedTime!: number;
 
   @ApiProperty()
   @IsString()

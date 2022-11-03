@@ -1,13 +1,12 @@
+import { Instant } from "@js-joda/core";
 import { Injectable } from "@nestjs/common";
-import type { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { plainToInstance } from "class-transformer";
-import { uniqueId } from "../../util";
+import { transformAndValidate, uniqueId } from "../../util";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
+  OpportunitySummaryResponseDto,
 } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
-import { Instant } from "@js-joda/core";
 
 @Injectable()
 export class OpportunityService {
@@ -17,12 +16,9 @@ export class OpportunityService {
     this.opportunities = entity.value;
   }
 
-  async findAll(): Promise<OpportunityResponseDto[]> {
+  async findAll(): Promise<OpportunitySummaryResponseDto[]> {
     const raw = await this.opportunities.scan();
-    return plainToInstance<OpportunityResponseDto, DocumentClient.AttributeMap>(
-      OpportunityResponseDto,
-      raw.Items!
-    );
+    return transformAndValidate(OpportunitySummaryResponseDto, raw.Items!);
   }
 
   async create(values: OpportunityCreateDto): Promise<OpportunityResponseDto> {
@@ -32,8 +28,8 @@ export class OpportunityService {
       postedTime: Instant.now().epochSecond(),
       postedByUserId: "none",
     };
-    const resp = plainToInstance(OpportunityResponseDto, opp);
+    const resp = await transformAndValidate(OpportunityResponseDto, opp);
     await this.opportunities.put(resp);
-    return resp;
+    return opp;
   }
 }

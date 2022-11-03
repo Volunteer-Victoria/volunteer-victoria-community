@@ -24,7 +24,8 @@ export class OpportunityController {
   @Get()
   @ApiResponse({ type: [OpportunitySummaryResponseDto] })
   async get(): Promise<OpportunitySummaryResponseDto[]> {
-    return this.service.findAll();
+    const resp = await this.service.findAll();
+    return resp;
   }
 
   @Post()
