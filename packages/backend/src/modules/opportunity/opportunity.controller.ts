@@ -62,9 +62,12 @@ export class OpportunityController {
 
   @Delete(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  deleteId(@Param("id") id: string): OpportunityResponseDto {
-    const result = new OpportunityResponseDto();
-    result.opportunityId = id;
-    return result;
+  async deleteId(@Param("id") id: string): Promise<OpportunityResponseDto> {
+    const opp = await this.service.delete(id);
+    if (opp === undefined) {
+      throw new NotFoundException();
+    } else {
+      return opp;
+    }
   }
 }

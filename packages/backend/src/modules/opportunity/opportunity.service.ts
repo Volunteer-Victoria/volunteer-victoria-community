@@ -44,13 +44,14 @@ export class OpportunityService {
     return opp;
   }
 
-  // async delete(id: string): Promise<OpportunityResponseDto | undefined> {
-  //   const opp = await this.findOne(id);
-  //   if (opp === undefined) {
-  //     return undefined;
-  //   } else {
-  //     const { opportunityId,  }
-  //     const resp = await this.opportunities.delete({ opportunityId})
-  //   }
-  // }
+  async delete(id: string): Promise<OpportunityResponseDto | undefined> {
+    const opp = await this.findOne(id);
+    if (opp === undefined) {
+      return undefined;
+    } else {
+      const { opportunityId, postedTime } = opp;
+      await this.opportunities.delete({ opportunityId, postedTime });
+      return opp;
+    }
+  }
 }

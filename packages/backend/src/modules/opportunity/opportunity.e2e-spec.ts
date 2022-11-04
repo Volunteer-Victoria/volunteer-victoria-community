@@ -74,6 +74,18 @@ describe("/opportunity", () => {
     }
   });
 
+  it("DELETE should remove an object", async () => {
+    const { opportunityId } = (await api.get("/opportunity").expect(200))
+      .body[0];
+    const resp = await api.delete(`/opportunity/${opportunityId}`).expect(200);
+    expect(resp.body.opportunityId).toBe(opportunityId);
+
+    const opps = (await api.get("/opportunity").expect(200)).body;
+    expect(opps.length).toBe(0);
+
+    await api.get(`/opportunity/${opportunityId}`).expect(404);
+  });
+
   afterAll(async () => {
     await app.close();
   });
