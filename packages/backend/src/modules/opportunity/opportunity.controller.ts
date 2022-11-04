@@ -14,7 +14,6 @@ import {
   OpportunityCreateDto,
   OpportunityResponseDto,
   OpportunitySummaryResponseDto,
-  OpportunityUpdateDto,
 } from "./opportunity.dto";
 import { OpportunityService } from "./opportunity.service";
 
@@ -50,14 +49,16 @@ export class OpportunityController {
 
   @Put(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  putId(
+  async putId(
     @Param("id") id: string,
-    @Body() opp: OpportunityUpdateDto
-  ): OpportunityResponseDto {
-    const result = new OpportunityResponseDto();
-    Object.assign(result, opp);
-    result.opportunityId = id;
-    return result;
+    @Body() values: OpportunityCreateDto
+  ): Promise<OpportunityResponseDto> {
+    const opp = await this.service.update(id, values);
+    if (opp === undefined) {
+      throw new NotFoundException();
+    } else {
+      return opp;
+    }
   }
 
   @Delete(":id")

@@ -30,9 +30,12 @@ const exampleOpp1 = {
   additionalInformation: "large person pls",
 };
 
-describe("/opportunity", () => {
+const path = "/opportunity";
+
+describe(path, () => {
   let app: INestApplication;
   let api: supertest.SuperTest<supertest.Test>;
+  let oppId: string;
 
   beforeAll(async () => {
     app = (await createNestApp(OpportunityTestModule, "")).nestApp;
@@ -40,17 +43,17 @@ describe("/opportunity", () => {
   });
 
   it("GET should return empty at the start", async () => {
-    const resp = await api.get("/opportunity").expect(200);
+    const resp = await api.get(path).expect(200);
     expect(resp.body.length).toBe(0);
   });
 
   it("POST should create an object returned in GET and GET /{id}", async () => {
-    const postResp = await api
-      .post("/opportunity")
-      .send(exampleOpp1)
-      .expect(201);
+    const postResp = await api.post(path).send(exampleOpp1).expect(201);
     const postBody = postResp.body;
-    expect(postBody.opportunityId.length).toBe(21);
+
+    oppId = postBody.opportunityId;
+    expect(oppId.length).toBe(21);
+
     expect(postBody.postedTime).toBeDefined();
     expect(typeof postBody.postedTime).toBe("number");
     expect(postBody.postedByUserId).toBeDefined();
@@ -58,32 +61,57 @@ describe("/opportunity", () => {
       expect(postBody[k]).toBe(v);
     }
 
-    const getResp = await api.get("/opportunity").expect(200);
+    const getResp = await api.get(path).expect(200);
     expect(getResp.body.length).toBe(1);
     const oppSummary = getResp.body[0];
-    expect(oppSummary.opportunityId.length).toBe(21);
+    expect(oppSummary.opportunityId).toBe(oppId);
     expect(oppSummary.title).toBe(exampleOpp1.title);
     expect(oppSummary["description"]).toBeUndefined();
 
-    const getIdResp = await api
-      .get(`/opportunity/${oppSummary.opportunityId}`)
-      .expect(200);
+    const getIdResp = await api.get(`/opportunity/${oppId}`).expect(200);
     const opp = getIdResp.body;
     for (const [k, v] of Object.entries(postBody)) {
       expect(opp[k]).toBe(v);
     }
   });
 
-  it("DELETE should remove an object", async () => {
-    const { opportunityId } = (await api.get("/opportunity").expect(200))
-      .body[0];
-    const resp = await api.delete(`/opportunity/${opportunityId}`).expect(200);
-    expect(resp.body.opportunityId).toBe(opportunityId);
+  it("GET /{id} should 404 if object does not exist", async () => {
+    await api.get(`${path}/notanid`).expect(404);
+  });
 
-    const opps = (await api.get("/opportunity").expect(200)).body;
+  it("POST should 400 on bad input", async () => {
+    await api
+      .post(path)
+      .send({ ...exampleOpp1, description: 3 })
+      .expect(400);
+    await api
+      .post(path)
+      .send({ ...exampleOpp1, startTime: null })
+      .expect(400);
+    await api
+      .post(path)
+      .send({ ...exampleOpp1, contactName: undefined })
+      .expect(400);
+  });
+
+  it("PUT should update fields", async () => {
+    //  const resp = await api.put(`${path}/${oppId}`).send({ ...exampleOpp1, description: "updated" }).expect(200);
+    //  const opp = (await api.get(`${path}/${oppId}`))
+  });
+
+  it("DELETE should remove an opp", async () => {
+    const resp = await api.delete(`${path}/${oppId}`).expect(200);
+    expect(resp.body.opportunityId).toBe(oppId);
+
+    const opps = (await api.get(path).expect(200)).body;
     expect(opps.length).toBe(0);
 
-    await api.get(`/opportunity/${opportunityId}`).expect(404);
+    await api.get(`${path}/${oppId}`).expect(404);
+  });
+
+  it("DELETE and PUT on an non-existent opp should 404", async () => {
+    await api.delete(`${path}/fake`).expect(404);
+    await api.put(`${path}/fake`).send({ a: 1 }).expect(404);
   });
 
   afterAll(async () => {

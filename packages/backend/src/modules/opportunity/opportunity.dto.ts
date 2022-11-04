@@ -91,8 +91,6 @@ class OpportunityBase extends OpportunitySummaryBase {
 
 export class OpportunityCreateDto extends OpportunityBase {}
 
-export class OpportunityUpdateDto extends OpportunityBase {}
-
 export class OpportunityResponseDto extends OpportunityBase {
   @ApiProperty()
   @IsString()

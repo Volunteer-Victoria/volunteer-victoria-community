@@ -6,6 +6,7 @@ import {
   OpportunityCreateDto,
   OpportunityResponseDto,
   OpportunitySummaryResponseDto,
+  OpportunityUpdateDto,
 } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
 
@@ -42,6 +43,23 @@ export class OpportunityService {
     const resp = await transformAndValidate(OpportunityResponseDto, opp);
     await this.opportunities.put(resp);
     return opp;
+  }
+
+  async update(
+    id: string,
+    values: OpportunityCreateDto
+  ): Promise<OpportunityResponseDto | undefined> {
+    const opp = await this.findOne(id);
+    if (opp === undefined) {
+      return undefined;
+    } else {
+      const updated = await transformAndValidate(OpportunityResponseDto, {
+        ...opp,
+        ...values,
+      });
+      await this.opportunities.put(updated);
+      return updated;
+    }
   }
 
   async delete(id: string): Promise<OpportunityResponseDto | undefined> {
