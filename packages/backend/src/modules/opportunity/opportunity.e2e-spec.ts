@@ -79,7 +79,7 @@ describe(path, () => {
     await api.get(`${path}/notanid`).expect(404);
   });
 
-  it("POST should 400 on bad input", async () => {
+  it("POST and PUT should 400 on bad input", async () => {
     await api
       .post(path)
       .send({ ...exampleOpp1, description: 3 })
@@ -92,26 +92,53 @@ describe(path, () => {
       .post(path)
       .send({ ...exampleOpp1, contactName: undefined })
       .expect(400);
+
+    await api
+      .put(`${path}/${oppId}`)
+      .send({ ...exampleOpp1, description: 3 })
+      .expect(400);
+    await api
+      .put(`${path}/${oppId}`)
+      .send({ ...exampleOpp1, startTime: null })
+      .expect(400);
+    await api
+      .put(`${path}/${oppId}`)
+      .send({ ...exampleOpp1, contactName: undefined })
+      .expect(400);
   });
 
   it("PUT should update fields", async () => {
-    //  const resp = await api.put(`${path}/${oppId}`).send({ ...exampleOpp1, description: "updated" }).expect(200);
-    //  const opp = (await api.get(`${path}/${oppId}`))
+    const put1 = await api
+      .put(`${path}/${oppId}`)
+      .send({ ...exampleOpp1, description: "updated" })
+      .expect(200);
+    expect(put1.body.description).toBe("updated");
+    const get1 = await api.get(`${path}/${oppId}`).expect(200);
+    expect(get1.body.description).toBe("updated");
+    expect(get1.body.locationName).toBe(exampleOpp1.locationName);
+    expect(get1.body.idealVolunteer).toBeDefined();
+
+    const newValues: Partial<typeof exampleOpp1> = { ...exampleOpp1 };
+    delete newValues.idealVolunteer;
+    await api.put(`${path}/${oppId}`).send(newValues).expect(200);
+    const get2 = await api.get(`${path}/${oppId}`).expect(200);
+    expect(get2.body.description).toBe(exampleOpp1.description);
+    expect(get2.body.idealVolunteer).toBeUndefined();
   });
 
   it("DELETE should remove an opp", async () => {
     const resp = await api.delete(`${path}/${oppId}`).expect(200);
     expect(resp.body.opportunityId).toBe(oppId);
 
-    const opps = (await api.get(path).expect(200)).body;
-    expect(opps.length).toBe(0);
+    const opps = await api.get(path).expect(200);
+    expect(opps.body.length).toBe(0);
 
     await api.get(`${path}/${oppId}`).expect(404);
   });
 
   it("DELETE and PUT on an non-existent opp should 404", async () => {
     await api.delete(`${path}/fake`).expect(404);
-    await api.put(`${path}/fake`).send({ a: 1 }).expect(404);
+    await api.put(`${path}/fake`).send(exampleOpp1).expect(404);
   });
 
   afterAll(async () => {

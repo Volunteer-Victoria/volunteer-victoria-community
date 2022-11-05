@@ -6,7 +6,6 @@ import {
   OpportunityCreateDto,
   OpportunityResponseDto,
   OpportunitySummaryResponseDto,
-  OpportunityUpdateDto,
 } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
 
@@ -53,9 +52,12 @@ export class OpportunityService {
     if (opp === undefined) {
       return undefined;
     } else {
+      const { postedTime, opportunityId, postedByUserId } = opp;
       const updated = await transformAndValidate(OpportunityResponseDto, {
-        ...opp,
         ...values,
+        postedTime,
+        opportunityId,
+        postedByUserId,
       });
       await this.opportunities.put(updated);
       return updated;

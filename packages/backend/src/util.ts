@@ -1,3 +1,6 @@
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ClassConstructor, plainToInstance } from "class-transformer";
 import { validateOrReject, ValidatorOptions } from "class-validator";
 import { nanoid } from "nanoid";
@@ -39,4 +42,15 @@ export async function transformAndValidate<T>(
     await validateOrReject(result as object, options);
   }
   return result;
+}
+
+export function RequireAuth(): MethodDecorator {
+  return <T>(
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<T>
+  ) => {
+    UseGuards(AuthGuard("jwt"))(target, propertyKey, descriptor);
+    ApiBearerAuth()(target, propertyKey, descriptor);
+  };
 }
