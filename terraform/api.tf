@@ -20,7 +20,7 @@ resource "aws_lambda_function" "api" {
 
   environment {
     variables = {
-      DDB_TABLE_NAME = local.api_name
+      DDB_TABLE_NAME = aws_dynamodb_table.api.name
     }
   }
 }
@@ -123,6 +123,35 @@ resource "aws_iam_role_policy" "api_lambda" {
         Resource = [
           "arn:aws:logs:${var.region}:${local.aws_account_id}:log-group:/aws/lambda/${local.api_name}:*"
         ]
+      },
+      {
+        Sid = "ListAndDescribe",
+        Effect = "Allow",
+        Action = [
+          "dynamodb:List*",
+          "dynamodb:DescribeReservedCapacity*",
+          "dynamodb:DescribeLimits",
+          "dynamodb:DescribeTimeToLive"
+        ],
+        Resource = "*"
+      },
+      {
+        Sid = "SpecificTable",
+        Effect = "Allow",
+        Action = [
+          "dynamodb:BatchGet*",
+          "dynamodb:DescribeStream",
+          "dynamodb:DescribeTable",
+          "dynamodb:Get*",
+          "dynamodb:Query",
+          "dynamodb:Scan",
+          "dynamodb:BatchWrite*",
+          "dynamodb:CreateTable",
+          "dynamodb:Delete*",
+          "dynamodb:Update*",
+          "dynamodb:PutItem"
+        ],
+        Resource = "arn:aws:dynamodb:*:*:table/${aws_dynamodb_table.api.name}"
       }
     ]
   })
