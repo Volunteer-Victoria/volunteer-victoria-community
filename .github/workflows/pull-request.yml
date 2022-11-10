@@ -38,4 +38,4 @@ jobs:
           mv packages/frontend/src/api packages/frontend/src/__api
           make api-schema-generate
           cd packages/frontend/src
-          diff -qr api __api
+          diff -r api __api
