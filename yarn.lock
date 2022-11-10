@@ -4542,7 +4542,6 @@ __metadata:
     "@openapitools/openapi-generator-cli": ^2.5.2
     husky: ^8.0.0
     lint-staged: ^13.0.3
-    openapi-typescript: ^5.4.1
     prettier: ^2.7.1
     typescript: ^4.8.4
   languageName: unknown
@@ -5811,7 +5810,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"busboy@npm:^1.0.0, busboy@npm:^1.6.0":
+"busboy@npm:^1.0.0":
   version: 1.6.0
   resolution: "busboy@npm:1.6.0"
   dependencies:
@@ -8919,13 +8918,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globalyzer@npm:0.1.0":
-  version: 0.1.0
-  resolution: "globalyzer@npm:0.1.0"
-  checksum: 419a0f95ba542534fac0842964d31b3dc2936a479b2b1a8a62bad7e8b61054faa9b0a06ad9f2e12593396b9b2621cac93358d9b3071d33723fb1778608d358a1
-  languageName: node
-  linkType: hard
-
 "globby@npm:^11.0.4, globby@npm:^11.1.0":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
@@ -8937,13 +8929,6 @@ __metadata:
     merge2: ^1.4.1
     slash: ^3.0.0
   checksum: b4be8885e0cfa018fc783792942d53926c35c50b3aefd3fdcfb9d22c627639dc26bd2327a40a0b74b074100ce95bb7187bfeae2f236856aa3de183af7a02aea6
-  languageName: node
-  linkType: hard
-
-"globrex@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "globrex@npm:0.1.2"
-  checksum: adca162494a176ce9ecf4dd232f7b802956bb1966b37f60c15e49d2e7d961b66c60826366dc2649093cad5a0d69970cfa8875bd1695b5a1a2f33dcd2aa88da3c
   languageName: node
   linkType: hard
 
@@ -12283,15 +12268,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "mime@npm:3.0.0"
-  bin:
-    mime: cli.js
-  checksum: f43f9b7bfa64534e6b05bd6062961681aeb406a5b53673b53b683f27fcc4e739989941836a355eef831f4478923651ecc739f4a5f6e20a76487b432bfd4db928
-  languageName: node
-  linkType: hard
-
 "mimic-fn@npm:^2.1.0":
   version: 2.1.0
   resolution: "mimic-fn@npm:2.1.0"
@@ -12878,22 +12854,6 @@ __metadata:
     is-docker: ^2.1.1
     is-wsl: ^2.2.0
   checksum: e9545bec64cdbf30a0c35c1bdc310344adf8428a117f7d8df3c0af0a0a24c513b304916a6d9b11db0190ff7225c2d578885080b761ed46a3d5f6f1eebb98b63c
-  languageName: node
-  linkType: hard
-
-"openapi-typescript@npm:^5.4.1":
-  version: 5.4.1
-  resolution: "openapi-typescript@npm:5.4.1"
-  dependencies:
-    js-yaml: ^4.1.0
-    mime: ^3.0.0
-    prettier: ^2.6.2
-    tiny-glob: ^0.2.9
-    undici: ^5.4.0
-    yargs-parser: ^21.0.1
-  bin:
-    openapi-typescript: bin/cli.js
-  checksum: ab0e7613a478fcfa675887e50ff00fd6403ad6313357944408c11b420c08bbfa2bb58bff66c4e9a8c5670c79fe1a8d2f4ee85beceb004e72c529a97019b57c20
   languageName: node
   linkType: hard
 
@@ -14121,7 +14081,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.6.2, prettier@npm:^2.7.1":
+"prettier@npm:^2.7.1":
   version: 2.7.1
   resolution: "prettier@npm:2.7.1"
   bin:
@@ -16261,16 +16221,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-glob@npm:^0.2.9":
-  version: 0.2.9
-  resolution: "tiny-glob@npm:0.2.9"
-  dependencies:
-    globalyzer: 0.1.0
-    globrex: ^0.1.2
-  checksum: aea5801eb6663ddf77ebb74900b8f8bd9dfcfc9b6a1cc8018cb7421590c00bf446109ff45e4b64a98e6c95ddb1255a337a5d488fb6311930e2a95334151ec9c6
-  languageName: node
-  linkType: hard
-
 "tmp@npm:^0.0.33":
   version: 0.0.33
   resolution: "tmp@npm:0.0.33"
@@ -16679,15 +16629,6 @@ __metadata:
     has-symbols: ^1.0.3
     which-boxed-primitive: ^1.0.2
   checksum: b7a1cf5862b5e4b5deb091672ffa579aa274f648410009c81cca63fed3b62b610c4f3b773f912ce545bb4e31edc3138975b5bc777fc6e4817dca51affb6380e9
-  languageName: node
-  linkType: hard
-
-"undici@npm:^5.4.0":
-  version: 5.12.0
-  resolution: "undici@npm:5.12.0"
-  dependencies:
-    busboy: ^1.6.0
-  checksum: fbc227704943c05aa3dc1630695e10309c17d0a535678594d136db107c50593248e9ace70e1ab77496a6c837bf14aa2ab3c501a7a6c45fb6277dbf0846e15ffe
   languageName: node
   linkType: hard
 
