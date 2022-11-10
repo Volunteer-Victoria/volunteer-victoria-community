@@ -37,5 +37,6 @@ jobs:
         run: |
           mv packages/frontend/src/api packages/frontend/src/__api
           make api-schema-generate
+          yarn format
           cd packages/frontend/src
           diff -r api __api
