@@ -39,7 +39,7 @@ frontend-deploy:
 
 api-schema-generate:
 	yarn workspace $(BACKEND_WORKSPACE) export:openapi
-	yarn openapi-typescript openapi.yml --output ./packages/frontend/src/schema.ts
+	yarn openapi generate -i openapi.yml -g typescript-fetch -o ./packages/frontend/src/api
 
 tf-write-config:
 	@echo "$$TFVARS_DATA" > $(TF_DIR)/.auto.tfvars

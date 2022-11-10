@@ -2,6 +2,7 @@ name: Pull Request
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarcloud:
     name: SonarCloud Scan
@@ -34,7 +35,7 @@ jobs:
 
       - name: Check API schema
         run: |
-          mv packages/frontend/src/schema.ts packages/frontend/src/schema.backup.ts
+          mv packages/frontend/src/api packages/frontend/src/__api
           make api-schema-generate
           cd packages/frontend/src
-          diff schema.ts schema.backup.ts
+          diff -qr api __api
