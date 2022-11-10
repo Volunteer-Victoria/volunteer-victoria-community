@@ -72,13 +72,13 @@ export interface OpportunityCreateDto {
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  contactEmail: string | null;
+  contactEmail?: string;
   /**
    *
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  contactPhone: string | null;
+  contactPhone?: string;
   /**
    *
    * @type {boolean}
@@ -90,13 +90,13 @@ export interface OpportunityCreateDto {
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  idealVolunteer: string | null;
+  idealVolunteer?: string;
   /**
    *
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  additionalInformation: string | null;
+  additionalInformation?: string;
 }
 
 /**
@@ -122,11 +122,7 @@ export function instanceOfOpportunityCreateDto(value: object): boolean {
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
-  isInstance = isInstance && "contactEmail" in value;
-  isInstance = isInstance && "contactPhone" in value;
   isInstance = isInstance && "criminalRecordCheckRequired" in value;
-  isInstance = isInstance && "idealVolunteer" in value;
-  isInstance = isInstance && "additionalInformation" in value;
 
   return isInstance;
 }
@@ -151,11 +147,19 @@ export function OpportunityCreateDtoFromJSONTyped(
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
-    contactEmail: json["contactEmail"],
-    contactPhone: json["contactPhone"],
+    contactEmail: !exists(json, "contactEmail")
+      ? undefined
+      : json["contactEmail"],
+    contactPhone: !exists(json, "contactPhone")
+      ? undefined
+      : json["contactPhone"],
     criminalRecordCheckRequired: json["criminalRecordCheckRequired"],
-    idealVolunteer: json["idealVolunteer"],
-    additionalInformation: json["additionalInformation"],
+    idealVolunteer: !exists(json, "idealVolunteer")
+      ? undefined
+      : json["idealVolunteer"],
+    additionalInformation: !exists(json, "additionalInformation")
+      ? undefined
+      : json["additionalInformation"],
   };
 }
 

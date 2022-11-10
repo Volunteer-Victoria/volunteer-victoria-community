@@ -64,12 +64,12 @@ class OpportunityBase extends OpportunitySummaryBase {
   @IsEnum(IndoorsOrOutdoors)
   indoorsOrOutdoors!: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ required: false })
   @IsEmail()
   @IsOptional()
   contactEmail?: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   contactPhone?: string;
@@ -78,12 +78,12 @@ class OpportunityBase extends OpportunitySummaryBase {
   @IsBoolean()
   criminalRecordCheckRequired!: boolean;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   idealVolunteer!: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
   additionalInformation?: string;
