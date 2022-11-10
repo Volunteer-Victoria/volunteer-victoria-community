@@ -72,13 +72,13 @@ export interface OpportunityResponseDto {
    * @type {string}
    * @memberof OpportunityResponseDto
    */
-  contactEmail: string | null;
+  contactEmail?: string;
   /**
    *
    * @type {string}
    * @memberof OpportunityResponseDto
    */
-  contactPhone: string | null;
+  contactPhone?: string;
   /**
    *
    * @type {boolean}
@@ -90,13 +90,13 @@ export interface OpportunityResponseDto {
    * @type {string}
    * @memberof OpportunityResponseDto
    */
-  idealVolunteer: string | null;
+  idealVolunteer?: string;
   /**
    *
    * @type {string}
    * @memberof OpportunityResponseDto
    */
-  additionalInformation: string | null;
+  additionalInformation?: string;
   /**
    *
    * @type {string}
@@ -140,11 +140,7 @@ export function instanceOfOpportunityResponseDto(value: object): boolean {
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
-  isInstance = isInstance && "contactEmail" in value;
-  isInstance = isInstance && "contactPhone" in value;
   isInstance = isInstance && "criminalRecordCheckRequired" in value;
-  isInstance = isInstance && "idealVolunteer" in value;
-  isInstance = isInstance && "additionalInformation" in value;
   isInstance = isInstance && "opportunityId" in value;
   isInstance = isInstance && "postedTime" in value;
   isInstance = isInstance && "postedByUserId" in value;
@@ -174,11 +170,19 @@ export function OpportunityResponseDtoFromJSONTyped(
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
-    contactEmail: json["contactEmail"],
-    contactPhone: json["contactPhone"],
+    contactEmail: !exists(json, "contactEmail")
+      ? undefined
+      : json["contactEmail"],
+    contactPhone: !exists(json, "contactPhone")
+      ? undefined
+      : json["contactPhone"],
     criminalRecordCheckRequired: json["criminalRecordCheckRequired"],
-    idealVolunteer: json["idealVolunteer"],
-    additionalInformation: json["additionalInformation"],
+    idealVolunteer: !exists(json, "idealVolunteer")
+      ? undefined
+      : json["idealVolunteer"],
+    additionalInformation: !exists(json, "additionalInformation")
+      ? undefined
+      : json["additionalInformation"],
     opportunityId: json["opportunityId"],
     postedTime: json["postedTime"],
     postedByUserId: json["postedByUserId"],

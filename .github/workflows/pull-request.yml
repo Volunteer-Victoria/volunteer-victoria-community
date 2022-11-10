@@ -17,8 +17,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  check-api-schema:
-    name: Check API schema matches
+  check-api-client:
+    name: Check auto-generated API client is up-to-date
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -36,7 +36,7 @@ jobs:
       - name: Check API schema
         run: |
           mv packages/frontend/src/api packages/frontend/src/__api
-          make api-schema-generate
+          make api-client-generate
           yarn format
           cd packages/frontend/src
           diff -r api __api
