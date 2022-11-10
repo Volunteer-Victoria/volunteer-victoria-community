@@ -1,78 +1,108 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsEmail } from "class-validator";
+import {
+  IsBoolean,
+  IsEmail,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 enum IndoorsOrOutdoors {
-  Indoors,
-  Outdoors,
+  Indoors = "indoors",
+  Outdoors = "outdoors",
 }
 
 class OpportunitySummaryBase {
   @ApiProperty()
+  @IsString()
   title!: string;
 
   @ApiProperty()
+  @IsString()
   contactName!: string;
 
   @ApiProperty()
+  @IsNumber()
   requiredPeopleCount!: number;
 
   @ApiProperty({
     example: 1666666666,
   })
+  @IsNumber()
   startTime!: number;
 
   @ApiProperty({
     example: 1666666666,
   })
+  @IsNumber()
   endTime!: number;
-
-  @ApiProperty({
-    example: 1666666666,
-  })
-  postedTime!: number;
 }
 
 export class OpportunitySummaryResponseDto extends OpportunitySummaryBase {
   @ApiProperty()
+  @IsString()
   opportunityId!: string;
+
+  @ApiProperty({
+    example: 1666666666,
+  })
+  @IsNumber()
+  postedTime!: number;
 }
 
 class OpportunityBase extends OpportunitySummaryBase {
   @ApiProperty()
+  @IsString()
   description!: string;
 
   @ApiProperty()
+  @IsString()
   locationName!: string;
 
   @ApiProperty({ enum: IndoorsOrOutdoors })
   @IsEnum(IndoorsOrOutdoors)
   indoorsOrOutdoors!: string;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
   @IsEmail()
-  contactEmail!: string;
+  @IsOptional()
+  contactEmail?: string;
+
+  @ApiProperty({ nullable: true })
+  @IsString()
+  @IsOptional()
+  contactPhone?: string;
 
   @ApiProperty()
-  contactPhone!: string;
-
-  @ApiProperty()
+  @IsBoolean()
   criminalRecordCheckRequired!: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ nullable: true })
+  @IsString()
+  @IsOptional()
   idealVolunteer!: string;
 
   @ApiProperty({ nullable: true })
+  @IsString()
+  @IsOptional()
   additionalInformation?: string;
 }
 
 export class OpportunityCreateDto extends OpportunityBase {}
 
-export class OpportunityUpdateDto extends OpportunityBase {}
-
 export class OpportunityResponseDto extends OpportunityBase {
   @ApiProperty()
+  @IsString()
   opportunityId!: string;
 
+  @ApiProperty({
+    example: 1666666666,
+  })
+  @IsNumber()
+  postedTime!: number;
+
   @ApiProperty()
+  @IsString()
   postedByUserId!: string;
 }

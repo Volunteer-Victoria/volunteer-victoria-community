@@ -12,7 +12,8 @@
     "clean": "rm -rf node_modules",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "openapi": "openapi-generator-cli"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
@@ -21,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "husky": "^8.0.0",
     "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",

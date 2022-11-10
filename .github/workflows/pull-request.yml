@@ -2,10 +2,11 @@ name: Pull Request
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   sonarcloud:
     name: SonarCloud Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -15,3 +16,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  check-api-schema:
+    name: Check API schema matches
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout
+
+      - uses: actions/cache@v3
+        name: Cache yarn
+        with:
+          path: ./.yarn/cache
+          key: ${{ runner.os }}-yarn
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Check API schema
+        run: |
+          mv packages/frontend/src/api packages/frontend/src/__api
+          make api-schema-generate
+          yarn format
+          cd packages/frontend/src
+          diff -r api __api

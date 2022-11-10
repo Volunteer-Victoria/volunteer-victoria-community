@@ -4,7 +4,6 @@ import {
   ExpressAdapter,
   NestExpressApplication,
 } from "@nestjs/platform-express";
-import { AppModule } from "./modules/app.module";
 import { SwaggerModule, DocumentBuilder, OpenAPIObject } from "@nestjs/swagger";
 import { ValidationPipe } from "@nestjs/common";
 
@@ -16,15 +15,18 @@ interface App {
   openapiDocument: OpenAPIObject;
 }
 
-export async function createNestApp(): Promise<App> {
+export async function createNestApp(
+  module: any,
+  urlPrefix: string = API_PREFIX
+): Promise<App> {
   const expressApp = express();
 
   const nestApp = await NestFactory.create<NestExpressApplication>(
-    AppModule,
+    module,
     new ExpressAdapter(expressApp)
   );
 
-  nestApp.setGlobalPrefix(API_PREFIX);
+  nestApp.setGlobalPrefix(urlPrefix);
 
   nestApp.useGlobalPipes(
     new ValidationPipe({

@@ -37,6 +37,10 @@ frontend-build:
 frontend-deploy:
 	aws s3 sync ./terraform/app-dist s3://$(APP_SRC_BUCKET) --delete
 
+api-schema-generate:
+	yarn workspace $(BACKEND_WORKSPACE) export:openapi
+	yarn openapi generate -i openapi.yml -g typescript-fetch -o ./packages/frontend/src/api
+
 tf-write-config:
 	@echo "$$TFVARS_DATA" > $(TF_DIR)/.auto.tfvars
 
