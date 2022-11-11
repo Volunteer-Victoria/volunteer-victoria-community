@@ -5,7 +5,6 @@ import { transformAndValidate, uniqueId } from "../../util";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
-  OpportunitySummaryResponseDto,
 } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
 
@@ -27,9 +26,9 @@ export class OpportunityService {
     }
   }
 
-  async findAll(): Promise<OpportunitySummaryResponseDto[]> {
+  async findAll(): Promise<OpportunityResponseDto[]> {
     const raw = await this.opportunities.scan();
-    return transformAndValidate(OpportunitySummaryResponseDto, raw.Items!);
+    return transformAndValidate(OpportunityResponseDto, raw.Items!);
   }
 
   async findOne(id: string): Promise<OpportunityResponseDto | undefined> {
@@ -80,7 +79,7 @@ export class OpportunityService {
     } else {
       const { opportunityId, postedTime } = opp;
       await this.opportunities.delete({ opportunityId, postedTime });
-      return opp;
+      return transformAndValidate(OpportunityResponseDto, opp);
     }
   }
 }

@@ -13,7 +13,6 @@ import { ApiResponse } from "@nestjs/swagger";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
-  OpportunitySummaryResponseDto,
 } from "./opportunity.dto";
 import { OpportunityService } from "./opportunity.service";
 
@@ -22,8 +21,8 @@ export class OpportunityController {
   constructor(private readonly service: OpportunityService) {}
 
   @Get()
-  @ApiResponse({ type: [OpportunitySummaryResponseDto] })
-  async get(): Promise<OpportunitySummaryResponseDto[]> {
+  @ApiResponse({ type: [OpportunityResponseDto] })
+  async get(): Promise<OpportunityResponseDto[]> {
     return this.service.findAll();
   }
 

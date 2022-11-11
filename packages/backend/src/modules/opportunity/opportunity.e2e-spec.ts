@@ -66,7 +66,7 @@ describe(path, () => {
     const oppSummary = getResp.body[0];
     expect(oppSummary.opportunityId).toBe(oppId);
     expect(oppSummary.title).toBe(exampleOpp1.title);
-    expect(oppSummary["description"]).toBeUndefined();
+    expect(oppSummary.description).toBe(exampleOpp1.description);
 
     const getIdResp = await api.get(`/opportunity/${oppId}`).expect(200);
     const opp = getIdResp.body;
