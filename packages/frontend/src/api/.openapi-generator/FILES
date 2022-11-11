@@ -1,8 +1,8 @@
+.openapi-generator-ignore
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
 models/OpportunityCreateDto.ts
 models/OpportunityResponseDto.ts
-models/OpportunitySummaryResponseDto.ts
 models/index.ts
 runtime.ts

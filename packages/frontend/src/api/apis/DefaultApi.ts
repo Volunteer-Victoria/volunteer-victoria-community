@@ -13,18 +13,12 @@
  */
 
 import * as runtime from "../runtime";
-import type {
-  OpportunityCreateDto,
-  OpportunityResponseDto,
-  OpportunitySummaryResponseDto,
-} from "../models";
+import type { OpportunityCreateDto, OpportunityResponseDto } from "../models";
 import {
   OpportunityCreateDtoFromJSON,
   OpportunityCreateDtoToJSON,
   OpportunityResponseDtoFromJSON,
   OpportunityResponseDtoToJSON,
-  OpportunitySummaryResponseDtoFromJSON,
-  OpportunitySummaryResponseDtoToJSON,
 } from "../models";
 
 export interface OpportunityControllerDeleteIdRequest {
@@ -100,7 +94,7 @@ export class DefaultApi extends runtime.BaseAPI {
    */
   async opportunityControllerGetRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Array<OpportunitySummaryResponseDto>>> {
+  ): Promise<runtime.ApiResponse<Array<OpportunityResponseDto>>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
@@ -116,7 +110,7 @@ export class DefaultApi extends runtime.BaseAPI {
     );
 
     return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(OpportunitySummaryResponseDtoFromJSON)
+      jsonValue.map(OpportunityResponseDtoFromJSON)
     );
   }
 
@@ -124,7 +118,7 @@ export class DefaultApi extends runtime.BaseAPI {
    */
   async opportunityControllerGet(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<Array<OpportunitySummaryResponseDto>> {
+  ): Promise<Array<OpportunityResponseDto>> {
     const response = await this.opportunityControllerGetRaw(initOverrides);
     return await response.value();
   }
