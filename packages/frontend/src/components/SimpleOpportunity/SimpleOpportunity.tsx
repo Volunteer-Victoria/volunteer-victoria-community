@@ -76,14 +76,12 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
             </Box>
           )}
 
-          {opportunity.requiredPeopleCount && (
-            <Box>
-              <Typography variant="subtitle2">
-                <PeopleOutlineIcon sx={{ verticalAlign: "middle", mr: 1 }} />
-                Recruiting {opportunity.requiredPeopleCount} people
-              </Typography>
-            </Box>
-          )}
+          <Box>
+            <Typography variant="subtitle2">
+              <PeopleOutlineIcon sx={{ verticalAlign: "middle", mr: 1 }} />
+              Recruiting {opportunity.requiredPeopleCount} people
+            </Typography>
+          </Box>
           <Box flexGrow={1}></Box>
 
           <Box>
