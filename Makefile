@@ -2,7 +2,7 @@ export ENV_NAME ?= dev
 export PROJECT_NAME ?= vvc
 export TF_WORKSPACE ?= $(PROJECT_NAME)-$(ENV_NAME)
 
-NAMESPACE = $(ENV_NAME)-$(PROJECT_NAME)
+NAMESPACE = $(PROJECT_NAME)-$(ENV_NAME)
 TF_DIR = terraform
 BACKEND_WORKSPACE = "@volunteer-victoria/community-backend"
 BACKEND_BUILD_DIR = "./packages/backend/dist"
@@ -10,6 +10,7 @@ FRONTEND_WORKSPACE = "@volunteer-victoria/community-frontend"
 FRONTEND_BUILD_DIR = "./packages/frontend/dist"
 APP_SRC_BUCKET = $(NAMESPACE)-app-dist
 TARGET_ARCH = arm64
+CLOUDFRONT_ID = E2V91EEXG7I3BC
 
 define TFVARS_DATA
 env_name = "$(ENV_NAME)"
@@ -29,6 +30,11 @@ backend-build:
 	cd $(BACKEND_BUILD_DIR) && zip -qr api-lambda.zip *
 	mv $(BACKEND_BUILD_DIR)/api-lambda.zip ./terraform/.
 
+backend-deploy:
+	aws lambda update-function-code \
+		--function-name $(NAMESPACE)-api \
+		--zip-file fileb://terraform/api-lambda.zip
+
 frontend-build:
 	rm -r $(FRONTEND_BUILD_DIR) || true
 	yarn workspace $(FRONTEND_WORKSPACE) build
@@ -36,6 +42,7 @@ frontend-build:
 
 frontend-deploy:
 	aws s3 sync ./terraform/app-dist s3://$(APP_SRC_BUCKET) --delete
+	aws cloudfront create-invalidation --distribution-id $(CLOUDFRONT_ID) --paths "/*"
 
 api-client-generate:
 	yarn workspace $(BACKEND_WORKSPACE) export:openapi
