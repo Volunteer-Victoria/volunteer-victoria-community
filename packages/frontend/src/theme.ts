@@ -24,5 +24,10 @@ export const theme = createTheme({
       fontWeight: 400,
       fontStyle: "italic",
     },
+    subtitle2: {
+      fontSize: 16,
+      fontWeight: 500,
+      color: "#757575",
+    },
   },
 });

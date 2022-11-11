@@ -1,20 +1,22 @@
-import { Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
+import { useLoaderData } from "react-router-dom";
+import { OpportunityResponseDto } from "../../api";
 import { ConstrainedLayout } from "../../components/ConstrainedLayout";
+import { OpportunitiesList } from "../../components/OpportunitiesList";
 import { RequireAuth } from "../../components/RequireAuth";
 
 export const OpportunitiesPage = () => {
+  const opportunities = useLoaderData() as OpportunityResponseDto[];
+
   return (
     <ConstrainedLayout>
       <RequireAuth>
-        <Typography variant="h1">Opportunities</Typography>
-        <Link to="create">Create</Link>
-        <br />
-        <Link to="../opportunity/123">Opportunity 123</Link>
-        <br />
-        <Link to="../opportunity/123/participants">
-          Opportunity 123 Participants
-        </Link>
+        <Box py={5}>
+          <Typography variant="h1">Volunteer Opportunities</Typography>
+          <Box py={5}>
+            <OpportunitiesList opportunities={opportunities} />
+          </Box>
+        </Box>
       </RequireAuth>
     </ConstrainedLayout>
   );

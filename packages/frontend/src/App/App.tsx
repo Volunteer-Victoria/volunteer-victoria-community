@@ -1,39 +1,13 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
-import { AppBar } from "../components/AppBar/AppBar";
-import {
-  CreateOpportunityPage,
-  LoginPage,
-  OpportunitiesPage,
-  OpportunityPage,
-  ParticipantsPage,
-} from "../pages";
+import { RouterProvider } from "react-router-dom";
 import { theme } from "../theme";
+import { Router } from "./Router";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <AppBar />
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route
-            path="opportunities/create"
-            element={<CreateOpportunityPage />}
-          />
-          <Route path="opportunities" element={<OpportunitiesPage />} />
-          <Route
-            path="opportunity/:opportunityId/participants"
-            element={<ParticipantsPage />}
-          />
-          <Route
-            path="opportunity/:opportunityId"
-            element={<OpportunityPage />}
-          />
-          <Route path="*" element={<Navigate to="/" replace={true} />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={Router} />
     </ThemeProvider>
   );
 }
