@@ -46,7 +46,10 @@ export async function makeDynamoDBService(
     await ensureTableExists(tableName, awsConfig);
   }
 
-  const DocumentClient = new DynamoDB.DocumentClient(awsConfig);
+  const DocumentClient = new DynamoDB.DocumentClient({
+    ...awsConfig,
+    convertEmptyValues: false,
+  });
   const table = new Table({
     name: tableName,
     partitionKey: "pk",

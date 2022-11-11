@@ -141,6 +141,25 @@ describe(path, () => {
     await api.put(`${path}/fake`).send(exampleOpp1).expect(404);
   });
 
+  it("empty strings should not cause issues", async () => {
+    await api
+      .post(path)
+      .send({
+        title: "",
+        contactName: "",
+        requiredPeopleCount: 2,
+        startTime: 0,
+        endTime: 0,
+        description: "",
+        locationName: "",
+        indoorsOrOutdoors: "indoors",
+        criminalRecordCheckRequired: false,
+      })
+      .expect(201);
+
+    await api.get(path).expect(200);
+  });
+
   afterAll(async () => {
     await app.close();
   });
