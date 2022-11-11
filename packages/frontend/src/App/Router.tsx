@@ -4,6 +4,7 @@ import {
   Navigate,
   Route,
 } from "react-router-dom";
+import { getConfiguredApi } from "../common";
 import { MainLayout } from "../components/MainLayout";
 import {
   LoginPage,
@@ -23,7 +24,7 @@ export const Router = createBrowserRouter(
         path="opportunities"
         element={<OpportunitiesPage />}
         loader={async () => {
-          return fetch("https://dev.vvc.sonnex.name/api/v1/opportunity");
+          return await getConfiguredApi().opportunityControllerGet();
         }}
         errorElement={<ErrorPage />}
       />
