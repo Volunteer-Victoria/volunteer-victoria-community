@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, useNavigate } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
+import { getConfiguredApi } from "../../common";
 
 interface SimpleOpportunityProps {
   opportunity: OpportunityResponseDto;
@@ -33,10 +34,9 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
     );
     if (!confirmation) return;
 
-    fetch(
-      `https://dev.vvc.sonnex.name/api/v1/opportunity/${opportunity.opportunityId}`,
-      { method: "DELETE" }
-    );
+    await getConfiguredApi().opportunityControllerDeleteId({
+      id: opportunity.opportunityId,
+    });
     navigate("/opportunities");
   };
 
