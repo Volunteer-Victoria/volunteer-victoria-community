@@ -17,18 +17,27 @@ export class OpportunityService {
     this.opportunities = entity.value;
   }
 
+  private async findById(id: string): Promise<any | undefined> {
+    const opp = await this.opportunities.query(id);
+    if (opp.Items === undefined || opp.Items.length === 0) {
+      return undefined;
+    } else {
+      assert(opp.Items.length === 1);
+      return opp.Items[0];
+    }
+  }
+
   async findAll(): Promise<OpportunitySummaryResponseDto[]> {
     const raw = await this.opportunities.scan();
     return transformAndValidate(OpportunitySummaryResponseDto, raw.Items!);
   }
 
   async findOne(id: string): Promise<OpportunityResponseDto | undefined> {
-    const opp = await this.opportunities.query(id);
-    if (opp.Items === undefined || opp.Items.length === 0) {
+    const opp = await this.findById(id);
+    if (opp === undefined) {
       return undefined;
     } else {
-      assert(opp.Items.length === 1);
-      return transformAndValidate(OpportunityResponseDto, opp.Items[0]);
+      return transformAndValidate(OpportunityResponseDto, opp);
     }
   }
 
@@ -48,7 +57,7 @@ export class OpportunityService {
     id: string,
     values: OpportunityCreateDto
   ): Promise<OpportunityResponseDto | undefined> {
-    const opp = await this.findOne(id);
+    const opp = await this.findById(id);
     if (opp === undefined) {
       return undefined;
     } else {
@@ -65,7 +74,7 @@ export class OpportunityService {
   }
 
   async delete(id: string): Promise<OpportunityResponseDto | undefined> {
-    const opp = await this.findOne(id);
+    const opp = await this.findById(id);
     if (opp === undefined) {
       return undefined;
     } else {
