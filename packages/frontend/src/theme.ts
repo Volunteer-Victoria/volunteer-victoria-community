@@ -19,5 +19,10 @@ export const theme = createTheme({
       fontWeight: 700,
       marginBottom: 8,
     },
+    subtitle1: {
+      fontSize: 16,
+      fontWeight: 400,
+      fontStyle: "italic",
+    },
   },
 });
