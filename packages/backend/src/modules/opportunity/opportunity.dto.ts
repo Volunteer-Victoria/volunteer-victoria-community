@@ -13,7 +13,7 @@ enum IndoorsOrOutdoors {
   Outdoors = "outdoors",
 }
 
-class OpportunitySummaryBase {
+class OpportunityBase {
   @ApiProperty()
   @IsString()
   title!: string;
@@ -37,21 +37,6 @@ class OpportunitySummaryBase {
   })
   @IsNumber()
   endTime!: number;
-}
-
-export class OpportunitySummaryResponseDto extends OpportunitySummaryBase {
-  @ApiProperty()
-  @IsString()
-  opportunityId!: string;
-
-  @ApiProperty({
-    example: 1666666666,
-  })
-  @IsNumber()
-  postedTime!: number;
-}
-
-class OpportunityBase extends OpportunitySummaryBase {
   @ApiProperty()
   @IsString()
   description!: string;
