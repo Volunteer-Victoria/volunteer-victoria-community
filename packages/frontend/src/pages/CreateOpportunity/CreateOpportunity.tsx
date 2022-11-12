@@ -1,25 +1,17 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { Box, Card, Divider, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { OpportunityCreateDto } from "../../api";
-import { getConfiguredApi } from "../../common";
+import { useApi } from "../../components/ApiProvider";
 import { ConstrainedLayout } from "../../components/ConstrainedLayout";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
 import { ReturnLink } from "../../components/ReturnLink";
 
 export const CreateOpportunityPage = () => {
   const navigate = useNavigate();
-
-  const { getAccessTokenSilently } = useAuth0();
+  const api = useApi();
 
   const onSubmit = async (opportunity: OpportunityCreateDto) => {
-    const accessToken = await getAccessTokenSilently();
-
-    await getConfiguredApi({
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }).opportunityControllerPost({
+    await api.opportunityControllerPost({
       opportunityCreateDto: opportunity,
     });
 

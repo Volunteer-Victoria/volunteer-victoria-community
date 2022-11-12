@@ -6,7 +6,10 @@ type RequireAuthProps = React.PropsWithChildren;
 export const RequireAuth = ({ children }: RequireAuthProps) => {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  if (isLoading) return <>Loading...</>;
+  // Return a blank page if currently loading.
+  // We could return a loading spinner here instead, but we're trusting that
+  // Auth0 won't take long.
+  if (isLoading) return <></>;
 
   if (isAuthenticated) return <>{children}</>;
 
