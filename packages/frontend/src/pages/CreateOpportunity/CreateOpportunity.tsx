@@ -1,27 +1,20 @@
 import { Box, Card, Divider, Typography } from "@mui/material";
-import { OpportunityResponseDto } from "../../api";
+import { useNavigate } from "react-router-dom";
+import { OpportunityCreateDto } from "../../api";
+import { getConfiguredApi } from "../../common";
 import { ConstrainedLayout } from "../../components/ConstrainedLayout";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
 import { ReturnLink } from "../../components/ReturnLink";
 
 export const CreateOpportunityPage = () => {
-  const sampleOpp: OpportunityResponseDto = {
-    opportunityId: "123",
-    postedTime: 0,
-    postedByUserId: "456",
-    title: "Title",
-    contactName: "Contact name",
-    requiredPeopleCount: 4,
-    startTime: 599648400000,
-    endTime: 599655600000,
-    description: "Description",
-    locationName: "Location name",
-    indoorsOrOutdoors: "outdoors",
-    contactEmail: "foo@bar.com",
-    contactPhone: "1234567891",
-    criminalRecordCheckRequired: true,
-    idealVolunteer: "ideal volunteer",
-    additionalInformation: "",
+  const navigate = useNavigate();
+
+  const onSubmit = async (opportunity: OpportunityCreateDto) => {
+    await getConfiguredApi().opportunityControllerPost({
+      opportunityCreateDto: opportunity,
+    });
+
+    navigate("/opportunities");
   };
 
   return (
@@ -39,10 +32,7 @@ export const CreateOpportunityPage = () => {
               </Typography>
             </Box>
             <Divider sx={{ my: 3 }} />
-            <EditableOpportunity
-              opportunity={sampleOpp}
-              onSubmit={(opp) => console.log(opp)}
-            />
+            <EditableOpportunity onSubmit={onSubmit} />
           </Box>
         </Card>
       </Box>
