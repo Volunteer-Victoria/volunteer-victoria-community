@@ -59,6 +59,14 @@ export class DefaultApi extends runtime.BaseAPI {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
+    if (this.configuration && this.configuration.accessToken) {
+      // oauth required
+      headerParameters["Authorization"] = await this.configuration.accessToken(
+        "bearer",
+        []
+      );
+    }
+
     const response = await this.request(
       {
         path: `/api/v1/opportunity/{id}`.replace(
@@ -193,6 +201,14 @@ export class DefaultApi extends runtime.BaseAPI {
 
     headerParameters["Content-Type"] = "application/json";
 
+    if (this.configuration && this.configuration.accessToken) {
+      // oauth required
+      headerParameters["Authorization"] = await this.configuration.accessToken(
+        "bearer",
+        []
+      );
+    }
+
     const response = await this.request(
       {
         path: `/api/v1/opportunity`,
@@ -252,6 +268,14 @@ export class DefaultApi extends runtime.BaseAPI {
     const headerParameters: runtime.HTTPHeaders = {};
 
     headerParameters["Content-Type"] = "application/json";
+
+    if (this.configuration && this.configuration.accessToken) {
+      // oauth required
+      headerParameters["Authorization"] = await this.configuration.accessToken(
+        "bearer",
+        []
+      );
+    }
 
     const response = await this.request(
       {
