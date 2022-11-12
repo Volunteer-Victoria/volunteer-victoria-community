@@ -42,11 +42,11 @@ export async function createNestApp(
   const config = new DocumentBuilder()
     .setTitle("Volunteer Victoria - Community")
     .setVersion("1.0")
-    .addOAuth2({
+    .addBearerAuth({
       type: "oauth2",
       flows: {
-        implicit: {
-          authorizationUrl: `${process.env["AUTH0_ISSUER_URL"]}authorize`,
+        authorizationCode: {
+          authorizationUrl: `${process.env["AUTH0_ISSUER_URL"]}authorize?audience=${process.env["AUTH0_AUDIENCE"]}`,
           tokenUrl: `${process.env["AUTH0_ISSUER_URL"]}oauth/token`,
           scopes: {
             openid: "Standard OpenID scope",
