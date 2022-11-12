@@ -35,6 +35,10 @@ export async function createNestApp(
     })
   );
 
+  nestApp.enableCors({
+    origin: "http://localhost:3000",
+  });
+
   const config = new DocumentBuilder()
     .setTitle("Volunteer Victoria - Community")
     .setVersion("1.0")
