@@ -1,13 +1,25 @@
-import { Box, Card, Typography, Divider, Grid, Stack } from "@mui/material";
+import {
+  Box,
+  Card,
+  Typography,
+  Divider,
+  Grid,
+  Stack,
+  Button,
+} from "@mui/material";
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
 import { ConstrainedLayout } from "../../components/ConstrainedLayout";
 import { RequireAuth } from "../../components/RequireAuth";
 import { ReturnLink } from "../../components/ReturnLink";
 import { DefinitionItem } from "./DefinitionItem";
+import { InterestDialog } from "./InterestDialog";
 
 export const OpportunityPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
+
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const date = "Not implemented";
   const time = "Not implemented";
@@ -23,12 +35,28 @@ export const OpportunityPage = () => {
         <Box pb={4}>
           <Card>
             <Box p={5}>
-              <Typography variant="h1">{opportunity.title}</Typography>
-              <Box py={1}>
-                {opportunity.contactName && (
-                  <Typography>for {opportunity.contactName}</Typography>
-                )}
-              </Box>
+              <Grid
+                container
+                alignItems="flex-end"
+                justifyContent="space-between"
+              >
+                <Grid item>
+                  <Typography variant="h1" gutterBottom>
+                    {opportunity.title}
+                  </Typography>
+                  {opportunity.contactName && (
+                    <Typography>for {opportunity.contactName}</Typography>
+                  )}
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={() => setDialogOpen(true)}
+                  >
+                    Express interest
+                  </Button>
+                </Grid>
+              </Grid>
               <Divider sx={{ my: 3 }} />
               <Grid container>
                 <Grid item xs={12} md={9}>
@@ -68,6 +96,14 @@ export const OpportunityPage = () => {
             </Box>
           </Card>
         </Box>
+        <InterestDialog
+          open={dialogOpen}
+          onOk={() => setDialogOpen(false)}
+          onClose={() => setDialogOpen(false)}
+          name={opportunity.contactName}
+          phoneNumber={opportunity.contactPhone}
+          email={opportunity.contactEmail}
+        />
       </RequireAuth>
     </ConstrainedLayout>
   );
