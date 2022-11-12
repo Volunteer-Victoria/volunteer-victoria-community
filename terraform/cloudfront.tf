@@ -9,6 +9,28 @@ resource "aws_cloudfront_origin_access_identity" "app" {
   comment = local.namespace
 }
 
+resource "aws_cloudfront_response_headers_policy" "api" {
+  name    = local.api_name
+
+  cors_config {
+    access_control_allow_credentials = false
+
+    access_control_allow_origins {
+      items = ["localhost:3000"]
+    }
+
+    access_control_allow_methods {
+      items = ["ALL"]
+    }
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+    origin_override = true
+  }
+}
+
 resource "aws_cloudfront_distribution" "app" {
   aliases = [var.domain]
 
@@ -68,6 +90,8 @@ resource "aws_cloudfront_distribution" "app" {
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = local.api_name
     viewer_protocol_policy = "redirect-to-https"
+
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.api.id
 
     forwarded_values {
       query_string = true
