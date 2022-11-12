@@ -1,31 +1,25 @@
 import { Box, Typography } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
-import { useApi } from "../../components/ApiProvider";
 import { ConstrainedLayout } from "../../components/ConstrainedLayout";
 import { Loader } from "../../components/Loader";
 import { OpportunitiesList } from "../../components/OpportunitiesList";
 import { RequireAuth } from "../../components/RequireAuth";
-import { useMount } from "../../hooks";
 
 export const OpportunitiesPage = () => {
-  const api = useApi();
+  const initialOpportunities = useLoaderData() as OpportunityResponseDto[];
 
-  const [loading, setLoading] = useState(false);
-  const [opportunities, setOpportunities] = useState<OpportunityResponseDto[]>(
-    []
-  );
+  const [loading] = useState(false);
+  const [opportunities] =
+    useState<OpportunityResponseDto[]>(initialOpportunities);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    const opps = await api.opportunityControllerGet();
-    setOpportunities(opps);
-    setLoading(false);
-  }, [api]);
-
-  useMount(() => {
-    fetchData();
-  });
+  // const fetchData = useCallback(async () => {
+  //   setLoading(true);
+  //   const opps = await api.opportunityControllerGet();
+  //   setOpportunities(opps);
+  //   setLoading(false);
+  // }, [api]);
 
   return (
     <ConstrainedLayout>

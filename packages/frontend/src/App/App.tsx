@@ -6,18 +6,20 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { useApi } from "../components/ApiProvider";
 import { MainLayout } from "../components/MainLayout";
 import {
   LoginPage,
   CreateOpportunityPage,
   OpportunitiesPage,
   ErrorPage,
-  ParticipantsPage,
   OpportunityPage,
 } from "../pages";
 import { theme } from "../theme";
 
 function App() {
+  const api = useApi();
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
@@ -29,15 +31,20 @@ function App() {
         <Route
           path="opportunities"
           element={<OpportunitiesPage />}
+          loader={() => {
+            return api.opportunityControllerGet();
+          }}
           errorElement={<ErrorPage />}
         />
         <Route
-          path="opportunity/:opportunityId/participants"
-          element={<ParticipantsPage />}
-        />
-        <Route
           path="opportunity/:opportunityId"
+          loader={({ params }) => {
+            return api.opportunityControllerGetId({
+              id: params.opportunityId ?? "",
+            });
+          }}
           element={<OpportunityPage />}
+          errorElement={<ErrorPage />}
         />
         <Route path="*" element={<Navigate to="/" replace={true} />} />
       </Route>
