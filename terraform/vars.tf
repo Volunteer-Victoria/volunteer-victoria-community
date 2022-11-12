@@ -17,6 +17,7 @@ variable "region" {
 
 variable "auth0_issuer_url" {}
 variable "auth0_audience" {}
+variable "auth0_client_id" {}
 
 locals {
   namespace = "${var.project_name}-${var.env_name}"
