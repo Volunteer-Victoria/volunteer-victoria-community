@@ -22,9 +22,6 @@ jobs:
           path: ./.yarn/cache
           key: ${{ runner.os }}-yarn
 
-      - name: Install dependencies
-        run: yarn
-
       - name: Build backend
         run: make backend-build
 
@@ -35,5 +32,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ca-central-1
 
-      - name: Deploy frontend
+      - name: Deploy backend
         run: make backend-deploy
