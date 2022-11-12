@@ -42,9 +42,31 @@ export async function createNestApp(
   const config = new DocumentBuilder()
     .setTitle("Volunteer Victoria - Community")
     .setVersion("1.0")
+    .addOAuth2({
+      type: "oauth2",
+      flows: {
+        implicit: {
+          authorizationUrl: `${process.env["AUTH0_ISSUER_URL"]}authorize`,
+          tokenUrl: `${process.env["AUTH0_ISSUER_URL"]}oauth/token`,
+          scopes: {
+            openid: "Standard OpenID scope",
+            profile: "Access to user profile information",
+            email: "Access to user email",
+          },
+        },
+      },
+    })
     .build();
   const openapiDocument = SwaggerModule.createDocument(nestApp, config);
-  SwaggerModule.setup(API_PREFIX, nestApp, openapiDocument);
+  SwaggerModule.setup(API_PREFIX, nestApp, openapiDocument, {
+    swaggerOptions: {
+      oauth2RedirectUrl: `${process.env["API_URL"]}/oauth2-redirect.html`,
+      initOAuth: {
+        clientId: process.env["AUTH0_CLIENT_ID"]!,
+        scopes: ["openid", "profile", "email"],
+      },
+    },
+  });
 
   await nestApp.init();
   return { expressApp, nestApp, openapiDocument };

@@ -20,7 +20,13 @@ resource "aws_lambda_function" "api" {
 
   environment {
     variables = {
+      API_URL = "https://${var.domain}/api/v1"
+
       DDB_TABLE_NAME = aws_dynamodb_table.api.name
+
+      AUTH0_ISSUER_URL = var.auth0_issuer_url
+      AUTH0_AUDIENCE = var.auth0_audience
+      AUTH0_CLIENT_ID = var.auth0_client_id
     }
   }
 }
