@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Link, useNavigate } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
 import { getConfiguredApi } from "../../common";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface SimpleOpportunityProps {
   opportunity: OpportunityResponseDto;
@@ -21,6 +22,8 @@ interface SimpleOpportunityProps {
 
 export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
   const navigate = useNavigate();
+
+  const { getAccessTokenSilently } = useAuth0();
 
   const date = new Date(opportunity.startTime).toLocaleDateString("en-CA", {
     month: "short",
@@ -34,7 +37,13 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
     );
     if (!confirmation) return;
 
-    await getConfiguredApi().opportunityControllerDeleteId({
+    const accessToken = await getAccessTokenSilently();
+
+    await getConfiguredApi({
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }).opportunityControllerDeleteId({
       id: opportunity.opportunityId,
     });
     navigate("/opportunities");
