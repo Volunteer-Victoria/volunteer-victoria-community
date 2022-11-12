@@ -20,7 +20,7 @@ resource "aws_cloudfront_response_headers_policy" "api" {
     }
 
     access_control_allow_methods {
-      items = ["ALL"]
+      items = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH", "DELETE"]
     }
 
     access_control_allow_headers {

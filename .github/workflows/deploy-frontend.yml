@@ -22,9 +22,6 @@ jobs:
           path: ./.yarn/cache
           key: ${{ runner.os }}-yarn
 
-      - name: Install dependencies
-        run: yarn
-
       - name: Build frontend
         run: make frontend-build
 

@@ -24,6 +24,7 @@ export TFVARS_DATA
 
 backend-build:
 	rm -r $(BACKEND_BUILD_DIR) || true
+	yarn workspaces focus $(BACKEND_WORKSPACE)
 	yarn workspace $(BACKEND_WORKSPACE) build
 	npm_config_target_arch=$(TARGET_ARCH) yarn workspaces focus $(BACKEND_WORKSPACE) --production 
 	mv node_modules $(BACKEND_BUILD_DIR)/.
@@ -37,6 +38,7 @@ backend-deploy:
 
 frontend-build:
 	rm -r $(FRONTEND_BUILD_DIR) || true
+	yarn workspaces focus $(FRONTEND_WORKSPACE)
 	yarn workspace $(FRONTEND_WORKSPACE) build
 	mv $(FRONTEND_BUILD_DIR) ./terraform/app-dist
 
