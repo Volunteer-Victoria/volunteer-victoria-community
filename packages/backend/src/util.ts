@@ -1,4 +1,4 @@
-import { UseGuards } from "@nestjs/common";
+import { HttpException, HttpStatus, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { ClassConstructor, plainToInstance } from "class-transformer";
@@ -53,4 +53,25 @@ export function RequireAuth(): MethodDecorator {
     UseGuards(AuthGuard("jwt"))(target, propertyKey, descriptor);
     ApiBearerAuth()(target, propertyKey, descriptor);
   };
+}
+
+/**
+ * Since we are using an SPA we need to set-up all 404s to redirect to index.html.
+ * This is a global setting in CloudFront rather than per-origin so we can't use 404s
+ * as API responses without it redirecting.
+ */
+export class CustomNotFoundException extends HttpException {
+  constructor(
+    objectOrError?: string | object | any,
+    description: string = "Not Found"
+  ) {
+    super(
+      HttpException.createBody(
+        objectOrError,
+        description,
+        HttpStatus.BAD_REQUEST
+      ),
+      HttpStatus.BAD_REQUEST
+    );
+  }
 }

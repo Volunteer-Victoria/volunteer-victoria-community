@@ -11,6 +11,8 @@ FRONTEND_BUILD_DIR = "./packages/frontend/dist"
 APP_SRC_BUCKET = $(NAMESPACE)-app-dist
 TARGET_ARCH = arm64
 CLOUDFRONT_ID = E2V91EEXG7I3BC
+AUTH0_ISSUER_URL = https://dev-71ee1qantl30gloi.us.auth0.com/
+AUTH0_AUDIENCE = https://dev.vvc.sonnex.name/api
 
 define TFVARS_DATA
 env_name = "$(ENV_NAME)"
@@ -19,6 +21,9 @@ domain = "$(ENV_NAME).vvc.sonnex.name"
 cert_domain = "vvc.sonnex.name"
 app_sources_bucket = "$(APP_SRC_BUCKET)"
 target_arch = "$(TARGET_ARCH)"
+
+auth0_issuer_url = "$(AUTH0_ISSUER_URL)"
+auth0_audience = "$(AUTH0_AUDIENCE)"
 endef
 export TFVARS_DATA
 

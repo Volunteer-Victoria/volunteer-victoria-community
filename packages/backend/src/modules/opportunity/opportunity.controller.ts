@@ -4,12 +4,12 @@ import {
   Delete,
   Get,
   HttpCode,
-  NotFoundException,
   Param,
   Post,
   Put,
 } from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
+import { CustomNotFoundException, RequireAuth } from "../../util";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
@@ -29,7 +29,7 @@ export class OpportunityController {
   @Post()
   @HttpCode(201)
   @ApiResponse({ type: OpportunityResponseDto })
-  // @RequireAuth()
+  @RequireAuth()
   async post(
     @Body() opp: OpportunityCreateDto
   ): Promise<OpportunityResponseDto> {
@@ -41,7 +41,7 @@ export class OpportunityController {
   async getId(@Param("id") id: string): Promise<OpportunityResponseDto> {
     const opp = await this.service.findOne(id);
     if (opp === undefined) {
-      throw new NotFoundException();
+      throw new CustomNotFoundException();
     } else {
       return opp;
     }
@@ -49,14 +49,14 @@ export class OpportunityController {
 
   @Put(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  // @RequireAuth()
+  @RequireAuth()
   async putId(
     @Param("id") id: string,
     @Body() values: OpportunityCreateDto
   ): Promise<OpportunityResponseDto> {
     const opp = await this.service.update(id, values);
     if (opp === undefined) {
-      throw new NotFoundException();
+      throw new CustomNotFoundException();
     } else {
       return opp;
     }
@@ -64,11 +64,11 @@ export class OpportunityController {
 
   @Delete(":id")
   @ApiResponse({ type: OpportunityResponseDto })
-  // @RequireAuth()
+  @RequireAuth()
   async deleteId(@Param("id") id: string): Promise<OpportunityResponseDto> {
     const opp = await this.service.delete(id);
     if (opp === undefined) {
-      throw new NotFoundException();
+      throw new CustomNotFoundException();
     } else {
       return opp;
     }

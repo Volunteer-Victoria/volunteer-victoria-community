@@ -15,6 +15,9 @@ variable "region" {
   default = "ca-central-1"
 }
 
+variable "auth0_issuer_url" {}
+variable "auth0_audience" {}
+
 locals {
   namespace = "${var.project_name}-${var.env_name}"
   aws_account_id = data.aws_caller_identity.current.account_id
