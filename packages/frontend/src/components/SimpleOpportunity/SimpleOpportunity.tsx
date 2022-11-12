@@ -55,7 +55,12 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
           </Grid>
           <Grid item flexGrow={1} />
           <Grid item>
-            <IconButton aria-label="Edit this opportunity" color="primary">
+            <IconButton
+              aria-label="Edit this opportunity"
+              color="primary"
+              component={Link}
+              to={`/opportunity/${opportunity.opportunityId}/edit`}
+            >
               <EditIcon />
             </IconButton>
             <IconButton

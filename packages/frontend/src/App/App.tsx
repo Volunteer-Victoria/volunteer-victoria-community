@@ -14,6 +14,7 @@ import {
   OpportunitiesPage,
   ErrorPage,
   OpportunityPage,
+  EditOpportunityPage,
 } from "../pages";
 import { theme } from "../theme";
 
@@ -34,6 +35,16 @@ function App() {
           loader={() => {
             return api.opportunityControllerGet();
           }}
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="opportunity/:opportunityId/edit"
+          loader={({ params }) => {
+            return api.opportunityControllerGetId({
+              id: params.opportunityId ?? "",
+            });
+          }}
+          element={<EditOpportunityPage />}
           errorElement={<ErrorPage />}
         />
         <Route

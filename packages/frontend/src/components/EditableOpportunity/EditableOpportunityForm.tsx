@@ -245,7 +245,7 @@ export const EditableOpportunityForm = ({
         </Stack>
         <Box display="flex" justifyContent="flex-end">
           <Button variant="contained" type="submit">
-            Post
+            {initialValues.title ? "Save" : "Post"}
           </Button>
         </Box>
       </Stack>
