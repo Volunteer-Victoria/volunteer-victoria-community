@@ -40,12 +40,15 @@ export class OpportunityService {
     }
   }
 
-  async create(values: OpportunityCreateDto): Promise<OpportunityResponseDto> {
+  async create(
+    values: OpportunityCreateDto,
+    postedByUserId: string
+  ): Promise<OpportunityResponseDto> {
     const opp = {
       ...values,
       opportunityId: uniqueId(),
       postedTime: Instant.now().epochSecond(),
-      postedByUserId: "none",
+      postedByUserId,
     };
     const resp = await transformAndValidate(OpportunityResponseDto, opp);
     await this.opportunities.put(resp);

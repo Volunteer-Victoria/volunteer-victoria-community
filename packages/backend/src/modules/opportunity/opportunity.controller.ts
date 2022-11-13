@@ -7,14 +7,26 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
 import { CustomNotFoundException, RequireAuth } from "../../util";
+import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { OpportunityService } from "./opportunity.service";
+
+function assertCanEdit(
+  opp: OpportunityResponseDto,
+  request: AuthenticatedRequest
+): void {
+  if (!isAdmin(request) && opp.postedByUserId !== userId(request)) {
+    throw new UnauthorizedException();
+  }
+}
 
 @Controller("opportunity")
 export class OpportunityController {
@@ -31,9 +43,10 @@ export class OpportunityController {
   @ApiResponse({ type: OpportunityResponseDto })
   @RequireAuth()
   async post(
-    @Body() opp: OpportunityCreateDto
+    @Body() opp: OpportunityCreateDto,
+    @Req() request: AuthenticatedRequest
   ): Promise<OpportunityResponseDto> {
-    return this.service.create(opp);
+    return this.service.create(opp, userId(request));
   }
 
   @Get(":id")
@@ -52,12 +65,14 @@ export class OpportunityController {
   @RequireAuth()
   async putId(
     @Param("id") id: string,
-    @Body() values: OpportunityCreateDto
+    @Body() values: OpportunityCreateDto,
+    @Req() request: AuthenticatedRequest
   ): Promise<OpportunityResponseDto> {
     const opp = await this.service.update(id, values);
     if (opp === undefined) {
       throw new CustomNotFoundException();
     } else {
+      assertCanEdit(opp, request);
       return opp;
     }
   }
@@ -65,11 +80,15 @@ export class OpportunityController {
   @Delete(":id")
   @ApiResponse({ type: OpportunityResponseDto })
   @RequireAuth()
-  async deleteId(@Param("id") id: string): Promise<OpportunityResponseDto> {
+  async deleteId(
+    @Param("id") id: string,
+    @Req() request: AuthenticatedRequest
+  ): Promise<OpportunityResponseDto> {
     const opp = await this.service.delete(id);
     if (opp === undefined) {
       throw new CustomNotFoundException();
     } else {
+      assertCanEdit(opp, request);
       return opp;
     }
   }

@@ -49,7 +49,7 @@ class OpportunityBase {
   @IsEnum(IndoorsOrOutdoors)
   indoorsOrOutdoors!: string;
 
-  @ApiProperty({ required: false })
+  @ApiProperty({ required: false, example: "person@email.com" })
   @IsEmail()
   @IsOptional()
   contactEmail?: string;
