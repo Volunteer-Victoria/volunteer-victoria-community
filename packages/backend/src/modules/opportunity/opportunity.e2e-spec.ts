@@ -1,5 +1,6 @@
 import { ZonedDateTime } from "@js-joda/core";
 import { INestApplication, Module } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import supertest from "supertest";
 import { createNestApp } from "../../app";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
@@ -36,13 +37,15 @@ const path = "/opportunity";
 describe(path, () => {
   let app: INestApplication;
   let api: supertest.SuperTest<supertest.Test>;
+  let auth: MockJwksProvider;
   let headers: Record<string, string>;
   let oppId: string;
 
   beforeAll(async () => {
     app = (await createNestApp(OpportunityTestModule, "")).nestApp;
     api = supertest(app.getHttpServer());
-    headers = app.get(MockJwksProvider).authHeaders();
+    auth = app.get(MockJwksProvider);
+    headers = auth.authHeaders();
   });
 
   it("GET should return empty at the start", async () => {
@@ -126,6 +129,22 @@ describe(path, () => {
     await api.put(`${path}/${oppId}`).send(exampleOpp1).expect(401);
 
     await api.delete(`${path}/${oppId}`).expect(401);
+  });
+
+  it("PUT and DELETE require authorization", async () => {
+    auth.userId = "other";
+    await api.delete(`${path}/${oppId}`).set(auth.authHeaders()).expect(401);
+    await api
+      .put(`${path}/${oppId}`)
+      .set(auth.authHeaders())
+      .send(exampleOpp1)
+      .expect(401);
+    auth.makeAdmin();
+    await api
+      .put(`${path}/${oppId}`)
+      .set(auth.authHeaders())
+      .send(exampleOpp1)
+      .expect(200);
   });
 
   it("PUT should update fields", async () => {

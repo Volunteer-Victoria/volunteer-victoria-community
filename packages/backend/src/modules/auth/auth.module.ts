@@ -15,7 +15,7 @@ export function userId(request: AuthenticatedRequest): string {
 }
 
 export function isAdmin(request: AuthenticatedRequest): boolean {
-  return request.user.permissions && "admin" in request.user.permissions;
+  return request.user.permissions && request.user.permissions.includes("admin");
 }
 
 @Module({

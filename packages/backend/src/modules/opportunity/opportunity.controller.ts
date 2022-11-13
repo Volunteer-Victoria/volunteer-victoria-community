@@ -8,25 +8,15 @@ import {
   Post,
   Put,
   Req,
-  UnauthorizedException,
 } from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
 import { CustomNotFoundException, RequireAuth } from "../../util";
-import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
+import { AuthenticatedRequest, userId } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { OpportunityService } from "./opportunity.service";
-
-function assertCanEdit(
-  opp: OpportunityResponseDto,
-  request: AuthenticatedRequest
-): void {
-  if (!isAdmin(request) && opp.postedByUserId !== userId(request)) {
-    throw new UnauthorizedException();
-  }
-}
 
 @Controller("opportunity")
 export class OpportunityController {
@@ -68,11 +58,10 @@ export class OpportunityController {
     @Body() values: OpportunityCreateDto,
     @Req() request: AuthenticatedRequest
   ): Promise<OpportunityResponseDto> {
-    const opp = await this.service.update(id, values);
+    const opp = await this.service.update(id, values, request);
     if (opp === undefined) {
       throw new CustomNotFoundException();
     } else {
-      assertCanEdit(opp, request);
       return opp;
     }
   }
@@ -84,11 +73,10 @@ export class OpportunityController {
     @Param("id") id: string,
     @Req() request: AuthenticatedRequest
   ): Promise<OpportunityResponseDto> {
-    const opp = await this.service.delete(id);
+    const opp = await this.service.delete(id, request);
     if (opp === undefined) {
       throw new CustomNotFoundException();
     } else {
-      assertCanEdit(opp, request);
       return opp;
     }
   }

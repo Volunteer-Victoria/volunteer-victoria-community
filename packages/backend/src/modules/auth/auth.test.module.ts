@@ -23,6 +23,12 @@ export class MockJwksProvider implements OnModuleDestroy {
     this.jwks.stop();
   }
 
+  makeAdmin(): void {
+    if (!("admin" in this.permissions)) {
+      this.permissions.push("admin");
+    }
+  }
+
   token(): string {
     return this.jwks.token({
       aud: MOCK_AUDIENCE,
