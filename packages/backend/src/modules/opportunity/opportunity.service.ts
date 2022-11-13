@@ -1,12 +1,22 @@
 import { Instant } from "@js-joda/core";
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import assert from "assert";
 import { transformAndValidate, uniqueId } from "../../util";
+import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
+
+function assertCanEdit(
+  opp: OpportunityResponseDto,
+  request: AuthenticatedRequest
+): void {
+  if (!isAdmin(request) && opp.postedByUserId !== userId(request)) {
+    throw new UnauthorizedException();
+  }
+}
 
 @Injectable()
 export class OpportunityService {
@@ -40,12 +50,15 @@ export class OpportunityService {
     }
   }
 
-  async create(values: OpportunityCreateDto): Promise<OpportunityResponseDto> {
+  async create(
+    values: OpportunityCreateDto,
+    postedByUserId: string
+  ): Promise<OpportunityResponseDto> {
     const opp = {
       ...values,
       opportunityId: uniqueId(),
       postedTime: Instant.now().epochSecond(),
-      postedByUserId: "none",
+      postedByUserId,
     };
     const resp = await transformAndValidate(OpportunityResponseDto, opp);
     await this.opportunities.put(resp);
@@ -54,12 +67,14 @@ export class OpportunityService {
 
   async update(
     id: string,
-    values: OpportunityCreateDto
+    values: OpportunityCreateDto,
+    request: AuthenticatedRequest
   ): Promise<OpportunityResponseDto | undefined> {
     const opp = await this.findById(id);
     if (opp === undefined) {
       return undefined;
     } else {
+      assertCanEdit(opp, request);
       const { postedTime, opportunityId, postedByUserId } = opp;
       const updated = await transformAndValidate(OpportunityResponseDto, {
         ...values,
@@ -72,11 +87,15 @@ export class OpportunityService {
     }
   }
 
-  async delete(id: string): Promise<OpportunityResponseDto | undefined> {
+  async delete(
+    id: string,
+    request: AuthenticatedRequest
+  ): Promise<OpportunityResponseDto | undefined> {
     const opp = await this.findById(id);
     if (opp === undefined) {
       return undefined;
     } else {
+      assertCanEdit(opp, request);
       const { opportunityId, postedTime } = opp;
       await this.opportunities.delete({ opportunityId, postedTime });
       return transformAndValidate(OpportunityResponseDto, opp);
