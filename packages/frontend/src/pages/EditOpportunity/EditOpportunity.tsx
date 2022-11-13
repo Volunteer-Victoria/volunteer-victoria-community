@@ -2,9 +2,8 @@ import { Box, Card, Divider, Typography } from "@mui/material";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { OpportunityCreateDto, OpportunityResponseDto } from "../../api";
 import { useApi } from "../../components/ApiProvider";
-import { ConstrainedLayout } from "../../components/ConstrainedLayout";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
-import { ReturnLink } from "../../components/ReturnLink";
+import { ReturnableLayout } from "../../components/ReturnableLayout";
 
 export const EditOpportunityPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
@@ -21,19 +20,16 @@ export const EditOpportunityPage = () => {
   };
 
   return (
-    <ConstrainedLayout>
-      <Box pt={3} pb={2.5}>
-        <ReturnLink to="../opportunities">Cancel edit</ReturnLink>
-      </Box>
+    <ReturnableLayout label="Cancel edit">
       <Box pb={4}>
         <Card>
-          <Box p={5}>
-            <Typography variant="h1">Edit an Opportunity</Typography>
-            <Box py={1}>
-              <Typography variant="subtitle1">
-                All fields are required unless marked as 'optional'
-              </Typography>
-            </Box>
+          <Box px={{ xs: 3, lg: 4 }} py={{ xs: 2, lg: 3 }}>
+            <Typography gutterBottom variant="h1">
+              Edit an Opportunity
+            </Typography>
+            <Typography variant="subtitle1">
+              All fields are required unless marked as 'optional'
+            </Typography>
             <Divider sx={{ my: 3 }} />
             <EditableOpportunity
               onSubmit={onSubmit}
@@ -42,6 +38,6 @@ export const EditOpportunityPage = () => {
           </Box>
         </Card>
       </Box>
-    </ConstrainedLayout>
+    </ReturnableLayout>
   );
 };

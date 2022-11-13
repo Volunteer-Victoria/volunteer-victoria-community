@@ -17,7 +17,7 @@ export const Fieldset = ({ title, children }: FieldsetProps) => {
         component="legend"
         variant="h2"
         sx={{
-          pb: 4,
+          pb: { xs: 1, lg: 4 },
         }}
       >
         {title}

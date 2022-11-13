@@ -10,9 +10,8 @@ import {
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
-import { ConstrainedLayout } from "../../components/ConstrainedLayout";
 import { RequireAuth } from "../../components/RequireAuth";
-import { ReturnLink } from "../../components/ReturnLink";
+import { ReturnableLayout } from "../../components/ReturnableLayout";
 import { DefinitionItem } from "./DefinitionItem";
 import { InterestDialog } from "./InterestDialog";
 
@@ -25,20 +24,17 @@ export const OpportunityPage = () => {
   const time = "Not implemented";
 
   return (
-    <ConstrainedLayout>
-      <RequireAuth>
-        <Box pt={3} pb={2.5}>
-          <ReturnLink to="../opportunities">
-            Back to all opportunities
-          </ReturnLink>
-        </Box>
+    <RequireAuth>
+      <ReturnableLayout>
         <Box pb={4}>
           <Card>
-            <Box p={5}>
+            <Box px={{ xs: 3, lg: 4 }} py={3}>
               <Grid
                 container
-                alignItems="flex-end"
+                alignItems={{ xs: "flex-start", lg: "flex-end" }}
                 justifyContent="space-between"
+                direction={{ xs: "column", lg: "row" }}
+                spacing={{ xs: 3, lg: 0 }}
               >
                 <Grid item>
                   <Typography variant="h1" gutterBottom>
@@ -58,14 +54,14 @@ export const OpportunityPage = () => {
                 </Grid>
               </Grid>
               <Divider sx={{ my: 3 }} />
-              <Grid container>
+              <Grid container spacing={{ xs: 3, lg: 0 }}>
                 <Grid item xs={12} md={9}>
                   <Typography variant="h2">Description</Typography>
                   <Typography>{opportunity.description}</Typography>
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <Typography variant="h2">Details</Typography>
-                  <Stack component="dl" spacing={2}>
+                  <Stack component="dl" spacing={{ xs: 1, lg: 2 }}>
                     <DefinitionItem
                       title="Location"
                       details={opportunity.locationName}
@@ -96,15 +92,15 @@ export const OpportunityPage = () => {
             </Box>
           </Card>
         </Box>
-        <InterestDialog
-          open={dialogOpen}
-          onOk={() => setDialogOpen(false)}
-          onClose={() => setDialogOpen(false)}
-          name={opportunity.contactName}
-          phoneNumber={opportunity.contactPhone}
-          email={opportunity.contactEmail}
-        />
-      </RequireAuth>
-    </ConstrainedLayout>
+      </ReturnableLayout>
+      <InterestDialog
+        open={dialogOpen}
+        onOk={() => setDialogOpen(false)}
+        onClose={() => setDialogOpen(false)}
+        name={opportunity.contactName}
+        phoneNumber={opportunity.contactPhone}
+        email={opportunity.contactEmail}
+      />
+    </RequireAuth>
   );
 };

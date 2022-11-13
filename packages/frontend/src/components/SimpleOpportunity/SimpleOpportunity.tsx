@@ -17,9 +17,13 @@ import { useApi } from "../ApiProvider";
 
 interface SimpleOpportunityProps {
   opportunity: OpportunityResponseDto;
+  canManage: boolean;
 }
 
-export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
+export const SimpleOpportunity = ({
+  opportunity,
+  canManage,
+}: SimpleOpportunityProps) => {
   const navigate = useNavigate();
   const api = useApi();
 
@@ -43,8 +47,8 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
 
   return (
     <Card>
-      <Box px={4.5} py={3}>
-        <Grid container direction="row">
+      <Box px={{ xs: 3, lg: 4 }} py={3}>
+        <Grid container direction={{ xs: "column", lg: "row" }}>
           <Grid item>
             <Typography variant="h2">
               {opportunity.title || "Volunteer Opportunity"}
@@ -54,25 +58,27 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
             )}
           </Grid>
           <Grid item flexGrow={1} />
-          <Grid item>
-            <IconButton
-              aria-label="Edit this opportunity"
-              color="primary"
-              component={Link}
-              to={`/opportunity/${opportunity.opportunityId}/edit`}
-            >
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              aria-label="Delete this opportunity"
-              color="primary"
-              onClick={onDelete}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Grid>
+          {canManage && (
+            <Grid item>
+              <IconButton
+                aria-label="Edit this opportunity"
+                color="primary"
+                component={Link}
+                to={`/opportunity/${opportunity.opportunityId}/edit`}
+              >
+                <EditIcon />
+              </IconButton>
+              <IconButton
+                aria-label="Delete this opportunity"
+                color="primary"
+                onClick={onDelete}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+          )}
         </Grid>
-        <Stack direction="row" spacing={3} pt={5}>
+        <Stack direction={{ xs: "column", lg: "row" }} spacing={3} pt={5}>
           {date && (
             <Box>
               <Typography variant="subtitle2">
@@ -88,7 +94,7 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
               Recruiting {opportunity.requiredPeopleCount} people
             </Typography>
           </Box>
-          <Box flexGrow={1}></Box>
+          <Box flexGrow={1} display={{ xs: "none", lg: "flex" }}></Box>
 
           <Box>
             <Button

@@ -6,7 +6,11 @@ export const MainLayout = () => {
   return (
     <>
       <AppBar />
-      <Container>
+      <Container
+        sx={{
+          py: 3,
+        }}
+      >
         <Outlet />
       </Container>
     </>

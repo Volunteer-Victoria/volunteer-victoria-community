@@ -12,25 +12,22 @@ export const SignInCard = () => {
       }}
     >
       <Typography variant="h2" textAlign="center">
-        Sign In With Whatever You Want
-      </Typography>
-      <Typography textAlign="center">
-        Some text about our sign up system?
+        Sign in to see or create volunteer opportunities
       </Typography>
       <Box mt={4} textAlign="center">
-        <Button
-          variant="contained"
-          onClick={() => loginWithRedirect({ screen_hint: "login" })}
-        >
-          Sign In
-        </Button>
-        <br />
-        <br />
         <Button
           variant="contained"
           onClick={() => loginWithRedirect({ screen_hint: "signup" })}
         >
           Create Account
+        </Button>
+        <br />
+        <br />
+        <Button
+          variant="outlined"
+          onClick={() => loginWithRedirect({ screen_hint: "login" })}
+        >
+          Sign In
         </Button>
       </Box>
     </Card>

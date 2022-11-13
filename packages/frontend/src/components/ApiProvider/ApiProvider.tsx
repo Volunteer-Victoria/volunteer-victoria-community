@@ -11,7 +11,7 @@ import { ApiContext } from "./ApiContext";
 type ApiProviderProps = React.PropsWithChildren;
 
 export const ApiProvider = ({ children }: ApiProviderProps) => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
   const api = useMemo<DefaultApi>(() => {
     const configuration = new Configuration({
@@ -19,12 +19,14 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
       middleware: [
         {
           async pre(context: ResponseContext): Promise<FetchParams | void> {
-            const accessToken = await getAccessTokenSilently();
+            if (isAuthenticated) {
+              const accessToken = await getAccessTokenSilently();
+              context.init.headers = {
+                ...context.init.headers,
+                Authorization: `Bearer ${accessToken ?? ""}`,
+              };
+            }
 
-            context.init.headers = {
-              ...context.init.headers,
-              Authorization: `Bearer ${accessToken}`,
-            };
             return { url: context.url, init: context.init };
           },
         },
@@ -34,7 +36,7 @@ export const ApiProvider = ({ children }: ApiProviderProps) => {
     const api = new DefaultApi(configuration);
 
     return api;
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, isAuthenticated]);
 
   return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
 };
