@@ -1987,6 +1987,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^7.6.0":
+  version: 7.6.0
+  resolution: "@faker-js/faker@npm:7.6.0"
+  checksum: 942af6221774e8c98a0eb6bc75265e05fb81a941170377666c3439aab9495dd321d6beedc5406f07e6ad44262b3e43c20961f666d116ad150b78e7437dd1bb2b
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -4454,6 +4461,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@volunteer-victoria/community-backend@workspace:packages/backend"
   dependencies:
+    "@faker-js/faker": ^7.6.0
     "@js-joda/core": ^5.4.2
     "@nestjs/cli": ^9.0.0
     "@nestjs/common": ^9.0.0
@@ -4486,6 +4494,7 @@ __metadata:
     nock: ^13.2.9
     passport: ^0.6.0
     passport-jwt: ^4.0.0
+    random: ^3.0.6
     reflect-metadata: ^0.1.13
     rxjs: ^7.5.7
     supertest: ^6.1.3
@@ -14448,6 +14457,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"random@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "random@npm:3.0.6"
+  dependencies:
+    seedrandom: ^3.0.5
+  checksum: 3e900ebadafda77e6e321180e1f813a08adbed35dcc0d283fea4d73ddd82eaabd5aa1c26ce251d6e7e3205650ae5d9210a82be058b03e4607eb3ae53adb8798b
+  languageName: node
+  linkType: hard
+
 "randombytes@npm:^2.1.0":
   version: 2.1.0
   resolution: "randombytes@npm:2.1.0"
@@ -15279,6 +15297,13 @@ __metadata:
     ajv-formats: ^2.1.1
     ajv-keywords: ^5.0.0
   checksum: c843e92fdd1a5c145dbb6ffdae33e501867f9703afac67bdf35a685e49f85b1dcc10ea250033175a64bd9d31f0555bc6785b8359da0c90bcea30cf6dfbb55a8f
+  languageName: node
+  linkType: hard
+
+"seedrandom@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "seedrandom@npm:3.0.5"
+  checksum: 728b56bc3bc1b9ddeabd381e449b51cb31bdc0aa86e27fcd0190cea8c44613d5bcb2f6bb63ed79f78180cbe791c20b8ec31a9627f7b7fc7f476fd2bdb7e2da9f
   languageName: node
   linkType: hard
 

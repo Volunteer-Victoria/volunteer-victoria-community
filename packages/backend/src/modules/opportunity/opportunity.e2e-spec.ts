@@ -202,6 +202,20 @@ describe(path, () => {
     await api.get(path).expect(200);
   });
 
+  it("POST /fake should create fake opportunities", async () => {
+    const fakes = [];
+    fakes.push(
+      ...(await api.post(`${path}/fake`).set(headers).expect(201)).body
+    );
+    expect(fakes.length).toBe(1);
+    fakes.push(
+      ...(await api.post(`${path}/fake?count=3`).set(headers).expect(201)).body
+    );
+    expect(fakes.length).toBe(4);
+    const all = await api.get(path).expect(200);
+    expect(all.body.length).toBeGreaterThan(3);
+  });
+
   afterAll(async () => {
     await app.close();
   });
