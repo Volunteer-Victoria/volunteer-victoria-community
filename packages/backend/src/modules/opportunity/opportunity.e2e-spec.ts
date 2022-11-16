@@ -1,6 +1,5 @@
-import { Duration, Instant, ZonedDateTime } from "@js-joda/core";
+import { Duration, Instant } from "@js-joda/core";
 import { INestApplication, Module } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import supertest from "supertest";
 import { createNestApp } from "../../app";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
