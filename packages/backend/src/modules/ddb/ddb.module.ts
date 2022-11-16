@@ -1,8 +1,9 @@
 import { Module } from "@nestjs/common";
-import { assert } from "console";
+import type DynamoDB from "aws-sdk/clients/dynamodb";
+import assert from "assert";
 import { DynamoDBService, makeDynamoDBService } from "./ddb.service";
 
-const awsConfig = {
+const awsConfig: DynamoDB.Types.ClientConfiguration = {
   ...(process.env["AWS_ENDPOINT"]
     ? { endpoint: process.env["AWS_ENDPOINT"] }
     : undefined),
