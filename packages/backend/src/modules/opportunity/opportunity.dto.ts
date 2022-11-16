@@ -3,9 +3,11 @@ import {
   IsBoolean,
   IsEmail,
   IsEnum,
+  IsISO8601,
   IsNumber,
   IsOptional,
   IsString,
+  Length,
 } from "class-validator";
 
 enum IndoorsOrOutdoors {
@@ -30,13 +32,30 @@ class OpportunityBase {
     example: 1668624857111,
   })
   @IsNumber()
+  @IsOptional()
   startTime!: number;
 
   @ApiProperty({
     example: 1668624857111,
   })
   @IsNumber()
+  @IsOptional()
   endTime!: number;
+
+  @IsISO8601({ strict: true })
+  @Length(10, 10)
+  @IsOptional()
+  @ApiProperty({
+    example: "2022-11-24",
+  })
+  occursDate?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    description: "Free-form text to describe when an opportunity occurs",
+  })
+  occursTime?: string;
 
   @ApiProperty()
   @IsString()
@@ -83,6 +102,7 @@ export class OpportunityResponseDto extends OpportunityBase {
   opportunityId!: string;
 
   @ApiProperty({
+    description: "Timestamp in millis when the opportunity was posted",
     example: 1668624857111,
   })
   @IsNumber()

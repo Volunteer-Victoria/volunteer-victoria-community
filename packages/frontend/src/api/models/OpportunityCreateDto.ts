@@ -54,6 +54,18 @@ export interface OpportunityCreateDto {
    * @type {string}
    * @memberof OpportunityCreateDto
    */
+  occursDate: string;
+  /**
+   * Free-form text to describe when an opportunity occurs
+   * @type {string}
+   * @memberof OpportunityCreateDto
+   */
+  occursTime: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OpportunityCreateDto
+   */
   description: string;
   /**
    *
@@ -119,6 +131,8 @@ export function instanceOfOpportunityCreateDto(value: object): boolean {
   isInstance = isInstance && "requiredPeopleCount" in value;
   isInstance = isInstance && "startTime" in value;
   isInstance = isInstance && "endTime" in value;
+  isInstance = isInstance && "occursDate" in value;
+  isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
@@ -144,6 +158,8 @@ export function OpportunityCreateDtoFromJSONTyped(
     requiredPeopleCount: json["requiredPeopleCount"],
     startTime: json["startTime"],
     endTime: json["endTime"],
+    occursDate: json["occursDate"],
+    occursTime: json["occursTime"],
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
@@ -178,6 +194,8 @@ export function OpportunityCreateDtoToJSON(
     requiredPeopleCount: value.requiredPeopleCount,
     startTime: value.startTime,
     endTime: value.endTime,
+    occursDate: value.occursDate,
+    occursTime: value.occursTime,
     description: value.description,
     locationName: value.locationName,
     indoorsOrOutdoors: value.indoorsOrOutdoors,

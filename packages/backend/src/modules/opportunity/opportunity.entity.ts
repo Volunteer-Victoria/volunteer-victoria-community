@@ -20,6 +20,8 @@ export class OpportunityEntity {
         requiredPeopleCount: "number",
         startTime: "number",
         endTime: "number",
+        occursDate: "string",
+        occursTime: "string",
         postedTime: "number",
         description: "string",
         locationName: "string",

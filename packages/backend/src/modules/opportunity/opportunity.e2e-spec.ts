@@ -19,8 +19,8 @@ const exampleOpp1 = {
   title: "My Opp",
   contactName: "Will",
   requiredPeopleCount: 3,
-  startTime: Instant.now().toEpochMilli(),
-  endTime: Instant.now().plus(Duration.ofDays(1)).toEpochMilli(),
+  occursDate: "2022-11-24",
+  occursTime: "in the evening - just go into the shed and find out",
   description: "volunteering",
   locationName: "my shed",
   indoorsOrOutdoors: "indoors",
@@ -97,7 +97,7 @@ describe(path, () => {
     await api
       .post(path)
       .set(headers)
-      .send({ ...exampleOpp1, startTime: null })
+      .send({ ...exampleOpp1, occursDate: "11/24/2022" })
       .expect(400);
     await api
       .post(path)
@@ -113,7 +113,7 @@ describe(path, () => {
     await api
       .put(`${path}/${oppId}`)
       .set(headers)
-      .send({ ...exampleOpp1, startTime: null })
+      .send({ ...exampleOpp1, occursDate: "11/24/2022" })
       .expect(400);
     await api
       .put(`${path}/${oppId}`)
@@ -189,8 +189,8 @@ describe(path, () => {
         title: "",
         contactName: "",
         requiredPeopleCount: 2,
-        startTime: 0,
-        endTime: 0,
+        occursDate: "2022-11-24",
+        occursTime: "",
         description: "",
         locationName: "",
         indoorsOrOutdoors: "indoors",
