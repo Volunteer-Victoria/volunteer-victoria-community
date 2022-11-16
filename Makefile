@@ -56,6 +56,7 @@ frontend-deploy:
 
 api-client-generate:
 	yarn workspace $(BACKEND_WORKSPACE) export:openapi
+	rm -r ./packages/frontend/src/api
 	yarn openapi generate -i openapi.yml -g typescript-fetch -o ./packages/frontend/src/api
 
 tf-write-config:
