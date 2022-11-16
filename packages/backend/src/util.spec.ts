@@ -1,4 +1,4 @@
-import { concatObjects } from "./util";
+import { batch, concatObjects } from "./util";
 
 describe("concatObjects", () => {
   it("should add objects by applying (+) to values with the same key", () => {
@@ -16,5 +16,17 @@ describe("concatObjects", () => {
       y: [1, 2],
       z: [3],
     });
+  });
+});
+
+describe("batch", () => {
+  it("should batch an array into segments", () => {
+    expect(batch([], 25)).toEqual([]);
+    expect(batch([1, 2, 3, 4, 5, 6, 7], 3)).toEqual([
+      [1, 2, 3],
+      [4, 5, 6],
+      [7],
+    ]);
+    expect(batch([1, 2], 2)).toEqual([[1, 2]]);
   });
 });

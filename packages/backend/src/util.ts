@@ -5,6 +5,7 @@ import assert from "assert";
 import { ClassConstructor, plainToInstance } from "class-transformer";
 import { validateOrReject, ValidatorOptions } from "class-validator";
 import { nanoid } from "nanoid";
+import { resourceLimits } from "worker_threads";
 
 export function uniqueId(): string {
   return nanoid();
@@ -86,6 +87,19 @@ export function concatObjects<V>(xs: Record<string, V>[]): Record<string, V[]> {
       }
       result[k]!.push(x[k]!);
     }
+  }
+  return result;
+}
+
+export function batch<A>(xs: A[], batchSize: number): A[][] {
+  let currentBatch: A[] = [];
+  const result: A[][] = [];
+  for (let i = 0; i < xs.length; i++) {
+    if (i % batchSize === 0) {
+      currentBatch = [];
+      result.push(currentBatch);
+    }
+    currentBatch.push(xs[i]!);
   }
   return result;
 }
