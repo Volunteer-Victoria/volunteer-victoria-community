@@ -31,5 +31,11 @@ jobs:
           cd packages/frontend/src
           diff -r api __api
 
+      - name: Dummy AWS credentials for localstack
+        run: |
+          aws configure set region ca-central-1 
+          aws configure set aws_access_key_id test
+          aws configure set aws_secret_access_key test
+
       - name: Run e2e tests
         run: make backend-test
