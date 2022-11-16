@@ -1,6 +1,11 @@
 import { Duration, Instant, Period, ZonedDateTime } from "@js-joda/core";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { concatObjects, transformAndValidate, uniqueId } from "../../util";
+import {
+  batch,
+  concatObjects,
+  transformAndValidate,
+  uniqueId,
+} from "../../util";
 import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
@@ -9,6 +14,8 @@ import {
 import { DUMMY_VALUES, OpportunityEntity } from "./opportunity.entity";
 import { faker } from "@faker-js/faker";
 import random from "random";
+
+const BATCH_WRITE_REQUEST_LIMIT = 25;
 
 function assertCanEdit(
   opp: OpportunityResponseDto,
@@ -103,13 +110,14 @@ export class OpportunityService {
   async deleteAll(): Promise<void> {
     const opps = await this.opportunities.scan();
     const requests = opps.Items!.map((opp: any) =>
-      this.opportunities.deleteBatch({
-        opportunityId: opp.opportunityId,
-        sk: opp.sk,
-      })
+      this.opportunities.deleteBatch(opp)
     );
-    const request = { RequestItems: concatObjects(requests) };
-    await this.opportunities.DocumentClient.batchWrite(request).promise();
+    const batchedRequests = batch(requests, BATCH_WRITE_REQUEST_LIMIT);
+    for (const batch of batchedRequests) {
+      const request = { RequestItems: concatObjects(batch) };
+      await this.opportunities.DocumentClient.batchWrite(request).promise();
+      console.info(`Deleted ${batch.length} opportunities`);
+    }
   }
 
   async createFake(
