@@ -96,8 +96,7 @@ export class OpportunityController {
     if (!isAdmin(request)) {
       throw new UnauthorizedException();
     }
-    const opps = await this.service.findAll();
-    await this.service.deleteAll(opps.map((opp) => opp.opportunityId));
+    await this.service.deleteAll();
   }
 
   @Delete(":id")

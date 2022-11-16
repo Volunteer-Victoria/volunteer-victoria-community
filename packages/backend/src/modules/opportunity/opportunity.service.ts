@@ -95,15 +95,15 @@ export class OpportunityService {
       return undefined;
     } else {
       assertCanEdit(opp, request);
-      const { opportunityId } = opp;
-      await this.opportunities.delete({ opportunityId, ...DUMMY_VALUES });
+      await this.opportunities.delete(opp);
       return transformAndValidate(OpportunityResponseDto, opp);
     }
   }
 
-  async deleteAll(ids: string[]): Promise<void> {
-    const requests = ids.map((opportunityId) =>
-      this.opportunities.deleteBatch({ opportunityId, ...DUMMY_VALUES })
+  async deleteAll(): Promise<void> {
+    const opps = await this.opportunities.scan();
+    const requests = opps.Items!.map((opp: any) =>
+      this.opportunities.deleteBatch(opp)
     );
     const request = { RequestItems: concatObjects(requests) };
     await this.opportunities.DocumentClient.batchWrite(request).promise();
