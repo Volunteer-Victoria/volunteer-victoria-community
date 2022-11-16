@@ -103,7 +103,10 @@ export class OpportunityService {
   async deleteAll(): Promise<void> {
     const opps = await this.opportunities.scan();
     const requests = opps.Items!.map((opp: any) =>
-      this.opportunities.deleteBatch(opp)
+      this.opportunities.deleteBatch({
+        opportunityId: opp.opportunityId,
+        sk: opp.sk,
+      })
     );
     const request = { RequestItems: concatObjects(requests) };
     await this.opportunities.DocumentClient.batchWrite(request).promise();
