@@ -1,11 +1,7 @@
-import {
-  Duration,
-  Instant,
-  LocalDate,
-  Period,
-  ZonedDateTime,
-} from "@js-joda/core";
+import { faker } from "@faker-js/faker";
+import { Duration, Instant, LocalDate } from "@js-joda/core";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
+import random from "random";
 import {
   batch,
   concatObjects,
@@ -18,8 +14,6 @@ import {
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { DUMMY_VALUES, OpportunityEntity } from "./opportunity.entity";
-import { faker } from "@faker-js/faker";
-import random from "random";
 
 const BATCH_WRITE_REQUEST_LIMIT = 25;
 
