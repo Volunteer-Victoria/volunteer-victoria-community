@@ -1,4 +1,4 @@
-name: Deploy Backend Changes
+name: Deploy (Backend)
 on:
   push:
     branches:
