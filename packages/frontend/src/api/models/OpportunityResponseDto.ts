@@ -54,6 +54,18 @@ export interface OpportunityResponseDto {
    * @type {string}
    * @memberof OpportunityResponseDto
    */
+  occursDate: string;
+  /**
+   * Free-form text to describe when an opportunity occurs
+   * @type {string}
+   * @memberof OpportunityResponseDto
+   */
+  occursTime: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OpportunityResponseDto
+   */
   description: string;
   /**
    *
@@ -104,7 +116,7 @@ export interface OpportunityResponseDto {
    */
   opportunityId: string;
   /**
-   *
+   * Timestamp in millis when the opportunity was posted
    * @type {number}
    * @memberof OpportunityResponseDto
    */
@@ -137,6 +149,8 @@ export function instanceOfOpportunityResponseDto(value: object): boolean {
   isInstance = isInstance && "requiredPeopleCount" in value;
   isInstance = isInstance && "startTime" in value;
   isInstance = isInstance && "endTime" in value;
+  isInstance = isInstance && "occursDate" in value;
+  isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
@@ -167,6 +181,8 @@ export function OpportunityResponseDtoFromJSONTyped(
     requiredPeopleCount: json["requiredPeopleCount"],
     startTime: json["startTime"],
     endTime: json["endTime"],
+    occursDate: json["occursDate"],
+    occursTime: json["occursTime"],
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
@@ -204,6 +220,8 @@ export function OpportunityResponseDtoToJSON(
     requiredPeopleCount: value.requiredPeopleCount,
     startTime: value.startTime,
     endTime: value.endTime,
+    occursDate: value.occursDate,
+    occursTime: value.occursTime,
     description: value.description,
     locationName: value.locationName,
     indoorsOrOutdoors: value.indoorsOrOutdoors,
