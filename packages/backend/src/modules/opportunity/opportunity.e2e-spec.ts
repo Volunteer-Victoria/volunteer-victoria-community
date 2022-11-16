@@ -1,4 +1,4 @@
-import { ZonedDateTime } from "@js-joda/core";
+import { Duration, Instant, ZonedDateTime } from "@js-joda/core";
 import { INestApplication, Module } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import supertest from "supertest";
@@ -20,8 +20,8 @@ const exampleOpp1 = {
   title: "My Opp",
   contactName: "Will",
   requiredPeopleCount: 3,
-  startTime: ZonedDateTime.now().toEpochSecond(),
-  endTime: ZonedDateTime.now().plusDays(1).toEpochSecond(),
+  startTime: Instant.now().toEpochMilli(),
+  endTime: Instant.now().plus(Duration.ofDays(1)).toEpochMilli(),
   description: "volunteering",
   locationName: "my shed",
   indoorsOrOutdoors: "indoors",

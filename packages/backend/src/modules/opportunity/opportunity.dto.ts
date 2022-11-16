@@ -27,16 +27,17 @@ class OpportunityBase {
   requiredPeopleCount!: number;
 
   @ApiProperty({
-    example: 1666666666,
+    example: 1668624857111,
   })
   @IsNumber()
   startTime!: number;
 
   @ApiProperty({
-    example: 1666666666,
+    example: 1668624857111,
   })
   @IsNumber()
   endTime!: number;
+
   @ApiProperty()
   @IsString()
   description!: string;
@@ -82,7 +83,7 @@ export class OpportunityResponseDto extends OpportunityBase {
   opportunityId!: string;
 
   @ApiProperty({
-    example: 1666666666,
+    example: 1668624857111,
   })
   @IsNumber()
   postedTime!: number;

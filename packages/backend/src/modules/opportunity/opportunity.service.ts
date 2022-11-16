@@ -127,14 +127,14 @@ export class OpportunityService {
       throw new UnauthorizedException();
     }
 
-    const startTime = ZonedDateTime.now().minusDays(random.int(-10, 10));
-    const endTime = startTime.plusHours(random.int(0, 24));
+    const startTime = Instant.now().plus(Duration.ofDays(random.int(-10, 10)));
+    const endTime = startTime.plus(Duration.ofHours(random.int(0, 24)));
     const fakeOpp = {
       title: faker.lorem.sentence(),
       contactName: faker.name.fullName(),
       requiredPeopleCount: random.int(0, 10),
-      startTime: startTime.toEpochSecond(),
-      endTime: endTime.toEpochSecond(),
+      startTime: startTime.toEpochMilli(),
+      endTime: endTime.toEpochMilli(),
       description: faker.lorem.paragraphs(random.int(1, 3)),
       locationName: faker.address.streetAddress(),
       indoorsOrOutdoors: ["indoors", "outdoors"][random.int(0, 1)]!,
