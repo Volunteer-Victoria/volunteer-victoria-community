@@ -105,7 +105,7 @@ export class OpportunityService {
     const requests = ids.map((opportunityId) =>
       this.opportunities.deleteBatch({ opportunityId, ...DUMMY_VALUES })
     );
-    const request = { RequestItems: requests.reduce(concatObjects) };
+    const request = { RequestItems: concatObjects(requests) };
     await this.opportunities.DocumentClient.batchWrite(request).promise();
   }
 

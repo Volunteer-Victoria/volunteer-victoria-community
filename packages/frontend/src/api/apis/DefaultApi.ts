@@ -33,6 +33,10 @@ export interface OpportunityControllerPostRequest {
   opportunityCreateDto: OpportunityCreateDto;
 }
 
+export interface OpportunityControllerPostFakeRequest {
+  count?: string;
+}
+
 export interface OpportunityControllerPutIdRequest {
   id: string;
   opportunityCreateDto: OpportunityCreateDto;
@@ -42,6 +46,46 @@ export interface OpportunityControllerPutIdRequest {
  *
  */
 export class DefaultApi extends runtime.BaseAPI {
+  /**
+   * Delete all opportunities
+   */
+  async opportunityControllerDeleteAllRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.accessToken) {
+      // oauth required
+      headerParameters["Authorization"] = await this.configuration.accessToken(
+        "bearer",
+        []
+      );
+    }
+
+    const response = await this.request(
+      {
+        path: `/api/v1/opportunity`,
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Delete all opportunities
+   */
+  async opportunityControllerDeleteAll(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.opportunityControllerDeleteAllRaw(initOverrides);
+  }
+
   /**
    */
   async opportunityControllerDeleteIdRaw(
@@ -234,6 +278,56 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<OpportunityResponseDto> {
     const response = await this.opportunityControllerPostRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   */
+  async opportunityControllerPostFakeRaw(
+    requestParameters: OpportunityControllerPostFakeRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<OpportunityResponseDto>>> {
+    const queryParameters: any = {};
+
+    if (requestParameters.count !== undefined) {
+      queryParameters["count"] = requestParameters.count;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.accessToken) {
+      // oauth required
+      headerParameters["Authorization"] = await this.configuration.accessToken(
+        "bearer",
+        []
+      );
+    }
+
+    const response = await this.request(
+      {
+        path: `/api/v1/opportunity/fake`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(OpportunityResponseDtoFromJSON)
+    );
+  }
+
+  /**
+   */
+  async opportunityControllerPostFake(
+    requestParameters: OpportunityControllerPostFakeRequest = {},
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<OpportunityResponseDto>> {
+    const response = await this.opportunityControllerPostFakeRaw(
       requestParameters,
       initOverrides
     );

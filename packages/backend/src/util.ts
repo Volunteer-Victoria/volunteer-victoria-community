@@ -77,22 +77,14 @@ export class CustomNotFoundException extends HttpException {
   }
 }
 
-export function concatObjects(x: any, y: any): any {
-  const result: any = {};
-  const seenKeys = new Set();
-  for (const k of Object.keys(x)) {
-    if (y[k] !== undefined) {
-      assert(Array.isArray(x[k]));
-      assert(Array.isArray(y[k]));
-      result[k] = x[k].concat(y[k]);
-    } else {
-      result[k] = x[k];
-    }
-    seenKeys.add(k);
-  }
-  for (const k of Object.keys(y)) {
-    if (!seenKeys.has(k)) {
-      result[k] = y[k];
+export function concatObjects<V>(xs: Record<string, V>[]): Record<string, V[]> {
+  const result: Record<string, V[]> = {};
+  for (const x of xs) {
+    for (const k of Object.keys(x)) {
+      if (result[k] === undefined) {
+        result[k] = [];
+      }
+      result[k]!.push(x[k]!);
     }
   }
   return result;

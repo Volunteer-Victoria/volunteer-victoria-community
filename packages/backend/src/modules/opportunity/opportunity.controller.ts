@@ -11,7 +11,7 @@ import {
   Req,
   UnauthorizedException,
 } from "@nestjs/common";
-import { ApiQuery, ApiResponse } from "@nestjs/swagger";
+import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { CustomNotFoundException, RequireAuth } from "../../util";
 import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
 import {
@@ -89,7 +89,8 @@ export class OpportunityController {
     }
   }
 
-  @Delete("everything")
+  @Delete()
+  @ApiOperation({ summary: "Delete all opportunities" })
   @RequireAuth()
   async deleteAll(@Req() request: AuthenticatedRequest): Promise<void> {
     if (!isAdmin(request)) {
