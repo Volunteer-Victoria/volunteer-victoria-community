@@ -1,4 +1,10 @@
-import { Duration, Instant, Period, ZonedDateTime } from "@js-joda/core";
+import {
+  Duration,
+  Instant,
+  LocalDate,
+  Period,
+  ZonedDateTime,
+} from "@js-joda/core";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import {
   batch,
@@ -135,6 +141,8 @@ export class OpportunityService {
       requiredPeopleCount: random.int(0, 10),
       startTime: startTime.toEpochMilli(),
       endTime: endTime.toEpochMilli(),
+      occursDate: LocalDate.now().plusDays(random.int(-10, 10)).toString(),
+      occursTime: faker.lorem.sentences(random.int(0, 1)),
       description: faker.lorem.paragraphs(random.int(1, 3)),
       locationName: faker.address.streetAddress(),
       indoorsOrOutdoors: ["indoors", "outdoors"][random.int(0, 1)]!,
