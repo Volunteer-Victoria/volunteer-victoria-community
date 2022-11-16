@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import assert from "assert";
 import { ClassConstructor, plainToInstance } from "class-transformer";
 import { validateOrReject, ValidatorOptions } from "class-validator";
 import { nanoid } from "nanoid";
@@ -74,4 +75,17 @@ export class CustomNotFoundException extends HttpException {
       HttpStatus.BAD_REQUEST
     );
   }
+}
+
+export function concatObjects<V>(xs: Record<string, V>[]): Record<string, V[]> {
+  const result: Record<string, V[]> = {};
+  for (const x of xs) {
+    for (const k of Object.keys(x)) {
+      if (result[k] === undefined) {
+        result[k] = [];
+      }
+      result[k]!.push(x[k]!);
+    }
+  }
+  return result;
 }

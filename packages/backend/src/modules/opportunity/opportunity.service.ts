@@ -1,13 +1,14 @@
-import { Instant } from "@js-joda/core";
+import { Duration, Instant, Period, ZonedDateTime } from "@js-joda/core";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import assert from "assert";
-import { transformAndValidate, uniqueId } from "../../util";
+import { concatObjects, transformAndValidate, uniqueId } from "../../util";
 import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
-import { OpportunityEntity } from "./opportunity.entity";
+import { DUMMY_VALUES, OpportunityEntity } from "./opportunity.entity";
+import { faker } from "@faker-js/faker";
+import random from "random";
 
 function assertCanEdit(
   opp: OpportunityResponseDto,
@@ -27,13 +28,11 @@ export class OpportunityService {
   }
 
   private async findById(id: string): Promise<any | undefined> {
-    const opp = await this.opportunities.query(id);
-    if (opp.Items === undefined || opp.Items.length === 0) {
-      return undefined;
-    } else {
-      assert(opp.Items.length === 1);
-      return opp.Items[0];
-    }
+    const opp = await this.opportunities.get({
+      opportunityId: id,
+      ...DUMMY_VALUES,
+    });
+    return opp.Item;
   }
 
   async findAll(): Promise<OpportunityResponseDto[]> {
@@ -61,8 +60,8 @@ export class OpportunityService {
       postedByUserId,
     };
     const resp = await transformAndValidate(OpportunityResponseDto, opp);
-    await this.opportunities.put(resp);
-    return opp;
+    await this.opportunities.put({ ...DUMMY_VALUES, ...resp });
+    return resp;
   }
 
   async update(
@@ -82,7 +81,7 @@ export class OpportunityService {
         opportunityId,
         postedByUserId,
       });
-      await this.opportunities.put(updated);
+      await this.opportunities.put({ ...DUMMY_VALUES, ...updated });
       return updated;
     }
   }
@@ -96,9 +95,44 @@ export class OpportunityService {
       return undefined;
     } else {
       assertCanEdit(opp, request);
-      const { opportunityId, postedTime } = opp;
-      await this.opportunities.delete({ opportunityId, postedTime });
+      const { opportunityId } = opp;
+      await this.opportunities.delete({ opportunityId, ...DUMMY_VALUES });
       return transformAndValidate(OpportunityResponseDto, opp);
     }
+  }
+
+  async deleteAll(ids: string[]): Promise<void> {
+    const requests = ids.map((opportunityId) =>
+      this.opportunities.deleteBatch({ opportunityId, ...DUMMY_VALUES })
+    );
+    const request = { RequestItems: concatObjects(requests) };
+    await this.opportunities.DocumentClient.batchWrite(request).promise();
+  }
+
+  async createFake(
+    request: AuthenticatedRequest
+  ): Promise<OpportunityResponseDto> {
+    if (!isAdmin(request)) {
+      throw new UnauthorizedException();
+    }
+
+    const startTime = ZonedDateTime.now().minusDays(random.int(-10, 10));
+    const endTime = startTime.plusHours(random.int(0, 24));
+    const fakeOpp = {
+      title: faker.lorem.sentence(),
+      contactName: faker.name.fullName(),
+      requiredPeopleCount: random.int(0, 10),
+      startTime: startTime.toEpochSecond(),
+      endTime: endTime.toEpochSecond(),
+      description: faker.lorem.paragraphs(random.int(1, 3)),
+      locationName: faker.address.streetAddress(),
+      indoorsOrOutdoors: ["indoors", "outdoors"][random.int(0, 1)]!,
+      contactEmail: faker.internet.email(),
+      contactPhone: faker.phone.number(),
+      criminalRecordCheckRequired: random.bool(),
+      idealVolunteer: faker.lorem.sentences(random.int(0, 4)),
+      additionalInformation: faker.lorem.paragraphs(random.int(0, 2)),
+    };
+    return this.create(fakeOpp, userId(request));
   }
 }

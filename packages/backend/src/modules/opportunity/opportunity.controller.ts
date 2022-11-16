@@ -7,11 +7,13 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
+  UnauthorizedException,
 } from "@nestjs/common";
-import { ApiResponse } from "@nestjs/swagger";
+import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { CustomNotFoundException, RequireAuth } from "../../util";
-import { AuthenticatedRequest, userId } from "../auth/auth.module";
+import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
@@ -39,6 +41,27 @@ export class OpportunityController {
     return this.service.create(opp, userId(request));
   }
 
+  @Post("fake")
+  @HttpCode(201)
+  @ApiResponse({ type: [OpportunityResponseDto] })
+  @ApiQuery({
+    name: "count",
+    type: String,
+    description: "Number of fake opportunities to generate",
+    required: false,
+  })
+  @RequireAuth()
+  async postFake(
+    @Req() request: AuthenticatedRequest,
+    @Query("count") count: number
+  ): Promise<OpportunityResponseDto[]> {
+    const result = [];
+    for (let i = 0; i < (Number.isNaN(count) ? 1 : count); i++) {
+      result.push(await this.service.createFake(request));
+    }
+    return result;
+  }
+
   @Get(":id")
   @ApiResponse({ type: OpportunityResponseDto })
   async getId(@Param("id") id: string): Promise<OpportunityResponseDto> {
@@ -64,6 +87,17 @@ export class OpportunityController {
     } else {
       return opp;
     }
+  }
+
+  @Delete()
+  @ApiOperation({ summary: "Delete all opportunities" })
+  @RequireAuth()
+  async deleteAll(@Req() request: AuthenticatedRequest): Promise<void> {
+    if (!isAdmin(request)) {
+      throw new UnauthorizedException();
+    }
+    const opps = await this.service.findAll();
+    await this.service.deleteAll(opps.map((opp) => opp.opportunityId));
   }
 
   @Delete(":id")

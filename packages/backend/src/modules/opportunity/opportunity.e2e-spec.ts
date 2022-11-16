@@ -202,6 +202,36 @@ describe(path, () => {
     await api.get(path).expect(200);
   });
 
+  it("POST /fake should create fake opportunities", async () => {
+    const fakes = [];
+    fakes.push(
+      ...(await api.post(`${path}/fake`).set(auth.authHeaders()).expect(201))
+        .body
+    );
+    expect(fakes.length).toBe(1);
+    fakes.push(
+      ...(
+        await api
+          .post(`${path}/fake?count=3`)
+          .set(auth.authHeaders())
+          .expect(201)
+      ).body
+    );
+    expect(fakes.length).toBe(4);
+    const all = await api.get(path).expect(200);
+    expect(all.body.length).toBeGreaterThan(3);
+  });
+
+  it("DELETE / should delete all opportunities", async () => {
+    const starting = await api.get(path).expect(200);
+    expect(starting.body.length).toBeGreaterThan(0);
+
+    await api.delete(path).set(headers).expect(401);
+    await api.delete(path).set(auth.authHeaders()).expect(200);
+    const final = await api.get(path).expect(200);
+    expect(final.body.length).toBe(0);
+  });
+
   afterAll(async () => {
     await app.close();
   });

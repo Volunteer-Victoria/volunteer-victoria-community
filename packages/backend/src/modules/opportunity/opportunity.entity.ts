@@ -2,6 +2,8 @@ import { Entity } from "dynamodb-toolbox";
 import { Injectable } from "@nestjs/common";
 import { DynamoDBService } from "../ddb/ddb.service";
 
+export const DUMMY_VALUES = { sk: "dummy" };
+
 @Injectable()
 export class OpportunityEntity {
   readonly value;
@@ -11,14 +13,14 @@ export class OpportunityEntity {
       name: "Opportunity",
       attributes: {
         opportunityId: { type: "string", partitionKey: true },
-        sk: { sortKey: true, hidden: true },
-        postedTime: ["sk", 0, "number"],
+        sk: { type: "string", sortKey: true },
 
         title: "string",
         contactName: "string",
         requiredPeopleCount: "number",
         startTime: "number",
         endTime: "number",
+        postedTime: "number",
         description: "string",
         locationName: "string",
         indoorsOrOutdoors: "string",
