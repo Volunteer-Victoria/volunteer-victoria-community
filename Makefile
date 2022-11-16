@@ -44,6 +44,9 @@ backend-deploy:
 		--function-name $(NAMESPACE)-api \
 		--zip-file fileb://terraform/api-lambda.zip
 
+backend-test:
+	yarn workspace $(BACKEND_WORKSPACE) test
+
 frontend-build:
 	rm -r $(FRONTEND_BUILD_DIR) || true
 	yarn workspaces focus $(FRONTEND_WORKSPACE)

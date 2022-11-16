@@ -1,4 +1,4 @@
-name: Deploy Infrastructure Changes
+name: Deploy (Infrastructure)
 on:
   push:
     branches:
