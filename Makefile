@@ -10,7 +10,6 @@ FRONTEND_WORKSPACE = "@volunteer-victoria/community-frontend"
 FRONTEND_BUILD_DIR = "./packages/frontend/dist"
 APP_SRC_BUCKET = $(NAMESPACE)-app-dist
 TARGET_ARCH = arm64
-CLOUDFRONT_ID = E2V91EEXG7I3BC
 CERT_DOMAIN = community.volunteervictoria.bc.ca
 DOMAIN = $(ENV_NAME).$(CERT_DOMAIN)
 
@@ -21,6 +20,14 @@ AUTH0_CLIENT_ID = gWVmaB2m8JYW7QeJeLgAscP0SWdLgKj6
 # Front-end build parameters
 export REACT_APP_AUTH0_AUDIENCE = $(AUTH0_AUDIENCE)
 export REACT_APP_API_BASE_PATH = $(DOMAIN)
+
+ifeq ($(ENV_NAME), dev)
+CLOUDFRONT_ID = E2V91EEXG7I3BC
+endif
+
+ifeq ($(ENV_NAME), test)
+CLOUDFRONT_ID = E2DCH2Y2F2YP49
+endif
 
 define TFVARS_DATA
 env_name = "$(ENV_NAME)"
