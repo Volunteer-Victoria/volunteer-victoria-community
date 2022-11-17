@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - dev
+      - test
     paths:
       - "terraform/**"
   workflow_dispatch:
@@ -16,6 +17,9 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
+      - name: Extract branch name
+        run: echo "ENV_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
       - uses: actions/checkout@v3
         name: Checkout
 
