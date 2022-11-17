@@ -13,14 +13,14 @@ TARGET_ARCH = arm64
 CLOUDFRONT_ID = E2V91EEXG7I3BC
 
 AUTH0_ISSUER_URL = https://dev-71ee1qantl30gloi.us.auth0.com/
-AUTH0_AUDIENCE = https://dev.vvc.sonnex.name/api
+AUTH0_AUDIENCE = https://dev.community.volunteervictoria.bc.ca/api
 AUTH0_CLIENT_ID = gWVmaB2m8JYW7QeJeLgAscP0SWdLgKj6
 
 define TFVARS_DATA
 env_name = "$(ENV_NAME)"
 project_name = "$(PROJECT_NAME)"
-domain = "$(ENV_NAME).vvc.sonnex.name"
-cert_domain = "vvc.sonnex.name"
+domain = "$(ENV_NAME).community.volunteervictoria.bc.ca"
+cert_domain = "community.volunteervictoria.bc.ca"
 app_sources_bucket = "$(APP_SRC_BUCKET)"
 target_arch = "$(TARGET_ARCH)"
 
