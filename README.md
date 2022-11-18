@@ -14,16 +14,16 @@
 
 - [Web App](https://dev.community.volunteervictoria.bc.ca)
 
-- [Swagger](https://dev.community.volunteervictoria.bc.ca/api/_v1)
+- [Swagger](https://dev.community.volunteervictoria.bc.ca/api/v1)
 
 ### Testing
 
 - [Web App](https://test.community.volunteervictoria.bc.ca)
 
-- [Swagger](https://test.community.volunteervictoria.bc.ca/api/_v1)
+- [Swagger](https://test.community.volunteervictoria.bc.ca/api/v1)
 
 ### Production
 
 - [Web App](https://community.volunteervictoria.bc.ca)
 
-- [Swagger](https://community.volunteervictoria.bc.ca/api/_v1)
+- [Swagger](https://community.volunteervictoria.bc.ca/api/v1)
