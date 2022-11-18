@@ -39,28 +39,16 @@ export interface OpportunityCreateDto {
   requiredPeopleCount: number;
   /**
    *
-   * @type {number}
-   * @memberof OpportunityCreateDto
-   */
-  startTime?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof OpportunityCreateDto
-   */
-  endTime?: number;
-  /**
-   *
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  occursDate?: string;
+  occursDate: string;
   /**
    * Free-form text to describe when an opportunity occurs
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  occursTime?: string;
+  occursTime: string;
   /**
    *
    * @type {string}
@@ -129,6 +117,8 @@ export function instanceOfOpportunityCreateDto(value: object): boolean {
   isInstance = isInstance && "title" in value;
   isInstance = isInstance && "contactName" in value;
   isInstance = isInstance && "requiredPeopleCount" in value;
+  isInstance = isInstance && "occursDate" in value;
+  isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
@@ -152,10 +142,8 @@ export function OpportunityCreateDtoFromJSONTyped(
     title: json["title"],
     contactName: json["contactName"],
     requiredPeopleCount: json["requiredPeopleCount"],
-    startTime: !exists(json, "startTime") ? undefined : json["startTime"],
-    endTime: !exists(json, "endTime") ? undefined : json["endTime"],
-    occursDate: !exists(json, "occursDate") ? undefined : json["occursDate"],
-    occursTime: !exists(json, "occursTime") ? undefined : json["occursTime"],
+    occursDate: json["occursDate"],
+    occursTime: json["occursTime"],
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
@@ -188,8 +176,6 @@ export function OpportunityCreateDtoToJSON(
     title: value.title,
     contactName: value.contactName,
     requiredPeopleCount: value.requiredPeopleCount,
-    startTime: value.startTime,
-    endTime: value.endTime,
     occursDate: value.occursDate,
     occursTime: value.occursTime,
     description: value.description,

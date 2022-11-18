@@ -28,36 +28,16 @@ class OpportunityBase {
   @IsNumber()
   requiredPeopleCount!: number;
 
-  @ApiProperty({
-    example: 1668624857111,
-    required: false,
-  })
-  @IsNumber()
-  @IsOptional()
-  startTime?: number;
-
-  @ApiProperty({
-    example: 1668624857111,
-    required: false,
-  })
-  @IsNumber()
-  @IsOptional()
-  endTime?: number;
-
   @IsISO8601({ strict: true })
   @Length(10, 10)
-  @IsOptional()
   @ApiProperty({
     example: "2022-11-24",
-    required: false,
   })
   occursDate?: string;
 
   @IsString()
-  @IsOptional()
   @ApiProperty({
     description: "Free-form text to describe when an opportunity occurs",
-    required: false,
   })
   occursTime?: string;
 
