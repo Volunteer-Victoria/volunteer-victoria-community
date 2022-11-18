@@ -24,7 +24,7 @@ export class MockJwksProvider implements OnModuleDestroy {
   }
 
   makeAdmin(): void {
-    if (!("admin" in this.permissions)) {
+    if (!this.permissions.includes("admin")) {
       this.permissions.push("admin");
     }
   }
