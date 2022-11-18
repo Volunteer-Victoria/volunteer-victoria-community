@@ -42,9 +42,21 @@ export class OpportunityService {
     return opp.Item;
   }
 
-  async findAll(): Promise<OpportunityResponseDto[]> {
+  async findAll({
+    minOccursDate,
+  }: {
+    minOccursDate: string | undefined;
+  }): Promise<OpportunityResponseDto[]> {
     const raw = await this.opportunities.scan();
-    return transformAndValidate(OpportunityResponseDto, raw.Items!);
+    const items = [];
+    for (const item of raw.Items!) {
+      if (minOccursDate !== undefined && item["occursDate"] < minOccursDate) {
+        continue;
+      }
+      items.push(item);
+    }
+
+    return transformAndValidate(OpportunityResponseDto, items);
   }
 
   async findOne(id: string): Promise<OpportunityResponseDto | undefined> {

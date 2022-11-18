@@ -1,4 +1,4 @@
-import { Duration, Instant } from "@js-joda/core";
+import { LocalDate } from "@js-joda/core";
 import { INestApplication, Module } from "@nestjs/common";
 import supertest from "supertest";
 import { createNestApp } from "../../app";
@@ -86,6 +86,20 @@ describe(path, () => {
 
   it("GET /{id} should 400 if object does not exist", async () => {
     await api.get(`${path}/notanid`).expect(400);
+  });
+
+  it("GET /?minOccursDate should filter older events", async () => {
+    const unfiltered = await api
+      .get(`${path}?minOccursDate=${exampleOpp1.occursDate}`)
+      .expect(200);
+    expect(unfiltered.body.length).toBe(1);
+    const tomorrow = LocalDate.parse(exampleOpp1.occursDate)
+      .plusDays(1)
+      .toString();
+    const filtered = await api
+      .get(`${path}?minOccursDate=${tomorrow}`)
+      .expect(200);
+    expect(filtered.body.length).toBe(0);
   });
 
   it("POST and PUT should 400 on bad input", async () => {
