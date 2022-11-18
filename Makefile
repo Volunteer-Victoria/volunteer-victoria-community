@@ -60,6 +60,9 @@ backend-deploy:
 backend-test:
 	yarn workspace $(BACKEND_WORKSPACE) test
 
+backend-coverage:
+	yarn workspace $(BACKEND_WORKSPACE) test:cov
+
 frontend-build:
 	rm -r $(FRONTEND_BUILD_DIR) || true
 	yarn workspaces focus $(FRONTEND_WORKSPACE)
