@@ -1,4 +1,3 @@
-import { LocalDateTime, nativeJs } from "@js-joda/core";
 import { OpportunityResponseDto } from "../../api";
 import { FormData } from "./default-values";
 
@@ -9,18 +8,13 @@ import { FormData } from "./default-values";
 export const opportunityToFormData = (
   opportunity: OpportunityResponseDto
 ): FormData => {
-  const startDate = LocalDateTime.from(
-    nativeJs(new Date(opportunity.startTime))
-  );
-  const endDate = LocalDateTime.from(nativeJs(new Date(opportunity.endTime)));
-
   return {
     title: opportunity.title,
     description: opportunity.description,
     locationName: opportunity.locationName,
     requiredPeopleCount: opportunity.requiredPeopleCount.toString(),
-    startDateTime: startDate.toString(),
-    endDateTime: endDate.toString(),
+    date: opportunity.occursDate,
+    time: opportunity.occursTime,
     indoorsOrOutdoors: opportunity.indoorsOrOutdoors,
     criminalRecordCheckRequired: opportunity.criminalRecordCheckRequired
       ? "yes"

@@ -10,6 +10,8 @@ import {
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
+import { formatYMD } from "../../common";
+import { ManageOpportunity } from "../../components/ManageOpportunity/ManageOpportunity";
 import { RequireAuth } from "../../components/RequireAuth";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
 import { DefinitionItem } from "./DefinitionItem";
@@ -19,9 +21,6 @@ export const OpportunityPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
 
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  const date = "Not implemented";
-  const time = "Not implemented";
 
   return (
     <RequireAuth>
@@ -45,12 +44,17 @@ export const OpportunityPage = () => {
                   )}
                 </Grid>
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    onClick={() => setDialogOpen(true)}
-                  >
-                    Express interest
-                  </Button>
+                  <Stack spacing={2} direction="column" alignItems="flex-end">
+                    <div>
+                      <ManageOpportunity opportunity={opportunity} />
+                    </div>
+                    <Button
+                      variant="contained"
+                      onClick={() => setDialogOpen(true)}
+                    >
+                      Express interest
+                    </Button>
+                  </Stack>
                 </Grid>
               </Grid>
               <Divider sx={{ my: 3 }} />
@@ -66,8 +70,14 @@ export const OpportunityPage = () => {
                       title="Location"
                       details={opportunity.locationName}
                     />
-                    <DefinitionItem title="Date" details={date} />
-                    <DefinitionItem title="Time" details={time} />
+                    <DefinitionItem
+                      title="Date"
+                      details={formatYMD(opportunity.occursDate)}
+                    />
+                    <DefinitionItem
+                      title="Time"
+                      details={opportunity.occursTime}
+                    />
                     <DefinitionItem
                       title="People required"
                       details={opportunity.requiredPeopleCount.toString()}

@@ -14,8 +14,8 @@ export const schema = yup.object().shape<SchemaFields>({
     .number()
     .positive("You must need at least one person!")
     .required("Required"),
-  startDateTime: yup.string().required("Required"),
-  endDateTime: yup.string().required("Required"),
+  date: yup.string().required("Required"),
+  time: yup.string().required("Required"),
   indoorsOrOutdoors: yup
     .string()
     .oneOf(["indoors", "outdoors"])

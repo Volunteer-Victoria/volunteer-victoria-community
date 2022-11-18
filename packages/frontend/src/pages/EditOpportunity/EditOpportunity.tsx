@@ -11,12 +11,16 @@ export const EditOpportunityPage = () => {
   const api = useApi();
 
   const onSubmit = async (updatedOpportunity: OpportunityCreateDto) => {
-    await api.opportunityControllerPutId({
-      id: opportunity.opportunityId,
-      opportunityCreateDto: updatedOpportunity,
-    });
+    try {
+      await api.opportunityControllerPutId({
+        id: opportunity.opportunityId,
+        opportunityCreateDto: updatedOpportunity,
+      });
 
-    navigate("/opportunities");
+      navigate(`/opportunity/${opportunity.opportunityId}`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

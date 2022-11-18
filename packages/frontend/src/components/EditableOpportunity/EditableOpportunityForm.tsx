@@ -63,18 +63,19 @@ export const EditableOpportunityForm = ({
           <TextField
             fullWidth
             InputLabelProps={{ shrink: true }}
-            label="Start time"
-            type="datetime-local"
-            inputProps={{ step: 60 * 60 }}
-            {...mapFormik(formik, "startDateTime")}
+            label="Date"
+            type="date"
+            inputProps={{
+              min: new Date().toLocaleDateString("en-ca"),
+            }}
+            {...mapFormik(formik, "date")}
           />
           <TextField
             fullWidth
             InputLabelProps={{ shrink: true }}
-            label="End time"
-            type="datetime-local"
-            inputProps={{ step: 60 * 60 }}
-            {...mapFormik(formik, "endDateTime")}
+            label="Time"
+            placeholder="10am, Afternoon, etc."
+            {...mapFormik(formik, "time")}
           />
           <FormControl
             fullWidth

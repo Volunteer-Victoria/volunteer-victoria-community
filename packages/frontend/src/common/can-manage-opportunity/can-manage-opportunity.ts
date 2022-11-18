@@ -1,13 +1,15 @@
 import { OpportunityResponseDto } from "../../api";
+import { IUserContext } from "../../components/UserDataProvider/UserContext";
 
 export const canManageOpportunity = (
-  permissions: string[],
-  userId: string,
+  user: IUserContext | undefined,
   opportunity: OpportunityResponseDto
 ): boolean => {
-  if (permissions.includes("admin")) return true;
+  if (!user) return false;
 
-  if (opportunity.postedByUserId === userId) return true;
+  if (user?.permissions?.includes("admin")) return true;
+
+  if (opportunity.postedByUserId === user.id) return true;
 
   return false;
 };
