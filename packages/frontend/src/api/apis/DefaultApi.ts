@@ -25,6 +25,10 @@ export interface OpportunityControllerDeleteIdRequest {
   id: string;
 }
 
+export interface OpportunityControllerGetRequest {
+  minOccursDate?: any;
+}
+
 export interface OpportunityControllerGetIdRequest {
   id: string;
 }
@@ -149,9 +153,14 @@ export class DefaultApi extends runtime.BaseAPI {
   /**
    */
   async opportunityControllerGetRaw(
+    requestParameters: OpportunityControllerGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<OpportunityResponseDto>>> {
     const queryParameters: any = {};
+
+    if (requestParameters.minOccursDate !== undefined) {
+      queryParameters["minOccursDate"] = requestParameters.minOccursDate;
+    }
 
     const headerParameters: runtime.HTTPHeaders = {};
 
@@ -173,9 +182,13 @@ export class DefaultApi extends runtime.BaseAPI {
   /**
    */
   async opportunityControllerGet(
+    requestParameters: OpportunityControllerGetRequest = {},
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<OpportunityResponseDto>> {
-    const response = await this.opportunityControllerGetRaw(initOverrides);
+    const response = await this.opportunityControllerGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 

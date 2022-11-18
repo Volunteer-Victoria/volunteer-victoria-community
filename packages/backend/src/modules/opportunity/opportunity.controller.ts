@@ -26,8 +26,17 @@ export class OpportunityController {
 
   @Get()
   @ApiResponse({ type: [OpportunityResponseDto] })
-  async get(): Promise<OpportunityResponseDto[]> {
-    return this.service.findAll();
+  @ApiQuery({
+    name: "minOccursDate",
+    description: "The earliest date to return",
+    required: false,
+  })
+  async get(
+    @Query("minOccursDate") minOccursDate: string | null
+  ): Promise<OpportunityResponseDto[]> {
+    return this.service.findAll({
+      minOccursDate: minOccursDate === null ? undefined : minOccursDate,
+    });
   }
 
   @Post()
