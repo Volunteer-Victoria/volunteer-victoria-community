@@ -37,9 +37,9 @@ export const InterestDialog = ({
           <DefinitionItem title="Email" details={email ?? ""} />
         </Stack>
         <Alert severity="info">
-          Volunteer Victoria is not responsible for the post or what happens
-          through it. Please make sure that the posting is legitimate and any
-          liability concerns is discussed with the poster
+          Volunteer Victoria is not responsible for the contents of this post.
+          Please ensure that the posting is legitimate and any liability
+          concerns are discussed with the poster.
         </Alert>
       </DialogContent>
       <DialogActions sx={{ p: 3, pt: 0 }}>

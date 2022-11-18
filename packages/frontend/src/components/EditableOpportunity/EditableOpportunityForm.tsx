@@ -180,15 +180,15 @@ export const EditableOpportunityForm = ({
           <Box component="ul" sx={{ pl: 2 }}>
             <li>
               You are responsible for vetting volunteers to ensure that they are
-              a good fit for the position
+              a good fit for the position.
             </li>
             <li>
-              All volunteers between 15-18 years old, must have parental
-              permission before they can volunteer
+              All volunteers between 15-18 years old must have parental
+              permission before they can volunteer.
             </li>
             <li>
-              All volunteers under age 15, must be accompanied by a parent or
-              guardian
+              All volunteers under age 15 must be accompanied by a parent or
+              guardian.
             </li>
           </Box>
         </Alert>
