@@ -15,7 +15,7 @@ import {
 
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { mapFormik } from "../../common";
+import { mapFormik, todayYMD } from "../../common";
 import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
@@ -66,7 +66,7 @@ export const EditableOpportunityForm = ({
             label="Date"
             type="date"
             inputProps={{
-              min: new Date().toLocaleDateString("en-ca"),
+              min: todayYMD(),
             }}
             {...mapFormik(formik, "date")}
           />

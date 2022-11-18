@@ -1,4 +1,5 @@
 import { OpportunityResponseDto } from "../../api";
+import { todayYMD } from "../../common";
 import { FormData } from "./default-values";
 
 /**
@@ -13,7 +14,7 @@ export const opportunityToFormData = (
     description: opportunity.description,
     locationName: opportunity.locationName,
     requiredPeopleCount: opportunity.requiredPeopleCount.toString(),
-    date: opportunity.occursDate ?? new Date().toLocaleDateString("en-ca"),
+    date: opportunity.occursDate ?? todayYMD(),
     time: opportunity.occursTime ?? "",
     indoorsOrOutdoors: opportunity.indoorsOrOutdoors,
     criminalRecordCheckRequired: opportunity.criminalRecordCheckRequired

@@ -6,6 +6,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { todayYMD } from "../common";
 import { useApi } from "../components/ApiProvider";
 import { MainLayout } from "../components/MainLayout";
 import {
@@ -33,7 +34,10 @@ function App() {
           path="opportunities"
           element={<OpportunitiesPage />}
           loader={() => {
-            return api.opportunityControllerGet();
+            console.log("FETCHING OPPS");
+            return api.opportunityControllerGet({
+              minOccursDate: todayYMD(),
+            });
           }}
           errorElement={<ErrorPage />}
         />
