@@ -16,6 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "api-http-500s" {
   threshold                 = "1"
   alarm_description         = "Have any 500s occurred in the past 20 minutes"
   insufficient_data_actions = []
+  treat_missing_data        = "notBreaching"
 
   alarm_actions       = [data.aws_sns_topic.alerts.arn]
   ok_actions          = [data.aws_sns_topic.alerts.arn]
@@ -35,6 +36,7 @@ resource "aws_cloudwatch_metric_alarm" "api-http-400s" {
   threshold                 = "0.05"
   alarm_description         = "Have more than 5% of requests been 400s in the past 20 minutes"
   insufficient_data_actions = []
+  treat_missing_data        = "notBreaching"
   
   alarm_actions       = [data.aws_sns_topic.alerts.arn]
   ok_actions          = [data.aws_sns_topic.alerts.arn]
