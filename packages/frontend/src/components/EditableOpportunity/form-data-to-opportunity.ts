@@ -28,8 +28,6 @@ export const formDataToOpportunity = (
     criminalRecordCheckRequired: formData.criminalRecordCheckRequired === "yes",
     idealVolunteer: formData.idealVolunteer,
     additionalInformation: formData.additionalInformation,
-    occursDate: formData.date,
-    occursTime: formData.time,
     startTime: 0,
     endTime: 0,
   };

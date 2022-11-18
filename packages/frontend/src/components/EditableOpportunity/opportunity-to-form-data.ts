@@ -13,8 +13,8 @@ export const opportunityToFormData = (
     description: opportunity.description,
     locationName: opportunity.locationName,
     requiredPeopleCount: opportunity.requiredPeopleCount.toString(),
-    date: opportunity.occursDate,
-    time: opportunity.occursTime,
+    date: opportunity.occursDate ?? new Date().toLocaleDateString("en-ca"),
+    time: opportunity.occursTime ?? "",
     indoorsOrOutdoors: opportunity.indoorsOrOutdoors,
     criminalRecordCheckRequired: opportunity.criminalRecordCheckRequired
       ? "yes"
