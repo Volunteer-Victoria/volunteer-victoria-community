@@ -42,6 +42,10 @@ export interface OpportunityControllerPutIdRequest {
   opportunityCreateDto: OpportunityCreateDto;
 }
 
+export interface RootControllerDebugRequest {
+  statusCode: number;
+}
+
 /**
  *
  */
@@ -403,5 +407,61 @@ export class DefaultApi extends runtime.BaseAPI {
       initOverrides
     );
     return await response.value();
+  }
+
+  /**
+   * Return debug response for testing out e.g. alarms
+   */
+  async rootControllerDebugRaw(
+    requestParameters: RootControllerDebugRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (
+      requestParameters.statusCode === null ||
+      requestParameters.statusCode === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "statusCode",
+        "Required parameter requestParameters.statusCode was null or undefined when calling rootControllerDebug."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.statusCode !== undefined) {
+      queryParameters["statusCode"] = requestParameters.statusCode;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    if (this.configuration && this.configuration.accessToken) {
+      // oauth required
+      headerParameters["Authorization"] = await this.configuration.accessToken(
+        "bearer",
+        []
+      );
+    }
+
+    const response = await this.request(
+      {
+        path: `/api/v1/debug`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Return debug response for testing out e.g. alarms
+   */
+  async rootControllerDebug(
+    requestParameters: RootControllerDebugRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.rootControllerDebugRaw(requestParameters, initOverrides);
   }
 }
