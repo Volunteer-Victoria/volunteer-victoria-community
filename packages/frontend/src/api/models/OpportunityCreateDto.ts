@@ -42,25 +42,25 @@ export interface OpportunityCreateDto {
    * @type {number}
    * @memberof OpportunityCreateDto
    */
-  startTime: number;
+  startTime?: number;
   /**
    *
    * @type {number}
    * @memberof OpportunityCreateDto
    */
-  endTime: number;
+  endTime?: number;
   /**
    *
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  occursDate: string;
+  occursDate?: string;
   /**
    * Free-form text to describe when an opportunity occurs
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  occursTime: string;
+  occursTime?: string;
   /**
    *
    * @type {string}
@@ -129,10 +129,6 @@ export function instanceOfOpportunityCreateDto(value: object): boolean {
   isInstance = isInstance && "title" in value;
   isInstance = isInstance && "contactName" in value;
   isInstance = isInstance && "requiredPeopleCount" in value;
-  isInstance = isInstance && "startTime" in value;
-  isInstance = isInstance && "endTime" in value;
-  isInstance = isInstance && "occursDate" in value;
-  isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
@@ -156,10 +152,10 @@ export function OpportunityCreateDtoFromJSONTyped(
     title: json["title"],
     contactName: json["contactName"],
     requiredPeopleCount: json["requiredPeopleCount"],
-    startTime: json["startTime"],
-    endTime: json["endTime"],
-    occursDate: json["occursDate"],
-    occursTime: json["occursTime"],
+    startTime: !exists(json, "startTime") ? undefined : json["startTime"],
+    endTime: !exists(json, "endTime") ? undefined : json["endTime"],
+    occursDate: !exists(json, "occursDate") ? undefined : json["occursDate"],
+    occursTime: !exists(json, "occursTime") ? undefined : json["occursTime"],
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
