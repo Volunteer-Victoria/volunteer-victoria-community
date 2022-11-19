@@ -1,6 +1,7 @@
 variable "env_name" {}
 variable "project_name" {}
 variable "domain" {}
+variable "api_lambda_zip_path" {}
 
 variable "target_arch" {
   default = "arm64"

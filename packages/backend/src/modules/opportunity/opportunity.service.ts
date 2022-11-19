@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Duration, Instant, LocalDate } from "@js-joda/core";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import random from "random";
+import random from "random/dist/cjs";
 import {
   batch,
   concatObjects,

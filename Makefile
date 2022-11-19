@@ -6,6 +6,7 @@ NAMESPACE = $(PROJECT_NAME)-$(ENV_NAME)
 TF_DIR = terraform
 BACKEND_WORKSPACE = "@volunteer-victoria/community-backend"
 BACKEND_BUILD_DIR = "./packages/backend/dist"
+API_LAMBDA_ZIP_PATH = $(BACKEND_BUILD_DIR)/api-lambda.zip
 FRONTEND_WORKSPACE = "@volunteer-victoria/community-frontend"
 FRONTEND_BUILD_DIR = "./packages/frontend/dist"
 APP_SRC_BUCKET = $(NAMESPACE)-app-dist
@@ -40,22 +41,17 @@ target_arch = "$(TARGET_ARCH)"
 auth0_issuer_url = "$(AUTH0_ISSUER_URL)"
 auth0_audience = "$(AUTH0_AUDIENCE)"
 auth0_client_id = "$(AUTH0_CLIENT_ID)"
+api_lambda_zip_path = "$(API_LAMBDA_ZIP_PATH)"
 endef
 export TFVARS_DATA
 
 backend-build:
-	rm -r $(BACKEND_BUILD_DIR) || true
-	yarn workspaces focus $(BACKEND_WORKSPACE)
-	yarn workspace $(BACKEND_WORKSPACE) build
-	npm_config_target_arch=$(TARGET_ARCH) yarn workspaces focus $(BACKEND_WORKSPACE) --production 
-	mv node_modules $(BACKEND_BUILD_DIR)/.
-	cd $(BACKEND_BUILD_DIR) && zip -qr api-lambda.zip *
-	mv $(BACKEND_BUILD_DIR)/api-lambda.zip ./terraform/.
+	cd $(BACKEND_BUILD_DIR)/.. && make package-lambda
 
 backend-deploy:
 	aws lambda update-function-code \
 		--function-name $(NAMESPACE)-api \
-		--zip-file fileb://terraform/api-lambda.zip
+		--zip-file fileb://$(API_LAMBDA_ZIP_PATH)
 
 backend-test:
 	yarn workspace $(BACKEND_WORKSPACE) test
