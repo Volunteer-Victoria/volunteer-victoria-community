@@ -1,5 +1,5 @@
 import { IconButton } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -16,6 +16,7 @@ export const ManageOpportunity = ({ opportunity }: ManageOpportunityProps) => {
   const api = useApi();
   const user = useUser();
   const navigate = useNavigate();
+  const isOpportunityList = useMatch("/opportunities");
 
   if (!user) return null;
 
@@ -25,10 +26,16 @@ export const ManageOpportunity = ({ opportunity }: ManageOpportunityProps) => {
     );
     if (!confirmation) return;
 
-    api.opportunityControllerDeleteId({
+    await api.opportunityControllerDeleteId({
       id: opportunity.opportunityId,
     });
-    navigate("/opportunities");
+
+    // TODO - refactor once we are tracking opps in state - no reason to reload
+    if (isOpportunityList) {
+      window.location.reload();
+    } else {
+      navigate("/opportunities", {});
+    }
   };
 
   const canManage = canManageOpportunity(user, opportunity);
