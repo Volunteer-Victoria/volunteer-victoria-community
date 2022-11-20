@@ -34,6 +34,7 @@ export const OpportunityPage = () => {
                 justifyContent="space-between"
                 direction={{ xs: "column", lg: "row" }}
                 spacing={{ xs: 3, lg: 0 }}
+                flexWrap="nowrap"
               >
                 <Grid item>
                   <Typography variant="h1" gutterBottom>
@@ -43,7 +44,7 @@ export const OpportunityPage = () => {
                     <Typography>for {opportunity.contactName}</Typography>
                   )}
                 </Grid>
-                <Grid item>
+                <Grid item flexShrink={0}>
                   <Stack spacing={2} direction="column" alignItems="flex-end">
                     <div>
                       <ManageOpportunity opportunity={opportunity} />
