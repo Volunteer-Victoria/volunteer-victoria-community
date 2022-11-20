@@ -39,18 +39,6 @@ export interface OpportunityCreateDto {
   requiredPeopleCount: number;
   /**
    *
-   * @type {number}
-   * @memberof OpportunityCreateDto
-   */
-  startTime: number;
-  /**
-   *
-   * @type {number}
-   * @memberof OpportunityCreateDto
-   */
-  endTime: number;
-  /**
-   *
    * @type {string}
    * @memberof OpportunityCreateDto
    */
@@ -129,8 +117,6 @@ export function instanceOfOpportunityCreateDto(value: object): boolean {
   isInstance = isInstance && "title" in value;
   isInstance = isInstance && "contactName" in value;
   isInstance = isInstance && "requiredPeopleCount" in value;
-  isInstance = isInstance && "startTime" in value;
-  isInstance = isInstance && "endTime" in value;
   isInstance = isInstance && "occursDate" in value;
   isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
@@ -156,8 +142,6 @@ export function OpportunityCreateDtoFromJSONTyped(
     title: json["title"],
     contactName: json["contactName"],
     requiredPeopleCount: json["requiredPeopleCount"],
-    startTime: json["startTime"],
-    endTime: json["endTime"],
     occursDate: json["occursDate"],
     occursTime: json["occursTime"],
     description: json["description"],
@@ -192,8 +176,6 @@ export function OpportunityCreateDtoToJSON(
     title: value.title,
     contactName: value.contactName,
     requiredPeopleCount: value.requiredPeopleCount,
-    startTime: value.startTime,
-    endTime: value.endTime,
     occursDate: value.occursDate,
     occursTime: value.occursTime,
     description: value.description,

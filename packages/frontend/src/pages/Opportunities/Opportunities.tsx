@@ -7,7 +7,6 @@ import {
   Stack,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useMemo, useState } from "react";
@@ -17,8 +16,8 @@ import { OpportunityResponseDto } from "../../api";
 import { Loader } from "../../components/Loader";
 import { OpportunitiesList } from "../../components/OpportunitiesList";
 import { RequireAuth } from "../../components/RequireAuth";
-import { useDebounce } from "../../hooks";
 import { useUser } from "../../components/UserDataProvider/use-user";
+import { Filter } from "./Filter";
 
 export const OpportunitiesPage = () => {
   const initialOpportunities = useLoaderData() as OpportunityResponseDto[];
@@ -32,15 +31,13 @@ export const OpportunitiesPage = () => {
   const [sort, setSort] = useState<"soonest" | "newest">("newest");
   const [scope, setScope] = useState<"mine" | "all">("all");
 
-  const debouncedKeyword = useDebounce(keyword);
-
   const sortedOpportunities = useMemo(() => {
     return [...opportunities].sort((a, b) => {
       switch (sort) {
         case "newest":
           return b.postedTime - a.postedTime;
         case "soonest":
-          return a.startTime - b.startTime;
+          return a.occursDate.localeCompare(b.occursDate);
       }
 
       return 1;
@@ -64,10 +61,10 @@ export const OpportunitiesPage = () => {
     if (scope === "mine")
       return sortedOpportunities.filter((o) => o.postedByUserId === user.id);
 
-    if (debouncedKeyword === "") return sortedOpportunities;
+    if (keyword === "") return sortedOpportunities;
 
-    return fuse.search(debouncedKeyword).map((result) => result.item);
-  }, [scope, sortedOpportunities, debouncedKeyword, fuse, user.id]);
+    return fuse.search(keyword).map((result) => result.item);
+  }, [scope, sortedOpportunities, keyword, fuse, user.id]);
 
   return (
     <>
@@ -92,18 +89,7 @@ export const OpportunitiesPage = () => {
               }}
               spacing={2}
             >
-              <TextField
-                label="Search Keyword"
-                value={keyword}
-                onChange={(event) => setKeyword(event.target.value)}
-                variant="outlined"
-                sx={{
-                  flex: 4,
-                }}
-                InputProps={{
-                  sx: { backgroundColor: "white" },
-                }}
-              />
+              <Filter keyword={keyword} setKeyword={setKeyword}></Filter>
               <FormControl sx={{ flex: 1 }}>
                 <InputLabel id="sort-select-label">Age</InputLabel>
                 <Select

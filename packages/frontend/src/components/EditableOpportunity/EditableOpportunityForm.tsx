@@ -15,7 +15,7 @@ import {
 
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { mapFormik } from "../../common";
+import { mapFormik, todayYMD } from "../../common";
 import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
@@ -63,18 +63,19 @@ export const EditableOpportunityForm = ({
           <TextField
             fullWidth
             InputLabelProps={{ shrink: true }}
-            label="Start time"
-            type="datetime-local"
-            inputProps={{ step: 60 * 60 }}
-            {...mapFormik(formik, "startDateTime")}
+            label="Date"
+            type="date"
+            inputProps={{
+              min: todayYMD(),
+            }}
+            {...mapFormik(formik, "date")}
           />
           <TextField
             fullWidth
             InputLabelProps={{ shrink: true }}
-            label="End time"
-            type="datetime-local"
-            inputProps={{ step: 60 * 60 }}
-            {...mapFormik(formik, "endDateTime")}
+            label="Time"
+            placeholder="10am, Afternoon, etc."
+            {...mapFormik(formik, "time")}
           />
           <FormControl
             fullWidth
@@ -179,15 +180,15 @@ export const EditableOpportunityForm = ({
           <Box component="ul" sx={{ pl: 2 }}>
             <li>
               You are responsible for vetting volunteers to ensure that they are
-              a good fit for the position
+              a good fit for the position.
             </li>
             <li>
-              All volunteers between 15-18 years old, must have parental
-              permission before they can volunteer
+              All volunteers between 15-18 years old must have parental
+              permission before they can volunteer.
             </li>
             <li>
-              All volunteers under age 15, must be accompanied by a parent or
-              guardian
+              All volunteers under age 15 must be accompanied by a parent or
+              guardian.
             </li>
           </Box>
         </Alert>

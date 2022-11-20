@@ -18,8 +18,6 @@ export class OpportunityEntity {
         title: "string",
         contactName: "string",
         requiredPeopleCount: "number",
-        startTime: "number",
-        endTime: "number",
         occursDate: "string",
         occursTime: "string",
         postedTime: "number",

@@ -10,11 +10,15 @@ export const CreateOpportunityPage = () => {
   const api = useApi();
 
   const onSubmit = async (opportunity: OpportunityCreateDto) => {
-    await api.opportunityControllerPost({
-      opportunityCreateDto: opportunity,
-    });
+    try {
+      const result = await api.opportunityControllerPost({
+        opportunityCreateDto: opportunity,
+      });
 
-    navigate("/opportunities");
+      navigate(`/opportunity/${result.opportunityId}`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

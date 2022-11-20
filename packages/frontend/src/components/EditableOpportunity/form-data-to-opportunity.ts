@@ -16,15 +16,10 @@ export const formDataToOpportunity = (
       ? OpportunityCreateDtoIndoorsOrOutdoorsEnum.Indoors
       : OpportunityCreateDtoIndoorsOrOutdoorsEnum.Outdoors;
 
-  const startTime = new Date(formData.startDateTime).valueOf();
-  const endTime = new Date(formData.endDateTime).valueOf();
-
   return {
     title: formData.title,
     contactName: formData.contactName,
     requiredPeopleCount: parseInt(formData.requiredPeopleCount),
-    startTime,
-    endTime,
     description: formData.description,
     locationName: formData.locationName,
     indoorsOrOutdoors,
@@ -33,5 +28,7 @@ export const formDataToOpportunity = (
     criminalRecordCheckRequired: formData.criminalRecordCheckRequired === "yes",
     idealVolunteer: formData.idealVolunteer,
     additionalInformation: formData.additionalInformation,
+    occursDate: formData.date,
+    occursTime: formData.time,
   };
 };

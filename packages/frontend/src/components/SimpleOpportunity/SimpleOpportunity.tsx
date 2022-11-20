@@ -1,50 +1,16 @@
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Card, Grid, Stack, Typography } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
-import { useApi } from "../ApiProvider";
+import { formatYMD } from "../../common";
+import { ManageOpportunity } from "../ManageOpportunity/ManageOpportunity";
 
 interface SimpleOpportunityProps {
   opportunity: OpportunityResponseDto;
-  canManage: boolean;
 }
 
-export const SimpleOpportunity = ({
-  opportunity,
-  canManage,
-}: SimpleOpportunityProps) => {
-  const navigate = useNavigate();
-  const api = useApi();
-
-  const date = new Date(opportunity.startTime).toLocaleDateString("en-CA", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  const onDelete = async () => {
-    const confirmation = window.confirm(
-      "Do you want to delete this opportunity?"
-    );
-    if (!confirmation) return;
-
-    api.opportunityControllerDeleteId({
-      id: opportunity.opportunityId,
-    });
-    navigate("/opportunities");
-  };
-
+export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
   return (
     <Card>
       <Box px={{ xs: 3, lg: 4 }} py={3}>
@@ -58,32 +24,16 @@ export const SimpleOpportunity = ({
             )}
           </Grid>
           <Grid item flexGrow={1} />
-          {canManage && (
-            <Grid item>
-              <IconButton
-                aria-label="Edit this opportunity"
-                color="primary"
-                component={Link}
-                to={`/opportunity/${opportunity.opportunityId}/edit`}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                aria-label="Delete this opportunity"
-                color="primary"
-                onClick={onDelete}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Grid>
-          )}
+          <Grid item>
+            <ManageOpportunity opportunity={opportunity} />
+          </Grid>
         </Grid>
         <Stack direction={{ xs: "column", lg: "row" }} spacing={3} pt={5}>
-          {date && (
+          {opportunity.occursDate && (
             <Box>
               <Typography variant="subtitle2">
                 <CalendarTodayIcon sx={{ verticalAlign: "middle", mr: 1 }} />
-                {date}
+                {formatYMD(opportunity.occursDate)}
               </Typography>
             </Box>
           )}

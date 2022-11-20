@@ -39,18 +39,6 @@ export interface OpportunityResponseDto {
   requiredPeopleCount: number;
   /**
    *
-   * @type {number}
-   * @memberof OpportunityResponseDto
-   */
-  startTime: number;
-  /**
-   *
-   * @type {number}
-   * @memberof OpportunityResponseDto
-   */
-  endTime: number;
-  /**
-   *
    * @type {string}
    * @memberof OpportunityResponseDto
    */
@@ -147,8 +135,6 @@ export function instanceOfOpportunityResponseDto(value: object): boolean {
   isInstance = isInstance && "title" in value;
   isInstance = isInstance && "contactName" in value;
   isInstance = isInstance && "requiredPeopleCount" in value;
-  isInstance = isInstance && "startTime" in value;
-  isInstance = isInstance && "endTime" in value;
   isInstance = isInstance && "occursDate" in value;
   isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
@@ -179,8 +165,6 @@ export function OpportunityResponseDtoFromJSONTyped(
     title: json["title"],
     contactName: json["contactName"],
     requiredPeopleCount: json["requiredPeopleCount"],
-    startTime: json["startTime"],
-    endTime: json["endTime"],
     occursDate: json["occursDate"],
     occursTime: json["occursTime"],
     description: json["description"],
@@ -218,8 +202,6 @@ export function OpportunityResponseDtoToJSON(
     title: value.title,
     contactName: value.contactName,
     requiredPeopleCount: value.requiredPeopleCount,
-    startTime: value.startTime,
-    endTime: value.endTime,
     occursDate: value.occursDate,
     occursTime: value.occursTime,
     description: value.description,
