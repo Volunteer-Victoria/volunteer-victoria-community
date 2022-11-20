@@ -1,14 +1,21 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 
+// TODO where I got to with this:
+// mode: production just doesn't even start up
+// mode: development starts up, but swagger UI doesn't work when deployed as a lamdba
+// swagger UI works fine locally if I start it up with main.ts though
+
 module.exports = {
   entry: "./dist/raw/lambda.js",
   output: {
     path: path.resolve(__dirname, "dist/webpacked"),
     filename: "lambda.js",
-    libraryTarget: "commonjs2",
+    library: {
+      type: "commonjs2",
+    },
   },
-  mode: "production",
+  mode: "development",
   target: "node",
   devtool: "source-map",
   module: {
