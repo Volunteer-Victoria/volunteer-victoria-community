@@ -1,14 +1,23 @@
 import { Box, Card, Divider, Typography } from "@mui/material";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
 import { OpportunityCreateDto, OpportunityResponseDto } from "../../api";
+import { canManageOpportunity } from "../../common";
 import { useApi } from "../../components/ApiProvider";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
+import { useUser } from "../../components/UserDataProvider/use-user";
 
 export const EditOpportunityPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
   const navigate = useNavigate();
   const api = useApi();
+  const user = useUser();
+
+  const canManage = canManageOpportunity(user, opportunity);
+
+  if (!canManage) {
+    return <Navigate to="/opportunities" />;
+  }
 
   const onSubmit = async (updatedOpportunity: OpportunityCreateDto) => {
     try {
