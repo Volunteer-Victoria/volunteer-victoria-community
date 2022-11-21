@@ -59,6 +59,9 @@ backend-test:
 backend-coverage:
 	yarn workspace $(BACKEND_WORKSPACE) test:cov
 
+backend-start:
+	yarn workspace $(BACKEND_WORKSPACE) start
+
 frontend-build:
 	rm -r $(FRONTEND_BUILD_DIR) || true
 	yarn workspaces focus $(FRONTEND_WORKSPACE)
@@ -69,6 +72,9 @@ frontend-build:
 frontend-deploy:
 	aws s3 sync ./terraform/app-dist s3://$(APP_SRC_BUCKET) --delete
 	aws cloudfront create-invalidation --distribution-id $(CLOUDFRONT_ID) --paths "/*"
+
+frontend-start: 
+	yarn workspace $(FRONTEND_WORKSPACE) start
 
 api-client-generate:
 	yarn workspace $(BACKEND_WORKSPACE) export:openapi
