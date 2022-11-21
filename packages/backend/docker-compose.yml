@@ -3,7 +3,7 @@ version: "3"
 services:
   localstack:
     container_name: vvc-localstack
-    image: docker.io/localstack/localstack
+    image: docker.io/localstack/localstack:1.2.0
     ports:
       - "4566:4566" # LocalStack Gateway
       - "4510-4559:4510-4559" # external services port range

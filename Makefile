@@ -74,7 +74,7 @@ frontend-deploy:
 	aws cloudfront create-invalidation --distribution-id $(CLOUDFRONT_ID) --paths "/*"
 
 frontend-start: 
-	yarn workspace $(FRONTEND_WORKSPACE) start
+	REACT_APP_API_BASE_PATH=http://localhost:3000 yarn workspace $(FRONTEND_WORKSPACE) start
 
 api-client-generate:
 	yarn workspace $(BACKEND_WORKSPACE) export:openapi
