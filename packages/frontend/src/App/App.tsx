@@ -1,3 +1,4 @@
+import { LocalDate } from "@js-joda/core";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import {
   createBrowserRouter,
@@ -6,7 +7,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { todayYMD } from "../common";
 import { useApi } from "../components/ApiProvider";
 import { MainLayout } from "../components/MainLayout";
 import {
@@ -36,7 +36,7 @@ function App() {
           loader={() => {
             console.log("FETCHING OPPS");
             return api.opportunityControllerGet({
-              minOccursDate: todayYMD(),
+              minOccursDate: LocalDate.now().toString(),
             });
           }}
           errorElement={<ErrorPage />}

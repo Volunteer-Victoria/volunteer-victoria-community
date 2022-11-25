@@ -1,3 +1,4 @@
+import { LocalDate } from "@js-joda/core";
 import {
   Alert,
   Box,
@@ -15,7 +16,7 @@ import {
 
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { mapFormik, todayYMD } from "../../common";
+import { mapFormik } from "../../common";
 import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
@@ -66,7 +67,8 @@ export const EditableOpportunityForm = ({
             label="Date"
             type="date"
             inputProps={{
-              min: todayYMD(),
+              min: LocalDate.now().toString(),
+              max: LocalDate.now().plusWeeks(4).toString(),
             }}
             {...mapFormik(formik, "date")}
           />

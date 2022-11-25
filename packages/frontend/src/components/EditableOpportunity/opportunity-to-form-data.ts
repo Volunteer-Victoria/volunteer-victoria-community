@@ -1,5 +1,5 @@
+import { LocalDate } from "@js-joda/core";
 import { OpportunityResponseDto } from "../../api";
-import { todayYMD } from "../../common";
 import { FormData } from "./default-values";
 
 /**
@@ -14,7 +14,7 @@ export const opportunityToFormData = (
     description: opportunity.description,
     locationName: opportunity.locationName,
     requiredPeopleCount: opportunity.requiredPeopleCount.toString(),
-    date: opportunity.occursDate ?? todayYMD(),
+    date: opportunity.occursDate ?? LocalDate.now().toString(),
     time: opportunity.occursTime ?? "",
     indoorsOrOutdoors: opportunity.indoorsOrOutdoors,
     criminalRecordCheckRequired: opportunity.criminalRecordCheckRequired
