@@ -17,6 +17,7 @@ import {
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
 import { mapFormik } from "../../common";
+import { LocationSelector } from "../LocationSelector";
 import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
@@ -51,10 +52,8 @@ export const EditableOpportunityForm = ({
       </Fieldset>
       <Fieldset title="Details">
         <Stack spacing={{ xs: 2, lg: 4 }}>
-          <TextField
-            fullWidth
-            label="Location"
-            {...mapFormik(formik, "locationName")}
+          <LocationSelector
+            {...mapFormik(formik, "locationName", ["helperText"])}
           />
           <TextField
             fullWidth
