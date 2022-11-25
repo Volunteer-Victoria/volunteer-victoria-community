@@ -52,9 +52,7 @@ export const EditableOpportunityForm = ({
       </Fieldset>
       <Fieldset title="Details">
         <Stack spacing={{ xs: 2, lg: 4 }}>
-          <LocationSelector
-            {...mapFormik(formik, "locationName", ["helperText"])}
-          />
+          <LocationSelector {...mapFormik(formik, "locationName")} />
           <TextField
             fullWidth
             label="Number of people required"

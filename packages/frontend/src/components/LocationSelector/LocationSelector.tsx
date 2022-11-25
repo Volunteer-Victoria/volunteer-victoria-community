@@ -34,7 +34,7 @@ export const LocationSelector = ({
           </MenuItem>
         ))}
       </Select>
-      <FormHelperText>{helperText}</FormHelperText>
+      <FormHelperText error={props.error}>{helperText}</FormHelperText>
     </FormControl>
   );
 };
