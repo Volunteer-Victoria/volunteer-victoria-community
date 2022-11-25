@@ -25,7 +25,7 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
         <Route
           path="opportunities/create"
           element={<CreateOpportunityPage />}
@@ -61,7 +61,14 @@ function App() {
           element={<OpportunityPage />}
           errorElement={<ErrorPage />}
         />
-        <Route path="*" element={<Navigate to="/" replace={true} />} />
+        <Route
+          path="/"
+          element={<Navigate to="/opportunities" replace={true} />}
+        />
+        <Route
+          path="*"
+          element={<Navigate to="/opportunities" replace={true} />}
+        />
       </Route>
     )
   );
