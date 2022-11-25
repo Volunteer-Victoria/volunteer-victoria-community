@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import "./index.css";
 import { App } from "./App";
 import { AuthProvider } from "./components/AuthProvider";
@@ -14,7 +16,9 @@ root.render(
     <AuthProvider>
       <UserProvider>
         <ApiProvider>
-          <App />
+          <LocalizationProvider dateAdapter={AdapterLuxon}>
+            <App />
+          </LocalizationProvider>
         </ApiProvider>
       </UserProvider>
     </AuthProvider>

@@ -1,4 +1,3 @@
-import { LocalDate } from "@js-joda/core";
 import {
   Alert,
   Box,
@@ -13,9 +12,12 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
+import { DateTime } from "luxon";
+
 import { mapFormik } from "../../common";
 import { LocationSelector } from "../LocationSelector";
 import { defaultValues, FormData } from "./default-values";
@@ -58,16 +60,14 @@ export const EditableOpportunityForm = ({
             label="Number of people required"
             {...mapFormik(formik, "requiredPeopleCount")}
           />
-          <TextField
-            fullWidth
-            InputLabelProps={{ shrink: true }}
+          <DatePicker
             label="Date"
-            type="date"
-            inputProps={{
-              min: LocalDate.now().toString(),
-              max: LocalDate.now().plusWeeks(4).toString(),
-            }}
-            {...mapFormik(formik, "date")}
+            disableMaskedInput
+            {...mapFormik(formik, "date", ["onChange"])}
+            onChange={(date) => formik.setFieldValue("date", date)}
+            minDate={DateTime.now()}
+            maxDate={DateTime.now().plus({ weeks: 4 })}
+            renderInput={(params) => <TextField {...params} />}
           />
           <TextField
             fullWidth

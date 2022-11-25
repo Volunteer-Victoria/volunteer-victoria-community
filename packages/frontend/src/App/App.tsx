@@ -1,4 +1,3 @@
-import { LocalDate } from "@js-joda/core";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import {
   createBrowserRouter,
@@ -7,6 +6,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { DateTime } from "luxon";
 import { useApi } from "../components/ApiProvider";
 import { MainLayout } from "../components/MainLayout";
 import {
@@ -34,9 +34,8 @@ function App() {
           path="opportunities"
           element={<OpportunitiesPage />}
           loader={() => {
-            console.log("FETCHING OPPS");
             return api.opportunityControllerGet({
-              minOccursDate: LocalDate.now().toString(),
+              minOccursDate: DateTime.now().toFormat("yyyy-MM-dd"),
             });
           }}
           errorElement={<ErrorPage />}

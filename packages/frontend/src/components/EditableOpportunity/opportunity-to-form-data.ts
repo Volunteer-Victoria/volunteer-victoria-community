@@ -1,4 +1,4 @@
-import { LocalDate } from "@js-joda/core";
+import { DateTime } from "luxon";
 import { OpportunityResponseDto } from "../../api";
 import { FormData } from "./default-values";
 
@@ -9,12 +9,16 @@ import { FormData } from "./default-values";
 export const opportunityToFormData = (
   opportunity: OpportunityResponseDto
 ): FormData => {
+  const date = DateTime.fromFormat(opportunity.occursDate, "yyyy-MM-dd", {
+    zone: "local",
+  });
+
   return {
     title: opportunity.title,
     description: opportunity.description,
     locationName: opportunity.locationName,
     requiredPeopleCount: opportunity.requiredPeopleCount.toString(),
-    date: opportunity.occursDate ?? LocalDate.now().toString(),
+    date,
     time: opportunity.occursTime ?? "",
     indoorsOrOutdoors: opportunity.indoorsOrOutdoors,
     criminalRecordCheckRequired: opportunity.criminalRecordCheckRequired
