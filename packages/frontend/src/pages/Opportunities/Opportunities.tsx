@@ -91,7 +91,7 @@ export const OpportunitiesPage = () => {
             >
               <Filter keyword={keyword} setKeyword={setKeyword}></Filter>
               <FormControl sx={{ flex: 1 }}>
-                <InputLabel id="sort-select-label">Age</InputLabel>
+                <InputLabel id="sort-select-label">Sort by</InputLabel>
                 <Select
                   labelId="sort-select-label"
                   id="sort-select"
