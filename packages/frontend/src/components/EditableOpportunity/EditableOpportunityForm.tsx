@@ -86,11 +86,11 @@ export const EditableOpportunityForm = ({
               Boolean(formik.errors.indoorsOrOutdoors)
             }
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel id="indoor-outdoors-group-label">
               Is your opportunity indoors or outdoors?
             </FormLabel>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
+              aria-labelledby="indoor-outdoors-group-label"
               row
               {...mapFormik(formik, "indoorsOrOutdoors", [
                 "helperText",
@@ -120,11 +120,11 @@ export const EditableOpportunityForm = ({
               Boolean(formik.errors.criminalRecordCheckRequired)
             }
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel id="criminal-check-group-label">
               Criminal Record Check Required?
             </FormLabel>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
+              aria-labelledby="criminal-check-group-label"
               row
               {...mapFormik(formik, "criminalRecordCheckRequired", [
                 "helperText",

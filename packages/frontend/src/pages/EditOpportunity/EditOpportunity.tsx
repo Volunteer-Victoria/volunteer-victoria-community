@@ -40,7 +40,7 @@ export const EditOpportunityPage = () => {
             <Typography gutterBottom variant="h1">
               Edit an Opportunity
             </Typography>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" component="span">
               All fields are required unless marked as 'optional'
             </Typography>
             <Divider sx={{ my: 3 }} />
