@@ -1,11 +1,11 @@
 version: "3"
 
 services:
-  localstack:
-    container_name: vvc-localstack
-    image: docker.io/localstack/localstack
+  cockroachdb:
+    container_name: vvc-cdb
+    image: cockroachdb/cockroach:v22.2.1
     ports:
-      - "4566:4566" # LocalStack Gateway
-      - "4510-4559:4510-4559" # external services port range
+      - "26257:26257"
+    command: start-single-node --insecure
     volumes:
-      - "./.localstack:/var/lib/localstack"
+      - "./.cockroach-data:/cockroach/cockroach-data"
