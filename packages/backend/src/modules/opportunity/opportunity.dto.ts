@@ -37,14 +37,14 @@ class OpportunityBase {
   @ApiProperty({
     example: "2022-11-24",
   })
-  @Column()
+  @Column({ nullable: true })
   occursDate?: string;
 
   @IsString()
   @ApiProperty({
     description: "Free-form text to describe when an opportunity occurs",
   })
-  @Column()
+  @Column({ nullable: true })
   occursTime?: string;
 
   @ApiProperty()
@@ -65,13 +65,13 @@ class OpportunityBase {
   @ApiProperty({ required: false, example: "person@email.com" })
   @IsEmail()
   @IsOptional()
-  @Column()
+  @Column({ nullable: true })
   contactEmail?: string;
 
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  @Column()
+  @Column({ nullable: true })
   contactPhone?: string;
 
   @ApiProperty()
@@ -82,13 +82,13 @@ class OpportunityBase {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  @Column()
-  idealVolunteer!: string;
+  @Column({ nullable: true })
+  idealVolunteer?: string;
 
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  @Column()
+  @Column({ nullable: true })
   additionalInformation?: string;
 }
 

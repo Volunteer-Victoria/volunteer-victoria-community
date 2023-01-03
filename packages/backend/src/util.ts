@@ -44,6 +44,28 @@ export async function transformAndValidate<T>(
   return result;
 }
 
+/** Going from a REST API to a database */
+export function undefinedToNull(keysFrom: any, dataFrom: any): any {
+  const result = { ...dataFrom };
+  for (const key of Object.keys(keysFrom)) {
+    if (result[key] === undefined) {
+      result[key] = null;
+    }
+  }
+  return result;
+}
+
+/** Going from a database to a REST API */
+export function nullToUndefined(target: any): any {
+  const result = { ...target };
+  for (const [key, value] of Object.entries(result)) {
+    if (value === null) {
+      delete result[key];
+    }
+  }
+  return result;
+}
+
 export function RequireAuth(): MethodDecorator {
   return <T>(
     target: Object,

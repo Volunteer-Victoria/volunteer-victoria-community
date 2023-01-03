@@ -1,11 +1,14 @@
 import { faker } from "@faker-js/faker";
 import { Duration, Instant, LocalDate } from "@js-joda/core";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import random from "random";
+import type { Repository } from "typeorm";
+import { MoreThanOrEqual } from "typeorm";
 import {
-  batch,
-  concatObjects,
+  nullToUndefined,
   transformAndValidate,
+  undefinedToNull,
   uniqueId,
 } from "../../util";
 import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
@@ -13,9 +16,7 @@ import {
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
-import { DUMMY_VALUES, OpportunityEntity } from "./opportunity.entity";
-
-const BATCH_WRITE_REQUEST_LIMIT = 25;
+import { OpportunityEntity } from "./opportunity.entity";
 
 function assertCanEdit(
   opp: OpportunityResponseDto,
@@ -28,18 +29,15 @@ function assertCanEdit(
 
 @Injectable()
 export class OpportunityService {
-  readonly opportunities;
+  constructor(
+    @InjectRepository(OpportunityEntity)
+    private readonly opportunities: Repository<OpportunityEntity>
+  ) {}
 
-  constructor(entity: OpportunityEntity) {
-    this.opportunities = entity.value;
-  }
-
-  private async findById(id: string): Promise<any | undefined> {
-    const opp = await this.opportunities.get({
-      opportunityId: id,
-      ...DUMMY_VALUES,
-    });
-    return opp.Item;
+  private async findById(
+    opportunityId: string
+  ): Promise<OpportunityEntity | null> {
+    return this.opportunities.findOneBy({ opportunityId });
   }
 
   async findAll({
@@ -47,24 +45,23 @@ export class OpportunityService {
   }: {
     minOccursDate: string | undefined;
   }): Promise<OpportunityResponseDto[]> {
-    const raw = await this.opportunities.scan();
-    const items = [];
-    for (const item of raw.Items!) {
-      if (minOccursDate !== undefined && item["occursDate"] < minOccursDate) {
-        continue;
-      }
-      items.push(item);
+    let items;
+    if (minOccursDate === undefined) {
+      items = await this.opportunities.find();
+    } else {
+      items = await this.opportunities.findBy({
+        occursDate: MoreThanOrEqual(minOccursDate),
+      });
     }
-
     return transformAndValidate(OpportunityResponseDto, items);
   }
 
-  async findOne(id: string): Promise<OpportunityResponseDto | undefined> {
+  async findOne(id: string): Promise<OpportunityResponseDto | null> {
     const opp = await this.findById(id);
-    if (opp === undefined) {
-      return undefined;
+    if (opp === null) {
+      return null;
     } else {
-      return transformAndValidate(OpportunityResponseDto, opp);
+      return transformAndValidate(OpportunityResponseDto, nullToUndefined(opp));
     }
   }
 
@@ -79,7 +76,7 @@ export class OpportunityService {
       postedByUserId,
     };
     const resp = await transformAndValidate(OpportunityResponseDto, opp);
-    await this.opportunities.put({ ...DUMMY_VALUES, ...resp });
+    await this.opportunities.insert(resp);
     return resp;
   }
 
@@ -87,49 +84,47 @@ export class OpportunityService {
     id: string,
     values: OpportunityCreateDto,
     request: AuthenticatedRequest
-  ): Promise<OpportunityResponseDto | undefined> {
+  ): Promise<OpportunityResponseDto | null> {
     const opp = await this.findById(id);
-    if (opp === undefined) {
-      return undefined;
+    if (opp === null) {
+      return null;
     } else {
       assertCanEdit(opp, request);
       const { postedTime, opportunityId, postedByUserId } = opp;
-      const updated = await transformAndValidate(OpportunityResponseDto, {
-        ...values,
-        postedTime,
-        opportunityId,
-        postedByUserId,
-      });
-      await this.opportunities.put({ ...DUMMY_VALUES, ...updated });
+      const updated = await transformAndValidate(
+        OpportunityResponseDto,
+        nullToUndefined({
+          ...values,
+          postedTime,
+          opportunityId,
+          postedByUserId,
+        })
+      );
+
+      const updatedForDb = undefinedToNull(opp, updated);
+      await this.opportunities.update({ opportunityId }, updatedForDb);
+
       return updated;
     }
   }
 
   async delete(
-    id: string,
+    opportunityId: string,
     request: AuthenticatedRequest
-  ): Promise<OpportunityResponseDto | undefined> {
-    const opp = await this.findById(id);
-    if (opp === undefined) {
-      return undefined;
+  ): Promise<OpportunityResponseDto | null> {
+    const opp = await this.findById(opportunityId);
+    if (opp === null) {
+      return null;
     } else {
       assertCanEdit(opp, request);
-      await this.opportunities.delete(opp);
-      return transformAndValidate(OpportunityResponseDto, opp);
+      await this.opportunities.delete({ opportunityId });
+      return transformAndValidate(OpportunityResponseDto, nullToUndefined(opp));
     }
   }
 
   async deleteAll(): Promise<void> {
-    const opps = await this.opportunities.scan();
-    const requests = opps.Items!.map((opp: any) =>
-      this.opportunities.deleteBatch(opp)
-    );
-    const batchedRequests = batch(requests, BATCH_WRITE_REQUEST_LIMIT);
-    for (const batch of batchedRequests) {
-      const request = { RequestItems: concatObjects(batch) };
-      await this.opportunities.DocumentClient.batchWrite(request).promise();
-      console.info(`Deleted ${batch.length} opportunities`);
-    }
+    await this.opportunities.clear();
+    console.info("Deleted all opportunities");
   }
 
   async createFake(

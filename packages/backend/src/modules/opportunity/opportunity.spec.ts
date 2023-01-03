@@ -1,17 +1,27 @@
 import { LocalDate } from "@js-joda/core";
 import { INestApplication, Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import supertest from "supertest";
 import { createNestApp } from "../../app";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
-import { DynamoDBTestModule } from "../ddb/ddb.test.module";
 import { OpportunityController } from "./opportunity.controller";
 import { OpportunityEntity } from "./opportunity.entity";
 import { OpportunityService } from "./opportunity.service";
 
 @Module({
   controllers: [OpportunityController],
-  providers: [OpportunityService, OpportunityEntity],
-  imports: [DynamoDBTestModule, AuthTestModule],
+  providers: [OpportunityService],
+  imports: [
+    AuthTestModule,
+    TypeOrmModule.forRoot({
+      type: "better-sqlite3",
+      database: ":memory:",
+      dropSchema: true,
+      entities: [OpportunityEntity],
+      synchronize: true,
+    }),
+    TypeOrmModule.forFeature([OpportunityEntity]),
+  ],
 })
 class OpportunityTestModule {}
 

@@ -75,7 +75,7 @@ export class OpportunityController {
   @ApiResponse({ type: OpportunityResponseDto })
   async getId(@Param("id") id: string): Promise<OpportunityResponseDto> {
     const opp = await this.service.findOne(id);
-    if (opp === undefined) {
+    if (opp === null) {
       throw new CustomNotFoundException();
     } else {
       return opp;
@@ -91,7 +91,7 @@ export class OpportunityController {
     @Req() request: AuthenticatedRequest
   ): Promise<OpportunityResponseDto> {
     const opp = await this.service.update(id, values, request);
-    if (opp === undefined) {
+    if (opp === null) {
       throw new CustomNotFoundException();
     } else {
       return opp;
@@ -116,7 +116,7 @@ export class OpportunityController {
     @Req() request: AuthenticatedRequest
   ): Promise<OpportunityResponseDto> {
     const opp = await this.service.delete(id, request);
-    if (opp === undefined) {
+    if (opp === null) {
       throw new CustomNotFoundException();
     } else {
       return opp;
