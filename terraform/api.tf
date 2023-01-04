@@ -25,10 +25,10 @@ resource "aws_lambda_function" "api" {
       DB_DATABASE = "api"
       DB_USERNAME = "api"
       DB_PORT     = "26257"
-      DB_HOST     = data.aws_ssm_parameter.cdb_host
+      DB_HOST     = data.aws_ssm_parameter.cdb_host.value
 
       // TODO need to fetch properly from inside lambda so this doesn't leak into tfstate
-      DB_PASSWORD = data.aws_ssm_parameter.cdb_password
+      DB_PASSWORD = data.aws_ssm_parameter.cdb_password.value
 
       AUTH0_ISSUER_URL  = var.auth0_issuer_url
       AUTH0_AUDIENCE    = var.auth0_audience
