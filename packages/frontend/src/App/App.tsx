@@ -6,7 +6,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { todayYMD } from "../common";
+import { DateTime } from "luxon";
 import { useApi } from "../components/ApiProvider";
 import { MainLayout } from "../components/MainLayout";
 import {
@@ -25,7 +25,7 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<MainLayout />}>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="login" element={<LoginPage />} />
         <Route
           path="opportunities/create"
           element={<CreateOpportunityPage />}
@@ -34,9 +34,8 @@ function App() {
           path="opportunities"
           element={<OpportunitiesPage />}
           loader={() => {
-            console.log("FETCHING OPPS");
             return api.opportunityControllerGet({
-              minOccursDate: todayYMD(),
+              minOccursDate: DateTime.now().toFormat("yyyy-MM-dd"),
             });
           }}
           errorElement={<ErrorPage />}
@@ -61,7 +60,14 @@ function App() {
           element={<OpportunityPage />}
           errorElement={<ErrorPage />}
         />
-        <Route path="*" element={<Navigate to="/" replace={true} />} />
+        <Route
+          path="/"
+          element={<Navigate to="/opportunities" replace={true} />}
+        />
+        <Route
+          path="*"
+          element={<Navigate to="/opportunities" replace={true} />}
+        />
       </Route>
     )
   );

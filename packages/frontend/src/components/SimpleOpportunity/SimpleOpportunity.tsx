@@ -31,7 +31,7 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
         <Stack direction={{ xs: "column", lg: "row" }} spacing={3} pt={5}>
           {opportunity.occursDate && (
             <Box>
-              <Typography variant="subtitle2">
+              <Typography variant="subtitle2" component="span">
                 <CalendarTodayIcon sx={{ verticalAlign: "middle", mr: 1 }} />
                 {formatYMD(opportunity.occursDate)}
               </Typography>
@@ -39,7 +39,7 @@ export const SimpleOpportunity = ({ opportunity }: SimpleOpportunityProps) => {
           )}
 
           <Box>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" component="span">
               <PeopleOutlineIcon sx={{ verticalAlign: "middle", mr: 1 }} />
               Recruiting {opportunity.requiredPeopleCount} people
             </Typography>

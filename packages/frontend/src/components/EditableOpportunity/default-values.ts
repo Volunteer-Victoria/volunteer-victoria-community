@@ -1,9 +1,11 @@
+import { DateTime } from "luxon";
+
 export const defaultValues = {
   title: "",
   description: "",
   locationName: "",
   requiredPeopleCount: "",
-  date: "",
+  date: DateTime.now(),
   time: "",
   indoorsOrOutdoors: "",
   criminalRecordCheckRequired: "",

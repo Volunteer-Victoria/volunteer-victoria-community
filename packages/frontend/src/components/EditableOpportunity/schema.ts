@@ -12,6 +12,7 @@ export const schema = yup.object().shape<SchemaFields>({
   locationName: yup.string().required("Required"),
   requiredPeopleCount: yup
     .number()
+    .typeError("Must be a number")
     .positive("You must need at least one person!")
     .required("Required"),
   date: yup.string().required("Required"),

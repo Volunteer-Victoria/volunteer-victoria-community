@@ -12,10 +12,14 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { mapFormik, todayYMD } from "../../common";
+import { DateTime } from "luxon";
+
+import { mapFormik } from "../../common";
+import { LocationSelector } from "../LocationSelector";
 import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
@@ -50,25 +54,20 @@ export const EditableOpportunityForm = ({
       </Fieldset>
       <Fieldset title="Details">
         <Stack spacing={{ xs: 2, lg: 4 }}>
-          <TextField
-            fullWidth
-            label="Location"
-            {...mapFormik(formik, "locationName")}
-          />
+          <LocationSelector {...mapFormik(formik, "locationName")} />
           <TextField
             fullWidth
             label="Number of people required"
             {...mapFormik(formik, "requiredPeopleCount")}
           />
-          <TextField
-            fullWidth
-            InputLabelProps={{ shrink: true }}
+          <DatePicker
             label="Date"
-            type="date"
-            inputProps={{
-              min: todayYMD(),
-            }}
-            {...mapFormik(formik, "date")}
+            disableMaskedInput
+            {...mapFormik(formik, "date", ["onChange"])}
+            onChange={(date) => formik.setFieldValue("date", date)}
+            minDate={DateTime.now()}
+            maxDate={DateTime.now().plus({ weeks: 4 })}
+            renderInput={(params) => <TextField {...params} />}
           />
           <TextField
             fullWidth
@@ -84,11 +83,11 @@ export const EditableOpportunityForm = ({
               Boolean(formik.errors.indoorsOrOutdoors)
             }
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel id="indoor-outdoors-group-label">
               Is your opportunity indoors or outdoors?
             </FormLabel>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
+              aria-labelledby="indoor-outdoors-group-label"
               row
               {...mapFormik(formik, "indoorsOrOutdoors", [
                 "helperText",
@@ -118,11 +117,11 @@ export const EditableOpportunityForm = ({
               Boolean(formik.errors.criminalRecordCheckRequired)
             }
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel id="criminal-check-group-label">
               Criminal Record Check Required?
             </FormLabel>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
+              aria-labelledby="criminal-check-group-label"
               row
               {...mapFormik(formik, "criminalRecordCheckRequired", [
                 "helperText",

@@ -15,7 +15,6 @@ import Fuse from "fuse.js";
 import { OpportunityResponseDto } from "../../api";
 import { Loader } from "../../components/Loader";
 import { OpportunitiesList } from "../../components/OpportunitiesList";
-import { RequireAuth } from "../../components/RequireAuth";
 import { useUser } from "../../components/UserDataProvider/use-user";
 import { Filter } from "./Filter";
 
@@ -68,55 +67,50 @@ export const OpportunitiesPage = () => {
 
   return (
     <>
-      <RequireAuth>
-        <Box>
-          <Typography variant="h1">Volunteer Opportunities</Typography>
-          <Box py={2}>
-            <Tabs
-              value={scope === "all" ? 0 : 1}
-              aria-label="basic tabs example"
-            >
-              <Tab label="All" onClick={() => setScope("all")} />
-              <Tab label="My Posts" onClick={() => setScope("mine")} />
-            </Tabs>
-          </Box>
-          <Box pb={2} display={scope === "all" ? "block" : "none"}>
-            <Stack
-              component="form"
-              direction={{
-                xs: "column",
-                md: "row",
-              }}
-              spacing={2}
-            >
-              <Filter keyword={keyword} setKeyword={setKeyword}></Filter>
-              <FormControl sx={{ flex: 1 }}>
-                <InputLabel id="sort-select-label">Age</InputLabel>
-                <Select
-                  labelId="sort-select-label"
-                  id="sort-select"
-                  value={sort}
-                  label="Sort by"
-                  onChange={(event) =>
-                    setSort(event.target.value as "soonest" | "newest")
-                  }
-                  sx={{
-                    backgroundColor: "white",
-                  }}
-                >
-                  <MenuItem value="soonest">Soonest</MenuItem>
-                  <MenuItem value="newest">Newest</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </Box>
-          <Stack spacing={2}>
-            <Loader loading={loading}>
-              <OpportunitiesList opportunities={filteredOpportunities} />
-            </Loader>
+      <Box>
+        <Typography variant="h1">Volunteer Opportunities</Typography>
+        <Box py={2}>
+          <Tabs value={scope === "all" ? 0 : 1} aria-label="basic tabs example">
+            <Tab label="All" onClick={() => setScope("all")} />
+            <Tab label="My Posts" onClick={() => setScope("mine")} />
+          </Tabs>
+        </Box>
+        <Box pb={2} display={scope === "all" ? "block" : "none"}>
+          <Stack
+            component="form"
+            direction={{
+              xs: "column",
+              md: "row",
+            }}
+            spacing={2}
+          >
+            <Filter keyword={keyword} setKeyword={setKeyword}></Filter>
+            <FormControl sx={{ flex: 1 }}>
+              <InputLabel id="sort-select-label">Sort by</InputLabel>
+              <Select
+                labelId="sort-select-label"
+                id="sort-select"
+                value={sort}
+                label="Sort by"
+                onChange={(event) =>
+                  setSort(event.target.value as "soonest" | "newest")
+                }
+                sx={{
+                  backgroundColor: "white",
+                }}
+              >
+                <MenuItem value="soonest">Soonest</MenuItem>
+                <MenuItem value="newest">Newest</MenuItem>
+              </Select>
+            </FormControl>
           </Stack>
         </Box>
-      </RequireAuth>
+        <Stack spacing={2}>
+          <Loader loading={loading}>
+            <OpportunitiesList opportunities={filteredOpportunities} />
+          </Loader>
+        </Stack>
+      </Box>
     </>
   );
 };

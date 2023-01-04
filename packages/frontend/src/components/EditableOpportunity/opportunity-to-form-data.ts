@@ -1,5 +1,5 @@
+import { DateTime } from "luxon";
 import { OpportunityResponseDto } from "../../api";
-import { todayYMD } from "../../common";
 import { FormData } from "./default-values";
 
 /**
@@ -9,12 +9,16 @@ import { FormData } from "./default-values";
 export const opportunityToFormData = (
   opportunity: OpportunityResponseDto
 ): FormData => {
+  const date = DateTime.fromFormat(opportunity.occursDate, "yyyy-MM-dd", {
+    zone: "local",
+  });
+
   return {
     title: opportunity.title,
     description: opportunity.description,
     locationName: opportunity.locationName,
     requiredPeopleCount: opportunity.requiredPeopleCount.toString(),
-    date: opportunity.occursDate ?? todayYMD(),
+    date,
     time: opportunity.occursTime ?? "",
     indoorsOrOutdoors: opportunity.indoorsOrOutdoors,
     criminalRecordCheckRequired: opportunity.criminalRecordCheckRequired
