@@ -4,6 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import supertest from "supertest";
 import { createNestApp } from "../../app";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
+import { InMemoryDbModule } from "../db/db.module";
 import { OpportunityController } from "./opportunity.controller";
 import { OpportunityEntity } from "./opportunity.entity";
 import { OpportunityService } from "./opportunity.service";
@@ -13,13 +14,7 @@ import { OpportunityService } from "./opportunity.service";
   providers: [OpportunityService],
   imports: [
     AuthTestModule,
-    TypeOrmModule.forRoot({
-      type: "better-sqlite3",
-      database: ":memory:",
-      dropSchema: true,
-      entities: [OpportunityEntity],
-      synchronize: true,
-    }),
+    InMemoryDbModule,
     TypeOrmModule.forFeature([OpportunityEntity]),
   ],
 })
