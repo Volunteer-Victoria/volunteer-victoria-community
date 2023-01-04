@@ -1,4 +1,5 @@
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { isRunningLocally } from "../../util";
 import { OpportunityEntity } from "../opportunity/opportunity.entity";
 import { CreateOpportunityTable1672450383070 } from "./migrations/1672450383070-CreateOpportunityTable";
 
@@ -18,6 +19,7 @@ export const CockroachDbModule = TypeOrmModule.forRootAsync({
       username: process.env["DB_USERNAME"],
       password: process.env["DB_PASSWORD"],
       database: process.env["DB_DATABASE"],
+      ssl: !isRunningLocally,
     } as TypeOrmModuleOptions),
 });
 
