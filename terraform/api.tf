@@ -22,13 +22,27 @@ resource "aws_lambda_function" "api" {
     variables = {
       API_URL = "https://${var.domain}/api/v1"
 
-      DDB_TABLE_NAME = aws_dynamodb_table.api.name
+      DB_DATABASE = "api"
+      DB_USERNAME = "api"
+      DB_PORT     = "26257"
+      DB_HOST     = data.aws_ssm_parameter.cdb_host
 
-      AUTH0_ISSUER_URL = var.auth0_issuer_url
-      AUTH0_AUDIENCE = var.auth0_audience
-      AUTH0_CLIENT_ID = var.auth0_client_id
+      // TODO need to fetch properly from inside lambda so this doesn't leak into tfstate
+      DB_PASSWORD = data.aws_ssm_parameter.cdb_password
+
+      AUTH0_ISSUER_URL  = var.auth0_issuer_url
+      AUTH0_AUDIENCE    = var.auth0_audience
+      AUTH0_CLIENT_ID   = var.auth0_client_id
     }
   }
+}
+
+data "aws_ssm_parameter" "cdb_host" {
+  name = "${local.namespace}-cdb-host"
+}
+
+data "aws_ssm_parameter" "cdb_password" {
+  name = "${local.namespace}-cdb-password"
 }
 
 resource "aws_cloudwatch_log_group" "api_lambda" {
