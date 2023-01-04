@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "nest build",
-    "start": "NODE_ENV=development concurrently -n cdb,api \"docker-compose up\" \"nest start --watch --preserveWatchOutput\"",
+    "start": "NODE_ENV=development concurrently -n cdb,api \"docker-compose up\" \"ts-node src/main.ts\"",
     "export:openapi": "ts-node src/export-openapi.ts",
     "test": "jest",
     "test:cov": "jest --coverage",
