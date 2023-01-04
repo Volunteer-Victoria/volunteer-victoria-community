@@ -14,10 +14,10 @@ export class OpportunityEntity {
   @Column()
   requiredPeopleCount!: number;
 
-  @Column({ type: "char", nullable: true })
+  @Column({ type: String, nullable: true })
   occursDate!: string | null;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: String, nullable: true })
   occursTime!: string | null;
 
   @Column()
@@ -29,19 +29,19 @@ export class OpportunityEntity {
   @Column()
   indoorsOrOutdoors!: string;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: String, nullable: true })
   contactEmail!: string | null;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: String, nullable: true })
   contactPhone!: string | null;
 
   @Column()
   criminalRecordCheckRequired!: boolean;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: String, nullable: true })
   idealVolunteer!: string | null;
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: String, nullable: true })
   additionalInformation!: string | null;
 
   @Column()
