@@ -19,7 +19,7 @@ import {
 import { OpportunityEntity } from "./opportunity.entity";
 
 function assertCanEdit(
-  opp: OpportunityResponseDto,
+  opp: OpportunityEntity,
   request: AuthenticatedRequest
 ): void {
   if (!isAdmin(request) && opp.postedByUserId !== userId(request)) {
