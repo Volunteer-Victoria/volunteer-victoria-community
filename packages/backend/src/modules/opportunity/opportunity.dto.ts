@@ -9,6 +9,7 @@ import {
   IsString,
   Length,
 } from "class-validator";
+import { Entity, Column, PrimaryColumn } from "typeorm";
 
 enum IndoorsOrOutdoors {
   Indoors = "indoors",
@@ -70,7 +71,7 @@ class OpportunityBase {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  idealVolunteer!: string;
+  idealVolunteer?: string;
 
   @ApiProperty({ required: false })
   @IsString()
