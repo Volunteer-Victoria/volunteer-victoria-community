@@ -7,13 +7,13 @@ import type {
   Handler,
 } from "aws-lambda";
 import { createNestApp } from "./app";
-import { VVCModule } from "./modules/vvc.module";
+import { AppModule } from "./modules/app.module";
 
 let cachedServer: Handler;
 
 async function bootstrap() {
   if (!cachedServer) {
-    const { expressApp } = await createNestApp(VVCModule);
+    const { expressApp } = await createNestApp(AppModule);
     cachedServer = serverlessExpress({ app: expressApp });
   }
   return cachedServer;

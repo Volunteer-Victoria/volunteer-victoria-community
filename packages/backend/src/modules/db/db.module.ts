@@ -18,5 +18,3 @@ export const DbModule = TypeOrmModule.forRootAsync({
       database: process.env["DB_DATABASE"],
     } as TypeOrmModuleOptions),
 });
-
-// TODO unit test migrations
