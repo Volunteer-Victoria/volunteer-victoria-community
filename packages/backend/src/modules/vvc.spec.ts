@@ -2,6 +2,7 @@ import { GenericContainer } from "testcontainers";
 import { createNestApp } from "../app";
 import { OpportunityService } from "./opportunity/opportunity.service";
 import { VVCModule } from "./vvc.module";
+import { Client } from "pg";
 
 const COCKROACH_IMAGE = "cockroachdb/cockroach:v22.2.1";
 const COCKROACH_PORT = 26257;
@@ -25,11 +26,23 @@ describe("VVC module", () => {
 
     const app = (await createNestApp(VVCModule, "")).nestApp;
 
-    // Pull something out of the db to ensure it connects and migrations have run
+    const client = new Client({
+      user: "root",
+      host: "localhost",
+      port,
+      database: "defaultdb",
+    });
+    await client.connect();
+    const res = await client.query(
+      "SELECT column_name FROM information_schema.columns WHERE table_name='opportunity'"
+    );
+    for (const row of res.rows) {
+      console.dir(row);
+    }
+
     const oppService = app.get(OpportunityService);
     const opps = await oppService.findAll({});
     expect(opps).toEqual([]);
-
     await Promise.all([app.close(), cockroachContainer.stop()]);
   });
 });
