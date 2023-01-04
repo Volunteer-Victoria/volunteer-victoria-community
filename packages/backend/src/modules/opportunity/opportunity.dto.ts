@@ -16,6 +16,7 @@ enum IndoorsOrOutdoors {
   Outdoors = "outdoors",
 }
 
+@Entity({ name: "opportunity" })
 class OpportunityBase {
   @ApiProperty()
   @IsString()

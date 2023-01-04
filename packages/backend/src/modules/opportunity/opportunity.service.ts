@@ -43,7 +43,7 @@ export class OpportunityService {
   async findAll({
     minOccursDate,
   }: {
-    minOccursDate: string | undefined;
+    minOccursDate?: string | undefined;
   }): Promise<OpportunityResponseDto[]> {
     let items;
     if (minOccursDate === undefined) {

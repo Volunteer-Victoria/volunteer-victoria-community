@@ -1,4 +1,5 @@
+import { Entity } from "typeorm";
 import { OpportunityResponseDto } from "./opportunity.dto";
 
-export type OpportunityEntity = OpportunityResponseDto;
-export const OpportunityEntity = OpportunityResponseDto;
+@Entity({ name: "opportunity" })
+export class OpportunityEntity extends OpportunityResponseDto {}
