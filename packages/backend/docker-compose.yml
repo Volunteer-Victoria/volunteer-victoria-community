@@ -6,7 +6,6 @@ services:
     image: cockroachdb/cockroach:v22.2.1
     ports:
       - "26257:26257"
-      - "8080:8080"
     command: start-single-node --insecure
     volumes:
       - "./.cockroach-data:/cockroach/cockroach-data"
