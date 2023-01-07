@@ -1,7 +1,7 @@
-import assert from "assert";
-import type { MigrationInterface, QueryRunner } from "typeorm";
+import type { QueryRunner } from "typeorm";
+import UnrevertableMigration from "./UnrevertableMigration";
 
-export class CreateOpportunityTable1672450383070 implements MigrationInterface {
+export class CreateOpportunityTable1672450383070 extends UnrevertableMigration {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       CREATE TABLE opportunity (
@@ -27,9 +27,5 @@ export class CreateOpportunityTable1672450383070 implements MigrationInterface {
 
       CREATE INDEX idx_occursDate ON opportunity ("occursDate");
     `);
-  }
-
-  public async down(_: QueryRunner): Promise<void> {
-    assert(false);
   }
 }

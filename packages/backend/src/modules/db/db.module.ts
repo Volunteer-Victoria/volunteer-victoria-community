@@ -2,6 +2,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { isRunningLocally } from "../../util";
 import { OpportunityEntity } from "../opportunity/opportunity.entity";
 import { CreateOpportunityTable1672450383070 } from "./migrations/1672450383070-CreateOpportunityTable";
+import { CreateMessageTables1673051031712 } from "./migrations/1673051031712-CreateMessageThreadTable";
 
 const dbInMemory = process.env["DB_INMEMORY"] !== undefined;
 
@@ -10,7 +11,10 @@ export const CockroachDbModule = TypeOrmModule.forRootAsync({
     ({
       type: "cockroachdb",
       entities: [OpportunityEntity],
-      migrations: [CreateOpportunityTable1672450383070],
+      migrations: [
+        CreateOpportunityTable1672450383070,
+        CreateMessageTables1673051031712,
+      ],
       migrationsRun: true,
       synchronize: false,
 

@@ -9,7 +9,7 @@ resource "aws_lambda_function" "api" {
   runtime          = "nodejs16.x"
   filename         = "api-lambda.zip"
   source_code_hash = filebase64sha256("api-lambda.zip")
-  handler          = "lambda.handler"
+  handler          = "api-lambda.handler"
   memory_size      = 2048
   timeout          = 10
   architectures    = [var.target_arch]
