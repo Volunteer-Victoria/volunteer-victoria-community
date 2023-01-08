@@ -1,10 +1,10 @@
 import type { QueryRunner } from "typeorm";
 import UnrevertableMigration from "./UnrevertableMigration";
 
-export class CreateOpportunityTable1672450383070 extends UnrevertableMigration {
+export class CreateMessageTables1673051031712 extends UnrevertableMigration {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      CREATE TABLE opportunity (
+      CREATE TABLE messageThread (
           "opportunityId"               char(21) NOT NULL,
           "title"                       text NOT NULL,
           "contactName"                 text NOT NULL,
@@ -14,7 +14,7 @@ export class CreateOpportunityTable1672450383070 extends UnrevertableMigration {
           "description"                 text NOT NULL,
           "locationName"                text NOT NULL,
           "indoorsOrOutdoors"           text NOT NULL,
-          "contactEmail"                text NOT NULL,
+          "contactEmail"                text,
           "contactPhone"                text,
           "criminalRecordCheckRequired" boolean NOT NULL,
           "idealVolunteer"              text,
@@ -24,8 +24,6 @@ export class CreateOpportunityTable1672450383070 extends UnrevertableMigration {
           
           PRIMARY KEY ("opportunityId")
       );
-
-      CREATE INDEX idx_occursDate ON opportunity ("occursDate");
     `);
   }
 }

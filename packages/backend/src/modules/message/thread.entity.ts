@@ -19,10 +19,7 @@ export class MessageThreadEntity {
   posterInboxId!: string;
 
   @Column()
-  posterName!: string;
-
-  @Column()
-  posterEmail!: string;
+  opportunityId!: string;
 
   @ManyToOne(() => OpportunityEntity, { nullable: false })
   @JoinColumn({ name: "opportunityId" })

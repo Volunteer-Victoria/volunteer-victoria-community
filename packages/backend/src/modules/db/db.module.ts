@@ -2,7 +2,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { isRunningLocally } from "../../util";
 import { OpportunityEntity } from "../opportunity/opportunity.entity";
 import { CreateOpportunityTable1672450383070 } from "./migrations/1672450383070-CreateOpportunityTable";
-import { CreateMessageTables1673051031712 } from "./migrations/1673051031712-CreateMessageThreadTable";
+import { CreateMessageTables1673051031712 } from "./migrations/1673051031712-CreateMessageTables";
 
 const dbInMemory = process.env["DB_INMEMORY"] !== undefined;
 

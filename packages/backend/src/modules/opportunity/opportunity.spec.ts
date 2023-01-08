@@ -236,6 +236,7 @@ describe(path, () => {
       ).body
     );
     expect(fakes.length).toBe(4);
+    expect(fakes[0].postedTime).not.toBeNull();
     const all = await api.get(path).expect(200);
     expect(all.body.length).toBeGreaterThan(3);
   });
