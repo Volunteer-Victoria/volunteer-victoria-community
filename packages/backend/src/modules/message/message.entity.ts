@@ -1,13 +1,16 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity({ name: "message" })
 export class MessageEntity {
   @PrimaryColumn()
-  applicantInboxId!: string;
+  messageId!: string;
 
   @Column()
-  posterInboxId!: string;
+  recipientInboxId!: string;
 
   @Column()
-  createdOn!: string;
+  senderEmailAddress!: string;
+
+  @Column()
+  sentAt!: number;
 }

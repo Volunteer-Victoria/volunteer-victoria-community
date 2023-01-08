@@ -1,7 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import type { S3Event, S3Handler } from "aws-lambda";
 import { MessageService } from "./modules/message/message.service";
-import { MessageStandaloneModule } from "./modules/message/message.standalone-module";
+import { MessageStandaloneModule } from "./modules/message/message.module";
 
 const messageService: Promise<MessageService> = (async () => {
   const nestApp = await NestFactory.createApplicationContext(
