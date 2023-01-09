@@ -19,6 +19,9 @@ export class MessageThreadEntity {
   posterInboxId!: string;
 
   @Column()
+  subject!: string;
+
+  @Column()
   opportunityId!: string;
 
   @ManyToOne(() => OpportunityEntity, { nullable: false })

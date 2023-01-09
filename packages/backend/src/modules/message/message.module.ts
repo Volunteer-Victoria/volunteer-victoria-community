@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DbModule } from "../db/db.module";
 import { OpportunityModule } from "../opportunity/opportunity.module";
+import { EmailService } from "./email.service";
 import { MessageEntity } from "./message.entity";
 import { MessageService } from "./message.service";
 import { MessageThreadEntity } from "./thread.entity";
@@ -13,6 +14,6 @@ import { MessageThreadEntity } from "./thread.entity";
     TypeOrmModule.forFeature([MessageEntity]),
     OpportunityModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, EmailService],
 })
-export class MessageStandaloneModule {}
+export class MessageModule {}
