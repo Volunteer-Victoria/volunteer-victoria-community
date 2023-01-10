@@ -5401,6 +5401,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nodemailer@npm:^6.4.7":
+  version: 6.4.7
+  resolution: "@types/nodemailer@npm:6.4.7"
+  dependencies:
+    "@types/node": "*"
+  checksum: dc2a33a89135e04a5bea4921e8645e8453b90e3c3b05f0646f05071c5951ab697ea49ea1e503a690f04cb0a6abfc54967325c5a4036356793cfbb64ba64fb141
+  languageName: node
+  linkType: hard
+
 "@types/parse-json@npm:^4.0.0":
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
@@ -5850,6 +5859,7 @@ __metadata:
     "@types/express": ^4.17.13
     "@types/jest": 28.1.8
     "@types/node": ^16.0.0
+    "@types/nodemailer": ^6.4.7
     "@types/passport-jwt": ^3.0.7
     "@types/pg": ^8.6.6
     "@types/supertest": ^2.0.11
@@ -5867,6 +5877,7 @@ __metadata:
     mock-jwks: ^1.0.8
     nanoid: ^3.0.0
     nock: ^13.2.9
+    nodemailer: ^6.8.0
     passport: ^0.6.0
     passport-jwt: ^4.0.0
     pg: ^8.8.0
@@ -14222,6 +14233,13 @@ __metadata:
   dependencies:
     asn1: ^0.2.4
   checksum: c03a6c8f69557326d2110086ce9610b4b17ef0fd594f76202225b7eb93fc0b342fb31714f6b3cf8d38320cf63c4790a3034e5d47a12f2c27d1900599ec9bd545
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:^6.8.0":
+  version: 6.8.0
+  resolution: "nodemailer@npm:6.8.0"
+  checksum: e1827df714d207a00f1bf8012e767826862467b72440fc9c37cf238a14d01a4c591b7657f4d1805bfb2764883c07aa9f2e31ee96a5fec51ccf1e6ad6dd01bd1d
   languageName: node
   linkType: hard
 

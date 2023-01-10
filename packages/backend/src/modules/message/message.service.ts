@@ -103,10 +103,12 @@ export class MessageService {
     message.sentAt = Instant.now().epochSecond();
     await this.messages.save(message);
 
+    // const senderInboxId = toPoster !== null ?
+
     // await this.email.send({
-    //   body,
+    //   text: body,
     //   subject: thread.subject,
-    //   recipientEmail:
+    //   fromInbox:
     // });
   }
 }
