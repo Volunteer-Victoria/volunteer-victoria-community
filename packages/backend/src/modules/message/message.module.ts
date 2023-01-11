@@ -3,6 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { DbModule } from "../db/db.module";
 import { OpportunityModule } from "../opportunity/opportunity.module";
 import { EmailService } from "./email.service";
+import { MessageController } from "./message.controller";
 import { MessageEntity } from "./message.entity";
 import { MessageService } from "./message.service";
 import { MessageThreadEntity } from "./thread.entity";
@@ -15,5 +16,6 @@ import { MessageThreadEntity } from "./thread.entity";
     OpportunityModule,
   ],
   providers: [MessageService, EmailService],
+  controllers: [MessageController],
 })
 export class MessageModule {}

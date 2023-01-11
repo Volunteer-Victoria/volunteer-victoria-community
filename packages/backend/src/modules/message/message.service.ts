@@ -36,7 +36,7 @@ export class MessageService {
   async startThread(
     opportunityId: string,
     applicant: { name: string; email: string; userId: string }
-  ): Promise<MessageThreadEntity> {
+  ): Promise<{ thread: MessageThreadEntity; alreadyExisted: boolean }> {
     const [opp, existingThread] = await Promise.all([
       this.opportunities.findOne(opportunityId),
       this.threads.findOneBy({
@@ -48,7 +48,7 @@ export class MessageService {
     if (opp === null) {
       throw new NotFoundException(`Opportunity ID does not exist`);
     } else if (existingThread !== null) {
-      return existingThread;
+      return { thread: existingThread, alreadyExisted: true };
     }
 
     const thread = new MessageThreadEntity();
@@ -62,13 +62,14 @@ export class MessageService {
     thread.createdAt = Instant.now().epochSecond();
 
     await this.threads.save(thread);
-    return thread;
+    return { thread, alreadyExisted: false };
   }
 
   async sendMessage(
     recipientInboxId: string,
     senderEmailAddress: string,
-    body: string
+    body: string,
+    ccSender: boolean = false
   ): Promise<void> {
     const [toPoster, toApplicant, messagesLastHour] = await Promise.all([
       this.threads.findOne({
@@ -116,12 +117,22 @@ export class MessageService {
     const senderName = sentByApplicant
       ? thread.applicantName
       : thread.opportunity!.contactName;
+    const recipientEmail = sentByApplicant
+      ? thread.opportunity!.contactEmail
+      : thread.applicantEmail;
+    const recipientName = sentByApplicant
+      ? thread.opportunity!.contactName
+      : thread.applicantName;
 
     await this.email.send({
       text: body,
       subject: thread.subject,
       fromInbox: senderInboxId,
       fromName: senderName,
+      to: {
+        name: recipientName,
+        address: recipientEmail,
+      },
     });
   }
 }

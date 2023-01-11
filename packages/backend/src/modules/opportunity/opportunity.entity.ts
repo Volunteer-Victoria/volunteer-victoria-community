@@ -29,8 +29,8 @@ export class OpportunityEntity {
   @Column()
   indoorsOrOutdoors!: string;
 
-  @Column({ type: String, nullable: true })
-  contactEmail!: string | null;
+  @Column({ type: String })
+  contactEmail!: string;
 
   @Column({ type: String, nullable: true })
   contactPhone!: string | null;
