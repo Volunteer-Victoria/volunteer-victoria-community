@@ -71,8 +71,14 @@ export class MessageService {
     body: string
   ): Promise<void> {
     const [toPoster, toApplicant, messagesLastHour] = await Promise.all([
-      this.threads.findOneBy({ posterInboxId: recipientInboxId }),
-      this.threads.findOneBy({ applicantInboxId: recipientInboxId }),
+      this.threads.findOne({
+        where: { posterInboxId: recipientInboxId },
+        relations: { opportunity: true },
+      }),
+      this.threads.findOne({
+        where: { applicantInboxId: recipientInboxId },
+        relations: { opportunity: true },
+      }),
       this.messages.countBy({
         recipientInboxId,
         sentAt: MoreThan(
@@ -103,12 +109,19 @@ export class MessageService {
     message.sentAt = Instant.now().epochSecond();
     await this.messages.save(message);
 
-    // const senderInboxId = toPoster !== null ?
+    const sentByApplicant = toPoster !== null;
+    const senderInboxId = sentByApplicant
+      ? thread.applicantInboxId
+      : thread.posterInboxId;
+    const senderName = sentByApplicant
+      ? thread.applicantName
+      : thread.opportunity!.contactName;
 
-    // await this.email.send({
-    //   text: body,
-    //   subject: thread.subject,
-    //   fromInbox:
-    // });
+    await this.email.send({
+      text: body,
+      subject: thread.subject,
+      fromInbox: senderInboxId,
+      fromName: senderName,
+    });
   }
 }
