@@ -7,6 +7,7 @@ export interface AuthenticatedRequest extends Request {
   user: {
     sub: string;
     permissions: string[];
+    email: string;
   };
 }
 

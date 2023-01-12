@@ -8,5 +8,5 @@ export class ThreadStartDto {
 
   @ApiProperty()
   @IsString()
-  messageBody!: string;
+  message!: string;
 }

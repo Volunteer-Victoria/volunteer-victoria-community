@@ -19,6 +19,14 @@ function threadSubject(opportunityTitle: string): string {
 
 const MAX_MESSAGES_PER_HOUR = 25;
 
+interface MessageOptions {
+  /**
+   * Whether to BCC the sender of this email at their real email address.
+   * This is for letting them know that they successfully sent a message when a thread is started.
+   */
+  bccSender: boolean;
+}
+
 @Injectable()
 export class MessageService {
   constructor(
@@ -65,11 +73,15 @@ export class MessageService {
     return { thread, alreadyExisted: false };
   }
 
+  /**
+   * @param bccSender Should you bcc the actual sender's email on this message.
+   * This is for letting them know that they successfully sent a message when a thread is started.
+   */
   async sendMessage(
     recipientInboxId: string,
     senderEmailAddress: string,
     body: string,
-    ccSender: boolean = false
+    options: MessageOptions = { bccSender: false }
   ): Promise<void> {
     const [toPoster, toApplicant, messagesLastHour] = await Promise.all([
       this.threads.findOne({
@@ -133,6 +145,9 @@ export class MessageService {
         name: recipientName,
         address: recipientEmail,
       },
+      ...(options.bccSender && {
+        bcc: { name: senderName, address: senderEmailAddress },
+      }),
     });
   }
 }

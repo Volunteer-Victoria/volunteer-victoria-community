@@ -1,24 +1,14 @@
 import { LocalDate } from "@js-joda/core";
-import { INestApplication, Module } from "@nestjs/common";
+import type { INestApplication } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { setupNestApp } from "../../app";
 import supertest from "supertest";
-import { createNestApp } from "../../app";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
 import { InMemoryDbModule } from "../db/db.module";
 import { OpportunityController } from "./opportunity.controller";
 import { OpportunityEntity } from "./opportunity.entity";
 import { OpportunityService } from "./opportunity.service";
-
-@Module({
-  controllers: [OpportunityController],
-  providers: [OpportunityService],
-  imports: [
-    AuthTestModule,
-    InMemoryDbModule,
-    TypeOrmModule.forFeature([OpportunityEntity]),
-  ],
-})
-class OpportunityTestModule {}
 
 const exampleOpp1 = {
   title: "My Opp",
@@ -46,7 +36,20 @@ describe(path, () => {
   let oppId: string;
 
   beforeAll(async () => {
-    app = (await createNestApp(OpportunityTestModule, "")).nestApp;
+    const moduleRef = await Test.createTestingModule({
+      controllers: [OpportunityController],
+      providers: [OpportunityService],
+      imports: [
+        AuthTestModule,
+        InMemoryDbModule,
+        TypeOrmModule.forFeature([OpportunityEntity]),
+      ],
+    }).compile();
+
+    app = moduleRef.createNestApplication();
+    setupNestApp(app);
+    await app.init();
+
     api = supertest(app.getHttpServer());
     auth = app.get(MockJwksProvider);
     headers = auth.authHeaders();
@@ -207,6 +210,7 @@ describe(path, () => {
       .send({
         title: "",
         contactName: "",
+        contactEmail: "test@email.com",
         requiredPeopleCount: 2,
         occursDate: "2022-11-24",
         occursTime: "",

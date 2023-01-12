@@ -143,6 +143,14 @@ resource "aws_iam_role_policy" "api_lambda" {
         Resource = [
           "arn:aws:logs:${var.region}:${local.aws_account_id}:log-group:/aws/lambda/${local.api_name}:*"
         ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ],
+        Resource = "*"
       }
     ]
   })

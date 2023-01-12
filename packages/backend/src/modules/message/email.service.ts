@@ -3,11 +3,11 @@ import { SES } from "@aws-sdk/client-ses";
 import nodemailer from "nodemailer";
 import type { Address } from "nodemailer/lib/mailer";
 
-interface Email {
+export interface Email {
   fromInbox: string;
   fromName: string;
   to: Address | Array<Address>;
-  cc?: Address | Array<Address>;
+  bcc?: Address | Array<Address>;
   subject: string;
   text: string;
 }
