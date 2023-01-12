@@ -8,5 +8,6 @@ import { OpportunityService } from "./opportunity.service";
   imports: [TypeOrmModule.forFeature([OpportunityEntity])],
   controllers: [OpportunityController],
   providers: [OpportunityService],
+  exports: [OpportunityService],
 })
 export class OpportunityModule {}

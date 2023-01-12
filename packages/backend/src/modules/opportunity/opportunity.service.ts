@@ -11,18 +11,15 @@ import {
   undefinedToNull,
   uniqueId,
 } from "../../util";
-import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
+import type { UserInfo } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
 
-function assertCanEdit(
-  opp: OpportunityEntity,
-  request: AuthenticatedRequest
-): void {
-  if (!isAdmin(request) && opp.postedByUserId !== userId(request)) {
+function assertCanEdit(opp: OpportunityEntity, user: UserInfo): void {
+  if (!user.isAdmin && opp.postedByUserId !== user.id) {
     throw new UnauthorizedException();
   }
 }
@@ -67,13 +64,13 @@ export class OpportunityService {
 
   async create(
     values: OpportunityCreateDto,
-    postedByUserId: string
+    user: UserInfo
   ): Promise<OpportunityResponseDto> {
     const opp = {
       ...values,
       opportunityId: uniqueId(),
       postedTime: Instant.now().epochSecond(),
-      postedByUserId,
+      postedByUserId: user.id,
     };
     const resp = await transformAndValidate(OpportunityResponseDto, opp);
     await this.opportunities.insert(resp);
@@ -83,13 +80,13 @@ export class OpportunityService {
   async update(
     id: string,
     values: OpportunityCreateDto,
-    request: AuthenticatedRequest
+    user: UserInfo
   ): Promise<OpportunityResponseDto | null> {
     const opp = await this.findById(id);
     if (opp === null) {
       return null;
     } else {
-      assertCanEdit(opp, request);
+      assertCanEdit(opp, user);
       const { postedTime, opportunityId, postedByUserId } = opp;
       const updated = await transformAndValidate(
         OpportunityResponseDto,
@@ -110,13 +107,13 @@ export class OpportunityService {
 
   async delete(
     opportunityId: string,
-    request: AuthenticatedRequest
+    user: UserInfo
   ): Promise<OpportunityResponseDto | null> {
     const opp = await this.findById(opportunityId);
     if (opp === null) {
       return null;
     } else {
-      assertCanEdit(opp, request);
+      assertCanEdit(opp, user);
       await this.opportunities.delete({ opportunityId });
       return transformAndValidate(OpportunityResponseDto, nullToUndefined(opp));
     }
@@ -127,10 +124,8 @@ export class OpportunityService {
     console.info("Deleted all opportunities");
   }
 
-  async createFake(
-    request: AuthenticatedRequest
-  ): Promise<OpportunityResponseDto> {
-    if (!isAdmin(request)) {
+  async createFake(user: UserInfo): Promise<OpportunityResponseDto> {
+    if (!user.isAdmin) {
       throw new UnauthorizedException();
     }
 
@@ -153,6 +148,6 @@ export class OpportunityService {
       idealVolunteer: faker.lorem.sentences(random.int(0, 4)),
       additionalInformation: faker.lorem.paragraphs(random.int(0, 2)),
     };
-    return this.create(fakeOpp, userId(request));
+    return this.create(fakeOpp, user);
   }
 }

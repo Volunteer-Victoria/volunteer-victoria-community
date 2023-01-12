@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Query, Req, Res } from "@nestjs/common";
 import { ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { RequireAuth } from "../../util";
-import type { AuthenticatedRequest } from "../auth/auth.module";
+import { User, UserInfo } from "../auth/auth.module";
 import type { ThreadStartDto } from "./message.dto";
 import type { Response } from "express";
 import type { MessageService } from "./message.service";
@@ -28,13 +28,13 @@ export class MessageController {
   async post(
     @Body() { applicantName, message }: ThreadStartDto,
     @Query("opportunityId") opportunityId: string,
-    @Req() req: AuthenticatedRequest,
+    @User() user: UserInfo,
     @Res() res: Response
   ): Promise<void> {
     const applicant = {
       name: applicantName,
-      email: req.user.email,
-      userId: req.user.sub,
+      email: user.email,
+      userId: user.id,
     };
 
     const { alreadyExisted, thread } = await this.messages.startThread(

@@ -29,7 +29,6 @@ const exampleOpp1 = {
 const path = "/opportunity";
 
 describe(path, () => {
-  let app: INestApplication;
   let api: supertest.SuperTest<supertest.Test>;
   let auth: MockJwksProvider;
   let headers: Record<string, string>;
@@ -46,7 +45,7 @@ describe(path, () => {
       ],
     }).compile();
 
-    app = moduleRef.createNestApplication();
+    const app = moduleRef.createNestApplication();
     setupNestApp(app);
     await app.init();
 
@@ -253,9 +252,5 @@ describe(path, () => {
     await api.delete(path).set(auth.authHeaders()).expect(200);
     const final = await api.get(path).expect(200);
     expect(final.body.length).toBe(0);
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

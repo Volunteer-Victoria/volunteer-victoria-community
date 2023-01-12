@@ -2,6 +2,7 @@ import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import supertest from "supertest";
 import { setupNestApp } from "../../app";
+import { UserInfo } from "../auth/auth.module";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
 import { InMemoryDbModule } from "../db/db.module";
 import type { OpportunityResponseDto } from "../opportunity/opportunity.dto";
@@ -21,12 +22,11 @@ const emailTestService = {
   },
 };
 
-const adminUserRequest = {
-  user: {
-    sub: "test-admin",
-    permissions: ["admin"],
-  },
-};
+const adminUser: UserInfo = new UserInfo(
+  "test-admin",
+  ["admin"],
+  "test@mail.com"
+);
 
 describe("/message", () => {
   let headers;
@@ -59,8 +59,8 @@ describe("/message", () => {
 
     // Create an initial opp to have conversations about
     const opps = app.get(OpportunityService);
-    opportunity = await opps.createFake({});
+    opportunity = await opps.createFake(adminUser);
   });
 
-  it();
+  it("POST should start a new thread", async () => {});
 });
