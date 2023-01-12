@@ -1,31 +1,66 @@
-import { Injectable, Module } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthTestModule } from "../auth/auth.test.module";
-import { DbModule, InMemoryDbModule } from "../db/db.module";
+import supertest from "supertest";
+import { setupNestApp } from "../../app";
+import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
+import { InMemoryDbModule } from "../db/db.module";
+import type { OpportunityResponseDto } from "../opportunity/opportunity.dto";
 import { OpportunityModule } from "../opportunity/opportunity.module";
-import type { Email } from "./email.service";
+import { OpportunityService } from "../opportunity/opportunity.service";
+import { Email, EmailService } from "./email.service";
 import { MessageController } from "./message.controller";
 import { MessageEntity } from "./message.entity";
 import { MessageService } from "./message.service";
 import { MessageThreadEntity } from "./thread.entity";
 
+const sentEmails: Array<Email> = [];
+
 const emailTestService = {
-  async send(email: Email): Promise<void> {},
+  async send(email: Email): Promise<void> {
+    sentEmails.push(email);
+  },
 };
 
-@Module({
-  imports: [
-    InMemoryDbModule,
-    AuthTestModule,
-    TypeOrmModule.forFeature([MessageThreadEntity]),
-    TypeOrmModule.forFeature([MessageEntity]),
-    OpportunityModule,
-  ],
-  providers: [MessageService],
-  controllers: [MessageController],
-})
-class MessageTestModule {}
+const adminUserRequest = {
+  user: {
+    sub: "test-admin",
+    permissions: ["admin"],
+  },
+};
 
 describe("/message", () => {
-  beforeAll(async () => {});
+  let headers;
+  let api;
+  let opportunity: OpportunityResponseDto;
+
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [
+        InMemoryDbModule,
+        AuthTestModule,
+        TypeOrmModule.forFeature([MessageThreadEntity]),
+        TypeOrmModule.forFeature([MessageEntity]),
+        OpportunityModule,
+      ],
+      providers: [MessageService, EmailService],
+      controllers: [MessageController],
+    })
+      .overrideProvider(EmailService)
+      .useValue(emailTestService)
+      .compile();
+
+    const app = moduleRef.createNestApplication();
+    setupNestApp(app);
+    await app.init();
+
+    api = supertest(app.getHttpServer());
+    const auth = app.get(MockJwksProvider);
+    headers = auth.authHeaders();
+
+    // Create an initial opp to have conversations about
+    const opps = app.get(OpportunityService);
+    opportunity = await opps.createFake({});
+  });
+
+  it();
 });
