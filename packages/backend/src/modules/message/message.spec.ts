@@ -1,20 +1,26 @@
 import { Test } from "@nestjs/testing";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import supertest from "supertest";
 import { setupNestApp } from "../../app";
 import { UserInfo } from "../auth/auth.module";
-import { MockJwksProvider } from "../auth/auth.test.module";
+import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
+import { InMemoryDbModule } from "../db/db.module";
 import type { OpportunityResponseDto } from "../opportunity/opportunity.dto";
+import { OpportunityModule } from "../opportunity/opportunity.module";
 import { OpportunityService } from "../opportunity/opportunity.service";
-// import type { Email } from "./email.service";
-import { Injectable } from "@nestjs/common";
+import { Email, EmailService } from "./email.service";
+import { MessageController } from "./message.controller";
+import { MessageEntity } from "./message.entity";
+import { MessageService } from "./message.service";
+import { MessageThreadEntity } from "./thread.entity";
 
-// const sentEmails: Array<Email> = [];
+const sentEmails: Array<Email> = [];
 
-// const emailTestService = {
-//   async send(email: Email): Promise<void> {
-//     sentEmails.push(email);
-//   },
-// };
+const emailTestService = {
+  async send(email: Email): Promise<void> {
+    sentEmails.push(email);
+  },
+};
 
 const adminUser: UserInfo = new UserInfo(
   "test-admin",
@@ -30,16 +36,18 @@ describe("/message", () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
-        // InMemoryDbModule,
-        // AuthTestModule,
-        // TypeOrmModule.forFeature([MessageThreadEntity]),
-        // TypeOrmModule.forFeature([MessageEntity]),
-        // OpportunityModule,
+        InMemoryDbModule,
+        AuthTestModule,
+        TypeOrmModule.forFeature([MessageThreadEntity]),
+        TypeOrmModule.forFeature([MessageEntity]),
+        OpportunityModule,
       ],
-    }).compile();
-    //   .overrideProvider(EmailService)
-    //   .useValue(emailTestService)
-    //   .compile();
+      providers: [MessageService, EmailService],
+      controllers: [MessageController],
+    })
+      .overrideProvider(EmailService)
+      .useValue(emailTestService)
+      .compile();
 
     const app = moduleRef.createNestApplication();
     setupNestApp(app);

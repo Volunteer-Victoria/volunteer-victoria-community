@@ -26,8 +26,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "importsNotUsedAsValues": "error",
+    "noUnusedParameters": true,
+    "importsNotUsedAsValues": "error",
     "checkJs": true
   },
   "exclude": ["dist", "test"],

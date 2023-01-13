@@ -8,7 +8,7 @@ import type { MessageService } from "./message.service";
 
 @Controller("message")
 export class MessageController {
-  constructor(private messages: MessageService) {}
+  constructor(private readonly messages: MessageService) {}
 
   @Post()
   @RequireAuth()
@@ -37,21 +37,21 @@ export class MessageController {
       userId: user.id,
     };
 
-    // const { alreadyExisted, thread } = await this.messages.startThread(
-    //   opportunityId,
-    //   applicant
-    // );
-    // await this.messages.sendMessage(
-    //   thread.posterInboxId,
-    //   applicant.email,
-    //   message,
-    //   { bccSender: true }
-    // );
+    const { alreadyExisted, thread } = await this.messages.startThread(
+      opportunityId,
+      applicant
+    );
+    await this.messages.sendMessage(
+      thread.posterInboxId,
+      applicant.email,
+      message,
+      { bccSender: true }
+    );
 
-    // if (alreadyExisted) {
-    //   res.status(200).end();
-    // } else {
-    //   res.status(201).end();
-    // }
+    if (alreadyExisted) {
+      res.status(200).end();
+    } else {
+      res.status(201).end();
+    }
   }
 }
