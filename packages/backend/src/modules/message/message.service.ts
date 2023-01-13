@@ -8,8 +8,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import type { Repository } from "typeorm";
 import { MoreThan } from "typeorm";
 import { uniqueId } from "../../util";
-import type { OpportunityService } from "../opportunity/opportunity.service";
-import type { EmailService } from "./email.service";
+import { OpportunityService } from "../opportunity/opportunity.service";
+import { EmailService } from "./email.service";
 import { MessageEntity } from "./message.entity";
 import { MessageThreadEntity } from "./thread.entity";
 

@@ -4,7 +4,7 @@ import { RequireAuth } from "../../util";
 import { User, UserInfo } from "../auth/auth.module";
 import type { ThreadStartDto } from "./message.dto";
 import type { Response } from "express";
-import type { MessageService } from "./message.service";
+import { MessageService } from "./message.service";
 
 @Controller("message")
 export class MessageController {
