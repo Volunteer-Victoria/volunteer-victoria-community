@@ -6,7 +6,7 @@ import { OpportunityModule } from "./opportunity/opportunity.module";
 import { RootController } from "./root/root.controller";
 
 @Module({
-  imports: [MessageModule, OpportunityModule, AuthModule, DbModule],
+  imports: [AuthModule, DbModule, OpportunityModule, MessageModule],
   controllers: [RootController],
 })
 export class AppModule {}

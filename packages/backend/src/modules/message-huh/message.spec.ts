@@ -5,16 +5,17 @@ import { UserInfo } from "../auth/auth.module";
 import { MockJwksProvider } from "../auth/auth.test.module";
 import type { OpportunityResponseDto } from "../opportunity/opportunity.dto";
 import { OpportunityService } from "../opportunity/opportunity.service";
-// import type { Email } from "./email.service";
-import { Injectable } from "@nestjs/common";
+import type { Email } from "./email.service";
+import { MessageService } from "./message.service";
+import { MessageController } from "./message.controller";
 
-// const sentEmails: Array<Email> = [];
+const sentEmails: Array<Email> = [];
 
-// const emailTestService = {
-//   async send(email: Email): Promise<void> {
-//     sentEmails.push(email);
-//   },
-// };
+const emailTestService = {
+  async send(email: Email): Promise<void> {
+    sentEmails.push(email);
+  },
+};
 
 const adminUser: UserInfo = new UserInfo(
   "test-admin",
@@ -36,6 +37,8 @@ describe("/message", () => {
         // TypeOrmModule.forFeature([MessageEntity]),
         // OpportunityModule,
       ],
+      providers: [MessageService],
+      controllers: [MessageController],
     }).compile();
     //   .overrideProvider(EmailService)
     //   .useValue(emailTestService)
