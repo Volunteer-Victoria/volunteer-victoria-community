@@ -4,5 +4,6 @@ apis/index.ts
 index.ts
 models/OpportunityCreateDto.ts
 models/OpportunityResponseDto.ts
+models/ThreadStartDto.ts
 models/index.ts
 runtime.ts

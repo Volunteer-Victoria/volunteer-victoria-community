@@ -11,6 +11,7 @@ export class MockJwksProvider implements OnModuleDestroy {
   private readonly jwks: JWKSMock;
   userId: string = "test-user";
   permissions: string[] = [];
+  email: string = "test@mail.com";
 
   constructor() {
     process.env["AUTH0_ISSUER_URL"] = MOCK_ISSUER_URL;
@@ -35,6 +36,7 @@ export class MockJwksProvider implements OnModuleDestroy {
       iss: MOCK_ISSUER_URL,
       sub: this.userId,
       permissions: this.permissions,
+      email: this.email,
     });
   }
 

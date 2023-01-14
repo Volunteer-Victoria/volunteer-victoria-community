@@ -1,0 +1,81 @@
+Return-Path: <test@mail.com>
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+ by inbound-smtp.us-west-2.amazonaws.com with SMTP id k7u6t2vjmkslisqapmgtej0b7fd66nle9s193bo1
+ for testemail@dev.community.volunteervictoria.bc.ca;
+ Sat, 14 Jan 2023 21:42:30 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of mail.com designates 209.85.217.49 as permitted sender) client-ip=209.85.217.49; envelope-from=test@mail.com; helo=mail-vs1-f49.google.com;
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of mail.com designates 209.85.217.49 as permitted sender) client-ip=209.85.217.49; envelope-from=test@mail.com; helo=mail-vs1-f49.google.com;
+ dkim=pass header.i=@mail.com;
+ dmarc=none header.from=mail.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFFQVRoYm4xcXEyRGcvK01lbW9PQTYwdnBaWnlLaGdDeEVWcmMyL21hYlIxeXFmeEREVnFRV3M3SkdQRVl1TzV2TkZ2Si9KclM3TkprL25ERzgrZFlzR3plMzEzbXF0ZzhKVlNGbk9BVmsyWXB2Z1VTaDNHN3NjTU1tZlNmTW5SR25ZbDJrWmFTU1M5anJyaXY1MFZ3REc5ckE5Nnloc05LR3JiRkRUcnZkcE9RdThJSytONkl2Y1BKbEtqdGF4aHdyMVp6cXNneWVPWUFGVEUwOUVHZ3Q2NE9VQmwxSklSci9UNG1Gejd3bjJEWGhscTFJdnUyZ3l6SUZoUm1Md0NoYUc0d3hGbE45SDMzcFRlY3V5Y1ZHOTVaUDZBRGRqR3ZBN0NMdndkZ3d5clE9PQ==
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=RZyYXmrdtAd7HVP94eEPnma6nwJV2fwMt9cqM9jg0ti+W7zjcbtMbsQIfDLYyfUrKjvfR7A/AEuTxzVEAPzkSInfmOnG091c3G4h4obLqDpmnGqa8dgbwMllXwCW21J4nUqgzlmLXUOxlBTXJZg722sPoFbn+Zs4Nrk2hpvZcxM=; c=relaxed/simple; s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1673732552; v=1; bh=DybiOyhnDtsd7T2Yu22ppvhyFkhPQeoQTKh1PbOAgfI=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-vs1-f49.google.com with SMTP id 186so20295005vsz.13
+        for <testemail@dev.community.volunteervictoria.bc.ca>; Sat, 14 Jan 2023 13:42:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mail.com; s=google;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DybiOyhnDtsd7T2Yu22ppvhyFkhPQeoQTKh1PbOAgfI=;
+        b=bM56BP6isXnOX2FTjz7AT13w7qDCLgg1cSvAb2NZu4/39upCoxffe0eIu89k7B86NZ
+         pvm+pis4ELFxxxRg+Qp4jX+BCz7R7FW/XWn4etUqW0ghPP1OE8BVhCAQQY5TCaTmKv4p
+         0+dqzobsAMfLFsXMerzDnIWbvEYK+jpzettNbOWq9BpR79RmHpPHcVSNFdjRglG3HT6+
+         k/GVxWOqDvhRqAC+7gSZ3i29LrMlk6Gw/xufsKvVmdACm0uoRcNrIz0zcX8g/bfeW2ml
+         7Nqg+beV9FUAR4Qks15BQet5PUtufTWPR0Dour0WHP9unuS2UcEQp/W/1etGF4UUyMn9
+         Yjjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DybiOyhnDtsd7T2Yu22ppvhyFkhPQeoQTKh1PbOAgfI=;
+        b=2mvi4F41G3Zxg/lugxf5C1u0CtV7aiRswEfDipuEXLu4P90QOk6UPHxx8AhzsnbTaX
+         9rVUC4Do1Kh9DBS+A+n2TcZWvFAFGkp9L8jjOd/gb3lhsdYHTbik3hYCb2Hsn1YsiLjo
+         dc2TaLZPFyY7o6iF/86BCMNMC3f+DPWl6JBsTISVQW62ejE/2ht5Tl5m43JXoIP4Vlfm
+         V5zIqTiD9688b90WCeBOgBW6KdAOLaGRCm/SFBuNcmcnr5iT4QP+zjpkGoAWgZ5Va7ie
+         NXXb0nvQjMtn36Am74OVuUR7zmpAfNUztB7KgLskwuHxk02vlPgZKTI2/hhjzkvUYNAy
+         xRaQ==
+X-Gm-Message-State: AFqh2krR2zmhd/DvVrNYaYnFa2blNNnd59U2sHqB6fVsMLNTJAvg8fTi
+	QXAhrlRrbE8WEaVfAj8G9w4kuP/rcX3r2PaWWb35mt4JLfY25A==
+X-Google-Smtp-Source: AMrXdXt+XzRZpQE9rS1bTEnJFUuOKLI6HMBrVky6prHy6pNdoXnNo21y07ThTMbzFM28B4sEIFxXRu1zsU9up1DdwhY=
+X-Received: by 2002:a67:f54d:0:b0:3ce:bced:178 with SMTP id
+ z13-20020a67f54d000000b003cebced0178mr6127468vsn.84.1673732549131; Sat, 14
+ Jan 2023 13:42:29 -0800 (PST)
+MIME-Version: 1.0
+From: Will S <test@mail.com>
+Date: Sat, 14 Jan 2023 13:42:24 -0800
+Message-ID: <CALp8K5AtKUsFUU25nCBa1OsqU7FKZ+J=k1osmfGjcPy_9nPK8g@mail.gmail.com>
+Subject: Test Subject
+To: testemail@dev.community.volunteervictoria.bc.ca
+Content-Type: multipart/related; boundary="0000000000000c64f205f2403a2c"
+
+--0000000000000c64f205f2403a2c
+Content-Type: multipart/alternative; boundary="0000000000000c64f005f2403a2b"
+
+--0000000000000c64f005f2403a2b
+Content-Type: text/plain; charset="UTF-8"
+
+Hi Person,
+*Hello*.
+
+Bye,
+Will S
+[image: single-pixel.png]
+
+--0000000000000c64f005f2403a2b
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr"><div>Hi Person,</div><div><b>Hello</b>.</div><div><br></div><div>Bye,</div><div>Will S</div><div><img src="cid:ii_lcwh4y380" alt="single-pixel.png" width="1" height="1"><br></div><div><br></div></div>
+
+--0000000000000c64f005f2403a2b--
+--0000000000000c64f205f2403a2c
+Content-Type: image/png; name="single-pixel.png"
+Content-Disposition: inline; filename="single-pixel.png"
+Content-Transfer-Encoding: base64
+Content-ID: <ii_lcwh4y380>
+X-Attachment-Id: ii_lcwh4y380
+
+iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdj
++L+U4T8ABu8CpCYJ1DQAAAAASUVORK5CYII=
+--0000000000000c64f205f2403a2c--

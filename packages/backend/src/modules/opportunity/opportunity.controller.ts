@@ -13,12 +13,13 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { CustomNotFoundException, RequireAuth } from "../../util";
-import { AuthenticatedRequest, isAdmin, userId } from "../auth/auth.module";
+import { User, UserInfo } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { OpportunityService } from "./opportunity.service";
+import type { Request } from "express";
 
 @Controller("opportunity")
 export class OpportunityController {
@@ -45,9 +46,9 @@ export class OpportunityController {
   @RequireAuth()
   async post(
     @Body() opp: OpportunityCreateDto,
-    @Req() request: AuthenticatedRequest
+    @User() user: UserInfo
   ): Promise<OpportunityResponseDto> {
-    return this.service.create(opp, userId(request));
+    return this.service.create(opp, user);
   }
 
   @Post("fake")
@@ -61,12 +62,12 @@ export class OpportunityController {
   })
   @RequireAuth()
   async postFake(
-    @Req() request: AuthenticatedRequest,
+    @User() user: UserInfo,
     @Query("count") count: number
   ): Promise<OpportunityResponseDto[]> {
     const result = [];
     for (let i = 0; i < (Number.isNaN(count) ? 1 : count); i++) {
-      result.push(await this.service.createFake(request));
+      result.push(await this.service.createFake(user));
     }
     return result;
   }
@@ -88,9 +89,9 @@ export class OpportunityController {
   async putId(
     @Param("id") id: string,
     @Body() values: OpportunityCreateDto,
-    @Req() request: AuthenticatedRequest
+    @User() user: UserInfo
   ): Promise<OpportunityResponseDto> {
-    const opp = await this.service.update(id, values, request);
+    const opp = await this.service.update(id, values, user);
     if (opp === null) {
       throw new CustomNotFoundException();
     } else {
@@ -101,8 +102,8 @@ export class OpportunityController {
   @Delete()
   @ApiOperation({ summary: "Delete all opportunities" })
   @RequireAuth()
-  async deleteAll(@Req() request: AuthenticatedRequest): Promise<void> {
-    if (!isAdmin(request)) {
+  async deleteAll(@User() user: UserInfo): Promise<void> {
+    if (!user.isAdmin) {
       throw new UnauthorizedException();
     }
     await this.service.deleteAll();
@@ -113,9 +114,9 @@ export class OpportunityController {
   @RequireAuth()
   async deleteId(
     @Param("id") id: string,
-    @Req() request: AuthenticatedRequest
+    @User() user: UserInfo
   ): Promise<OpportunityResponseDto> {
-    const opp = await this.service.delete(id, request);
+    const opp = await this.service.delete(id, user);
     if (opp === null) {
       throw new CustomNotFoundException();
     } else {

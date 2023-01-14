@@ -1,24 +1,13 @@
 import { LocalDate } from "@js-joda/core";
-import { INestApplication, Module } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import supertest from "supertest";
-import { createNestApp } from "../../app";
+import { setupNestApp } from "../../app";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
 import { InMemoryDbModule } from "../db/db.module";
 import { OpportunityController } from "./opportunity.controller";
 import { OpportunityEntity } from "./opportunity.entity";
 import { OpportunityService } from "./opportunity.service";
-
-@Module({
-  controllers: [OpportunityController],
-  providers: [OpportunityService],
-  imports: [
-    AuthTestModule,
-    InMemoryDbModule,
-    TypeOrmModule.forFeature([OpportunityEntity]),
-  ],
-})
-class OpportunityTestModule {}
 
 const exampleOpp1 = {
   title: "My Opp",
@@ -39,14 +28,26 @@ const exampleOpp1 = {
 const path = "/opportunity";
 
 describe(path, () => {
-  let app: INestApplication;
   let api: supertest.SuperTest<supertest.Test>;
   let auth: MockJwksProvider;
   let headers: Record<string, string>;
   let oppId: string;
 
   beforeAll(async () => {
-    app = (await createNestApp(OpportunityTestModule, "")).nestApp;
+    const moduleRef = await Test.createTestingModule({
+      controllers: [OpportunityController],
+      providers: [OpportunityService],
+      imports: [
+        AuthTestModule,
+        InMemoryDbModule,
+        TypeOrmModule.forFeature([OpportunityEntity]),
+      ],
+    }).compile();
+
+    const app = moduleRef.createNestApplication();
+    setupNestApp(app);
+    await app.init();
+
     api = supertest(app.getHttpServer());
     auth = app.get(MockJwksProvider);
     headers = auth.authHeaders();
@@ -207,6 +208,7 @@ describe(path, () => {
       .send({
         title: "",
         contactName: "",
+        contactEmail: "test@email.com",
         requiredPeopleCount: 2,
         occursDate: "2022-11-24",
         occursTime: "",
@@ -236,6 +238,7 @@ describe(path, () => {
       ).body
     );
     expect(fakes.length).toBe(4);
+    expect(fakes[0].postedTime).not.toBeNull();
     const all = await api.get(path).expect(200);
     expect(all.body.length).toBeGreaterThan(3);
   });
@@ -248,9 +251,5 @@ describe(path, () => {
     await api.delete(path).set(auth.authHeaders()).expect(200);
     const final = await api.get(path).expect(200);
     expect(final.body.length).toBe(0);
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

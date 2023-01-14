@@ -5,25 +5,21 @@ import type {
   Context,
   Callback,
   Handler,
+  APIGatewayProxyHandler,
 } from "aws-lambda";
 import { createNestApp } from "./app";
 import { AppModule } from "./modules/app.module";
 
-let cachedServer: Handler;
+const cachedHandler: Promise<Handler> = (async () => {
+  const { expressApp } = await createNestApp(AppModule);
+  return serverlessExpress({ app: expressApp });
+})();
 
-async function bootstrap() {
-  if (!cachedServer) {
-    const { expressApp } = await createNestApp(AppModule);
-    cachedServer = serverlessExpress({ app: expressApp });
-  }
-  return cachedServer;
-}
-
-export const handler: Handler = async (
+export const handler: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   context: Context,
   callback: Callback
 ): Promise<APIGatewayProxyResult> => {
-  const cachedServer = await bootstrap();
-  return cachedServer(event, context, callback);
+  const handler = await cachedHandler;
+  return handler(event, context, callback);
 };
