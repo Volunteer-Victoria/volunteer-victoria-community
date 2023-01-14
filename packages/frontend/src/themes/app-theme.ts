@@ -1,13 +1,10 @@
 import { createTheme } from "@mui/material/styles";
+import { baseTheme } from "./base-theme";
 
-export const theme = createTheme({
-  palette: {
-    primary: { main: "#276EB4" },
-    background: {
-      default: "#FAFAFA",
-    },
-  },
+export const appTheme = createTheme({
+  ...baseTheme,
   typography: {
+    ...baseTheme.typography,
     fontFamily: "'Montserrat', sans-serif",
     h1: {
       fontFamily: "'Montserrat', sans-serif",
