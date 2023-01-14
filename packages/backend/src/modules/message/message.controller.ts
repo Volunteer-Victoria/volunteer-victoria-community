@@ -2,7 +2,7 @@ import { Body, Controller, Post, Query, Req, Res } from "@nestjs/common";
 import { ApiQuery, ApiResponse } from "@nestjs/swagger";
 import { RequireAuth } from "../../util";
 import { User, UserInfo } from "../auth/auth.module";
-import type { ThreadStartDto } from "./message.dto";
+import { ThreadStartDto } from "./message.dto";
 import type { Response } from "express";
 import { MessageService } from "./message.service";
 
@@ -26,11 +26,12 @@ export class MessageController {
     description: "New thread created and first message sent",
   })
   async post(
-    @Body() { applicantName, message }: ThreadStartDto,
+    @Body() body: ThreadStartDto,
     @Query("opportunityId") opportunityId: string,
     @User() user: UserInfo,
     @Res() res: Response
   ): Promise<void> {
+    const { applicantName, message } = body;
     const applicant = {
       name: applicantName,
       email: user.email,

@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { SES } from "@aws-sdk/client-ses";
 import nodemailer from "nodemailer";
 import type { Address } from "nodemailer/lib/mailer";
+import type SESTransport from "nodemailer/lib/ses-transport";
 
 export interface Email {
   fromInbox: string;
@@ -12,15 +13,25 @@ export interface Email {
   text: string;
 }
 
-@Injectable()
-export class EmailService {
-  private readonly transporter;
-  private readonly domain;
+export const SESTransportService = "SESTransport";
 
-  constructor() {
-    this.transporter = nodemailer.createTransport({
+export const SESTransportFactory = {
+  provide: SESTransportService,
+  useFactory: async () => {
+    return nodemailer.createTransport({
       SES: new SES({}),
     });
+  },
+};
+
+@Injectable()
+export class EmailService {
+  readonly domain;
+
+  constructor(
+    @Inject(SESTransportService)
+    private readonly transporter: nodemailer.Transporter<SESTransport.SentMessageInfo>
+  ) {
     this.domain = process.env["EMAIL_DOMAIN"]!;
   }
 

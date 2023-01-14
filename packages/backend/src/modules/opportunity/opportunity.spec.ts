@@ -1,9 +1,8 @@
 import { LocalDate } from "@js-joda/core";
-import type { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { setupNestApp } from "../../app";
 import supertest from "supertest";
+import { setupNestApp } from "../../app";
 import { AuthTestModule, MockJwksProvider } from "../auth/auth.test.module";
 import { InMemoryDbModule } from "../db/db.module";
 import { OpportunityController } from "./opportunity.controller";

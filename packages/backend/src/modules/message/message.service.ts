@@ -1,10 +1,19 @@
-import { Duration, Instant, Period, TemporalUnit } from "@js-joda/core";
+import { Duration, Instant } from "@js-joda/core";
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import assert from "assert";
+import { convert } from "html-to-text";
+import {
+  AddressObject,
+  EmailAddress,
+  ParsedMail,
+  simpleParser,
+  Source,
+} from "mailparser";
 import type { Repository } from "typeorm";
 import { MoreThan } from "typeorm";
 import { uniqueId } from "../../util";
@@ -25,6 +34,62 @@ interface MessageOptions {
    * This is for letting them know that they successfully sent a message when a thread is started.
    */
   bccSender: boolean;
+}
+
+function messageAsPlaintext(mail: ParsedMail): string {
+  if (mail.html === false) {
+    assert(mail.text !== undefined, "No email body found");
+    return mail.text;
+  } else {
+    return convert(mail.html);
+  }
+}
+
+function flattenAddresses(
+  addresses: AddressObject | AddressObject[] | undefined
+): string[] {
+  const result = [] as string[];
+
+  if (addresses === undefined) {
+    return [];
+  } else if (!(addresses instanceof Array)) {
+    addresses = [addresses];
+  }
+
+  function pushAddr({ address, group }: EmailAddress) {
+    if (address !== undefined) {
+      result.push(address);
+    } else if (group !== undefined) {
+      for (const addr of group) {
+        pushAddr(addr);
+      }
+    }
+  }
+
+  for (const addr of addresses) {
+    for (const val of addr.value) {
+      pushAddr(val);
+    }
+  }
+
+  return result;
+}
+
+async function parseRawMail(raw: Source): Promise<{
+  text: string;
+  to: string[];
+  from: string;
+}> {
+  const mail = await simpleParser(raw);
+  const text = messageAsPlaintext(mail);
+  const to = flattenAddresses(mail.to);
+  const [from] = flattenAddresses(mail.from);
+  assert(from !== undefined);
+  return {
+    text,
+    to,
+    from,
+  };
 }
 
 @Injectable()
@@ -55,6 +120,8 @@ export class MessageService {
 
     if (opp === null) {
       throw new NotFoundException(`Opportunity ID does not exist`);
+    } else if (opp.postedByUserId === applicant.userId) {
+      throw new BadRequestException("Cannot start a thread with yourself");
     } else if (existingThread !== null) {
       return { thread: existingThread, alreadyExisted: true };
     }
@@ -149,5 +216,19 @@ export class MessageService {
         bcc: { name: senderName, address: senderEmailAddress },
       }),
     });
+  }
+
+  /** Called when we receive an email to one of the managed inboxes */
+  async receiveMail(raw: Source): Promise<void> {
+    const parsed = await parseRawMail(raw);
+    assert(parsed.to.length > 0);
+
+    // Try to find the recipient if there are more than one in the "To" field
+    const to = parsed.to.find((addr) => addr.endsWith(this.email.domain));
+    assert(to !== undefined);
+    assert(to.length === 21 + 1 + this.email.domain.length);
+    const toInbox = to.substring(0, 21);
+
+    await this.sendMessage(toInbox, parsed.from, parsed.text);
   }
 }
