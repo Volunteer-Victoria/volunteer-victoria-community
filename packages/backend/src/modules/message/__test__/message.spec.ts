@@ -1,5 +1,6 @@
 import { Test } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import assert from "assert";
 import { readFileSync } from "fs";
 import type { Source } from "mailparser";
 import supertest from "supertest";
@@ -39,14 +40,12 @@ const emailDomain = "fake.community.vvc";
 const emailSourceTemplate = readFileSync(
   "./src/modules/message/__test__/ses-received-email-1.txt"
 ).toString();
+const emailTemplateBody = "Hi Person,\nHello.\n\n\nBye,\nWill S";
 
-function generateRawEmail(fromAddress: string, toInbox: string): Source {
+function generateRawEmail(fromAddress: string, toAddress: string): Source {
   return emailSourceTemplate
     .replaceAll("test@mail.com", fromAddress)
-    .replaceAll(
-      "testemail@dev.community.volunteervictoria.bc.ca",
-      `${toInbox}@${emailDomain}`
-    );
+    .replaceAll("testemail@dev.community.volunteervictoria.bc.ca", toAddress);
 }
 
 // TODO test the format of a reply to make sure we strip the previous messages
@@ -154,23 +153,63 @@ describe(path, () => {
   });
 
   it("can't start a thread with yourself", async () => {
+    const applicantUserId = auth.userId;
     auth.userId = posterUser.id;
     await api
       .post(oppPath)
       .set(auth.authHeaders())
       .send({ applicantName: "test", message: "test" })
       .expect(400);
+    auth.userId = applicantUserId;
   });
 
   it("replying to an email forwards it onto the inbox owner", async () => {
     expect(sentEmails.length).toBe(2);
+    const thread = await messages.getThread(
+      opportunity.opportunityId,
+      auth.userId
+    );
+    expect(thread).not.toBeNull();
+    assert(thread !== null);
 
-    const replyMail = generateRawEmail(
+    const replyMail1 = generateRawEmail(
       "test@testemail123.com",
       sentEmails[0].from.address
     );
-    await messages.receiveMail(replyMail);
+    await messages.receiveMail(replyMail1);
+
     expect(sentEmails.length).toBe(3);
-    // const sentMail = sentEmails[2]!;
+    const reply1 = sentEmails[2]!;
+    expect(reply1.text).toBe(emailTemplateBody);
+    expect(reply1.subject).toBe(opportunity.title);
+    expect(reply1.to).toEqual({
+      name: "Applicant Name",
+      address: auth.email,
+    });
+    expect(reply1.from).toEqual({
+      name: opportunity.contactName,
+      address: `${thread.posterInboxId}@${emailDomain}`,
+    });
+    expect(reply1.bcc).toBeUndefined();
+
+    const replyMail2 = generateRawEmail(
+      "notimportant@fake.fake",
+      sentEmails[2]!.from.address
+    );
+    await messages.receiveMail(replyMail2);
+
+    expect(sentEmails.length).toBe(4);
+    const reply2 = sentEmails[3]!;
+    expect(reply2.text).toBe(emailTemplateBody);
+    expect(reply2.subject).toBe(opportunity.title);
+    expect(reply2.to).toEqual({
+      name: opportunity.contactName,
+      address: opportunity.contactEmail,
+    });
+    expect(reply2.from).toEqual({
+      name: thread.applicantName,
+      address: `${thread.applicantInboxId}@${emailDomain}`,
+    });
+    expect(reply2.bcc).toBeUndefined();
   });
 });

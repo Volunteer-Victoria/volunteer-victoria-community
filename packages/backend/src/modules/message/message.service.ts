@@ -39,9 +39,16 @@ interface MessageOptions {
 function messageAsPlaintext(mail: ParsedMail): string {
   if (mail.html === false) {
     assert(mail.text !== undefined, "No email body found");
-    return mail.text;
+    return mail.text.trim();
   } else {
-    return convert(mail.html);
+    return convert(mail.html, {
+      selectors: [
+        {
+          selector: "img",
+          format: "skip",
+        },
+      ],
+    }).trim();
   }
 }
 
@@ -103,6 +110,16 @@ export class MessageService {
     private readonly email: EmailService
   ) {}
 
+  async getThread(
+    opportunityId: string,
+    applicantUserId: string
+  ): Promise<MessageThreadEntity | null> {
+    return this.threads.findOneBy({
+      opportunityId,
+      applicantUserId: applicantUserId,
+    });
+  }
+
   /**
    * @returns New thread if one has been created, and the existing thread if one already exists.
    */
@@ -112,10 +129,7 @@ export class MessageService {
   ): Promise<{ thread: MessageThreadEntity; alreadyExisted: boolean }> {
     const [opp, existingThread] = await Promise.all([
       this.opportunities.findOne(opportunityId),
-      this.threads.findOneBy({
-        opportunityId,
-        applicantUserId: applicant.userId,
-      }),
+      this.getThread(opportunityId, applicant.userId),
     ]);
 
     if (opp === null) {
