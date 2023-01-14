@@ -1,16 +1,13 @@
 import { NestFactory } from "@nestjs/core";
-import type { S3Event, S3Handler } from "aws-lambda";
+import { MessageModule } from "./modules/message/message.module";
 import { MessageService } from "./modules/message/message.service";
-import { MessageStandaloneModule } from "./modules/message/message.module";
 
 const messageService: Promise<MessageService> = (async () => {
-  const nestApp = await NestFactory.createApplicationContext(
-    MessageStandaloneModule
-  );
+  const nestApp = await NestFactory.createApplicationContext(MessageModule);
   return nestApp.get(MessageService);
 })();
 
 /**
  * Handles new emails arriving when SES dumps them into our received emails bucket
  */
-export const handler: S3Handler = async (event: S3Event): Promise<void> => {};
+// export const handler: S3Handler = async (event: S3Event): Promise<void> => {};
