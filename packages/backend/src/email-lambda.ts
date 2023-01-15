@@ -29,11 +29,14 @@ export const handler: S3Handler = async (event: S3Event): Promise<void> => {
   try {
     const messages = await messageService;
     for (const { s3: data } of event.Records) {
+      const Key = data.object.key;
+      console.info(`Processing S3 event for key: ${Key}`, data);
       const obj = await s3
-        .getObject({ Bucket: data.bucket.name, Key: data.object.key })
+        .getObject({ Bucket: data.bucket.name, Key })
         .promise();
       assert(obj.Body !== undefined);
       assert(obj.Body instanceof Stream || obj.Body instanceof Buffer);
+      console.dir(obj.Body);
       await messages.receiveMail(obj.Body);
     }
   } catch (ex) {
