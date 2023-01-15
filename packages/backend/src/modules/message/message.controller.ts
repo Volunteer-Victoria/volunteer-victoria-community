@@ -1,9 +1,9 @@
-import { Body, Controller, Post, Query, Req, Res } from "@nestjs/common";
+import { Body, Controller, Post, Query, Res } from "@nestjs/common";
 import { ApiQuery, ApiResponse } from "@nestjs/swagger";
+import type { Response } from "express";
 import { RequireAuth } from "../../util";
 import { User, UserInfo } from "../auth/auth.module";
 import { ThreadStartDto } from "./message.dto";
-import type { Response } from "express";
 import { MessageService } from "./message.service";
 
 @Controller("message")

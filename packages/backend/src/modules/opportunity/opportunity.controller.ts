@@ -8,7 +8,6 @@ import {
   Post,
   Put,
   Query,
-  Req,
   UnauthorizedException,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
@@ -19,7 +18,6 @@ import {
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { OpportunityService } from "./opportunity.service";
-import type { Request } from "express";
 
 @Controller("opportunity")
 export class OpportunityController {

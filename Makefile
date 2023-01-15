@@ -57,6 +57,10 @@ backend-deploy:
 		--function-name $(NAMESPACE)-api \
 		--zip-file fileb://terraform/api-lambda.zip
 
+	aws lambda update-function-code \
+		--function-name $(NAMESPACE)-emails-received \
+		--zip-file fileb://terraform/api-lambda.zip
+
 backend-test:
 	yarn workspace $(BACKEND_WORKSPACE) test
 

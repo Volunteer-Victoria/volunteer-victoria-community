@@ -1,12 +1,11 @@
-import { Module } from "@nestjs/common";
+import { createParamDecorator, ExecutionContext, Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
-import { JwtStrategy } from "./jwt.strategy";
 import type { Request } from "express";
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { JwtStrategy } from "./jwt.strategy";
 
 export const User = createParamDecorator(
   (_: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest() as Request;
+    const request = ctx.switchToHttp().getRequest();
     return UserInfo.fromRequest(request);
   }
 );
