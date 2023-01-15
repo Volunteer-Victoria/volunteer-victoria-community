@@ -11,7 +11,7 @@ export const Section = ({ background, children, maxWidth }: SectionProps) => {
     <Box
       sx={{
         backgroundColor: background === "white" ? "white" : "#e5e5e5",
-        py: 12,
+        py: { xs: 3, md: 6, lg: 12 },
       }}
     >
       <Container maxWidth={maxWidth}>{children}</Container>

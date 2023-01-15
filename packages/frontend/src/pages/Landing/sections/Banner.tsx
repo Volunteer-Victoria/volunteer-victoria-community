@@ -1,4 +1,11 @@
-import { Box, ImageList, ImageListItem, Typography } from "@mui/material";
+import {
+  Box,
+  ImageList,
+  ImageListItem,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import LandingBannerWriting from "../../../assets/landing-banner-writing.png";
 import LandingBannerPlanting from "../../../assets/landing-banner-planting.png";
 import LandingBannerWalking from "../../../assets/landing-banner-walking.png";
@@ -24,11 +31,12 @@ const BANNER_IMAGES: DescribedImage[] = [
 ];
 
 export const BannerSection = () => {
+  const isMedium = useMediaQuery<Theme>((theme) => theme.breakpoints.up("md"));
   return (
     <>
       <ImageList
         cols={3}
-        rowHeight={517}
+        rowHeight={isMedium ? 517 : 150}
         gap={0}
         sx={{ overflow: "hidden", my: 0 }}
       >
@@ -46,8 +54,8 @@ export const BannerSection = () => {
       <Box
         sx={{
           backgroundColor: "primary.main",
-          pt: 5,
-          pb: 3,
+          pt: { xs: 2, md: 5 },
+          pb: { xs: 2, md: 3 },
           boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           position: "relative",
         }}

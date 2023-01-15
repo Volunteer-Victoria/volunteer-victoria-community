@@ -1,7 +1,6 @@
 import {
   AppBar as MaterialAppBar,
   Box,
-  Container,
   Toolbar,
   useTheme,
 } from "@mui/material";
@@ -21,19 +20,16 @@ export const AppBar = () => {
       sx={{
         backgroundColor: theme.palette.background.paper,
         py: 1,
-        px: 0,
       }}
     >
-      <Container maxWidth="xl">
-        <Toolbar>
-          <Box sx={{ flexGrow: 1 }}>
-            <Link to="/">
-              <img src={logo} height="45px" alt="Volunteer Victoria" />
-            </Link>
-          </Box>
-          {user.data ? <AuthenticatedOptions /> : <UnauthenticatedOptions />}
-        </Toolbar>
-      </Container>
+      <Toolbar>
+        <Box sx={{ flexGrow: 1 }}>
+          <Link to="/">
+            <img src={logo} height="45px" alt="Volunteer Victoria" />
+          </Link>
+        </Box>
+        {user.data ? <AuthenticatedOptions /> : <UnauthenticatedOptions />}
+      </Toolbar>
     </MaterialAppBar>
   );
 };

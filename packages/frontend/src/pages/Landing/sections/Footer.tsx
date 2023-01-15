@@ -11,10 +11,14 @@ export const FooterSection = () => {
   return (
     <Box
       sx={{ backgroundColor: "primary.main" }}
-      padding={8}
+      padding={{ xs: 3, lg: 8 }}
       paddingBottom={13}
     >
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction={{ xs: "column", lg: "row" }}
+        justifyContent="space-between"
+        spacing={2}
+      >
         <Box>
           <Typography color="white" variant="h5">
             Our Address

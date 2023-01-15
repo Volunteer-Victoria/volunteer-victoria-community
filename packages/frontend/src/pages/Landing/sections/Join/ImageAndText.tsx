@@ -20,11 +20,20 @@ export const ImageAndText = ({
         container
         direction={reverse ? { xs: "row", lg: "row-reverse" } : {}}
       >
-        <Grid item xs={12} lg={6}>
-          <img src={img} alt={alt} />
+        <Grid item xs={12} md={6}>
+          <Box
+            component="img"
+            src={img}
+            alt={alt}
+            sx={{
+              height: { xs: 200, md: "auto" },
+              display: "block",
+              margin: "auto",
+            }}
+          />
         </Grid>
-        <Grid item xs={12} lg={6}>
-          <Typography variant="h2" mb={5}>
+        <Grid item xs={12} md={6} my={{ xs: 3, md: 0 }}>
+          <Typography variant="h2" mb={{ xs: 2, md: 5 }}>
             {title}
           </Typography>
           {children}
