@@ -1,6 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { SES } from "@aws-sdk/client-ses";
-import aws from "@aws-sdk/client-ses";
+import * as aws from "aws-sdk";
 import nodemailer from "nodemailer";
 import type { Address } from "nodemailer/lib/mailer";
 import type SESTransport from "nodemailer/lib/ses-transport";
@@ -20,7 +19,7 @@ export const SESTransportFactory = {
   provide: SESTransportService,
   useFactory: async () => {
     return nodemailer.createTransport({
-      SES: { ses: new SES({}), aws },
+      SES: { ses: new aws.SES({}), aws },
     });
   },
 };
