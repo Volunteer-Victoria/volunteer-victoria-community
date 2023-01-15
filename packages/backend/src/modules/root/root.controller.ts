@@ -26,6 +26,11 @@ export class RootController {
     if (!user.isAdmin) {
       throw new UnauthorizedException();
     }
-    throw new HttpException({ message: "debug status code" }, statusCode);
+    if (statusCode >= 600) {
+      // Throw non-HttpExceptions to test generic exception handling
+      throw new Error(statusCode.toString());
+    } else {
+      throw new HttpException({ message: "debug status code" }, statusCode);
+    }
   }
 }

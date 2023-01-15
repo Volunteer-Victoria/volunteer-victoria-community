@@ -34,6 +34,10 @@ describe("/", () => {
     await api.get("/debug?statusCode=503").set(headers).expect(503);
   });
 
+  it("GET /debug?statusCode=666 throws an internal error", async () => {
+    await api.get("/debug?statusCode=666").set(headers).expect(500);
+  });
+
   afterAll(async () => {
     await app.close();
   });
