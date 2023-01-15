@@ -14,7 +14,7 @@ export class GenericExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       res.status(exception.getStatus()).json({ message: exception.message });
     } else {
-      console.error(JSON.stringify(exception));
+      console.error(exception);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     }
   }
