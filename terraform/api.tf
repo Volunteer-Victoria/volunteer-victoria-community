@@ -33,6 +33,8 @@ resource "aws_lambda_function" "api" {
       AUTH0_ISSUER_URL  = var.auth0_issuer_url
       AUTH0_AUDIENCE    = var.auth0_audience
       AUTH0_CLIENT_ID   = var.auth0_client_id
+
+      EMAIL_DOMAIN = var.domain
     }
   }
 }
