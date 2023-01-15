@@ -3,7 +3,6 @@ import {
   Get,
   HttpException,
   Query,
-  Req,
   UnauthorizedException,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery } from "@nestjs/swagger";
