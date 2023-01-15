@@ -1,13 +1,22 @@
+import { Module } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
+import assert from "assert";
 import type { S3Event, S3Handler } from "aws-lambda";
+import S3 from "aws-sdk/clients/s3";
+import { Stream } from "stream";
+import { DbModule } from "./modules/db/db.module";
 import { MessageModule } from "./modules/message/message.module";
 import { MessageService } from "./modules/message/message.service";
-import S3 from "aws-sdk/clients/s3";
-import assert from "assert";
-import { Stream } from "stream";
+
+@Module({
+  imports: [DbModule, MessageModule],
+})
+class MessageStandaloneModule {}
 
 const messageService: Promise<MessageService> = (async () => {
-  const nestApp = await NestFactory.createApplicationContext(MessageModule);
+  const nestApp = await NestFactory.createApplicationContext(
+    MessageStandaloneModule
+  );
   return nestApp.get(MessageService);
 })();
 

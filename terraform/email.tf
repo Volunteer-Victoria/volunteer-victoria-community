@@ -50,6 +50,18 @@ resource "aws_lambda_function" "emails_received" {
   depends_on = [
     aws_cloudwatch_log_group.emails_received_lambda,
   ]
+
+  environment {
+    variables = {
+      DB_DATABASE = "api"
+      DB_USERNAME = "api"
+      DB_PORT     = "26257"
+      DB_HOST     = data.aws_ssm_parameter.cdb_host.value
+
+      // TODO need to fetch properly from inside lambda so this doesn't leak into tfstate
+      DB_PASSWORD = data.aws_ssm_parameter.cdb_password.value
+    }
+  }
 }
 
 resource "aws_s3_bucket_notification" "emails_received" {

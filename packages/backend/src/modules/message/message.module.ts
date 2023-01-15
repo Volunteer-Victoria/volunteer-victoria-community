@@ -10,12 +10,12 @@ import { MessageThreadEntity } from "./thread.entity";
 
 @Module({
   imports: [
-    DbModule,
     TypeOrmModule.forFeature([MessageThreadEntity]),
     TypeOrmModule.forFeature([MessageEntity]),
     OpportunityModule,
   ],
   providers: [MessageService, EmailService, SESTransportFactory],
   controllers: [MessageController],
+  exports: [MessageService],
 })
 export class MessageModule {}
