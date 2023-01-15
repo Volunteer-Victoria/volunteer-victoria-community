@@ -11,10 +11,15 @@ import { ListItem } from "./ListItem";
 export const QuerySection = () => {
   return (
     <Section background="white">
-      <Typography variant="h2" textAlign="center" color="primary" mb={14}>
+      <Typography
+        variant="h2"
+        textAlign="center"
+        color="primary"
+        mb={{ xs: 5, lg: 14 }}
+      >
         Have A Query? Get In Touch
       </Typography>
-      <Stack direction="row">
+      <Stack direction={{ xs: "column", lg: "row" }} spacing={{ xs: 5, md: 2 }}>
         <Box flex="1 1 0">
           <Typography variant="subtitle1" gutterBottom>
             Meet with our volunteering advisor to find the right volunteering

@@ -1,7 +1,8 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Theme, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const UnauthenticatedOptions = () => {
+  const isMedium = useMediaQuery<Theme>((theme) => theme.breakpoints.up("md"));
   return (
     <Stack direction="row" spacing={2} alignItems="center">
       <Button
@@ -9,21 +10,10 @@ export const UnauthenticatedOptions = () => {
         component={Link}
         to="opportunities"
         relative="route"
-        sx={{
-          ml: 2,
-        }}
       >
-        VIEW OPPORTUNITIES
+        {isMedium ? "VIEW OPPORTUNITIES" : "VIEW"}
       </Button>
-      <Button
-        variant="contained"
-        component={Link}
-        to="login"
-        relative="route"
-        sx={{
-          ml: 2,
-        }}
-      >
+      <Button variant="contained" component={Link} to="login" relative="route">
         LOG IN
       </Button>
     </Stack>

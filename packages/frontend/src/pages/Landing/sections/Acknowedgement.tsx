@@ -5,10 +5,15 @@ import { Section } from "./Section";
 export const AcknowedgementSection = () => {
   return (
     <Section background="shaded">
-      <Typography variant="h2" color="primary" textAlign="center" mb={10}>
+      <Typography
+        variant="h2"
+        color="primary"
+        textAlign="center"
+        mb={{ xs: 2, lg: 10 }}
+      >
         Territorial Acknowledgement
       </Typography>
-      <Stack direction="row" spacing="3">
+      <Stack direction={{ xs: "column", lg: "row" }} spacing={2}>
         <Box>
           <Typography variant="subtitle2" gutterBottom>
             We live, work, and volunteer as uninvited guests in the traditional
