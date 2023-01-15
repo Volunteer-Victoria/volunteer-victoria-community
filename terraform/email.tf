@@ -37,7 +37,7 @@ resource "aws_s3_bucket_policy" "emails_received" {
 resource "aws_lambda_function" "emails_received" {
   description      = "Email processor for ${local.namespace}"
   function_name    = local.emails_name
-  role             = aws_iam_role.email_lambda.arn
+  role             = aws_iam_role.emails_received_lambda.arn
   runtime          = "nodejs16.x"
   // For now I am using the same lambda code for both, I am a lazy person I know
   filename         = "api-lambda.zip"
@@ -48,7 +48,7 @@ resource "aws_lambda_function" "emails_received" {
   architectures    = [var.target_arch]
 
   depends_on = [
-    aws_cloudwatch_log_group.email_lambda,
+    aws_cloudwatch_log_group.emails_received_lambda,
   ]
 }
 
