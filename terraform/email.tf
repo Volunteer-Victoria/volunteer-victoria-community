@@ -99,6 +99,16 @@ resource "aws_iam_role_policy" "emails_received_lambda" {
       {
         Effect = "Allow"
         Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = [
+          "arn:aws:logs:${var.region}:${local.aws_account_id}:log-group:/aws/lambda/${local.emails_name}:*"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "s3:GetObject"
         ]
         Resource = "${aws_s3_bucket.emails_received.arn}/*"
