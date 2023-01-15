@@ -6,6 +6,7 @@ import {
 } from "@nestjs/platform-express";
 import { SwaggerModule, DocumentBuilder, OpenAPIObject } from "@nestjs/swagger";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { GenericExceptionFilter } from "./modules/exception.filter";
 
 const API_PREFIX = "/api/v1";
 
@@ -25,6 +26,7 @@ export function setupNestApp(app: INestApplication): void {
       transform: true,
     })
   );
+  app.useGlobalFilters(new GenericExceptionFilter());
 }
 
 export async function createNestApp(
