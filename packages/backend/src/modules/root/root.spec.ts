@@ -38,6 +38,15 @@ describe("/", () => {
     await api.get("/debug?statusCode=666").set(headers).expect(500);
   });
 
+  it("GET /debug requires a verified email", async () => {
+    auth.emailVerified = false;
+    const resp = await api
+      .get("/debug?statusCode=200")
+      .set(auth.authHeaders())
+      .expect(401);
+    expect(resp.body.code).toBe("EMAIL_UNVERIFIED");
+  });
+
   afterAll(async () => {
     await app.close();
   });

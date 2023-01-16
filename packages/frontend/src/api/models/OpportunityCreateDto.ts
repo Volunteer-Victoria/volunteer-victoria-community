@@ -72,12 +72,6 @@ export interface OpportunityCreateDto {
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  contactEmail: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OpportunityCreateDto
-   */
   contactPhone?: string;
   /**
    *
@@ -122,7 +116,6 @@ export function instanceOfOpportunityCreateDto(value: object): boolean {
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
-  isInstance = isInstance && "contactEmail" in value;
   isInstance = isInstance && "criminalRecordCheckRequired" in value;
 
   return isInstance;
@@ -148,7 +141,6 @@ export function OpportunityCreateDtoFromJSONTyped(
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
-    contactEmail: json["contactEmail"],
     contactPhone: !exists(json, "contactPhone")
       ? undefined
       : json["contactPhone"],
@@ -180,7 +172,6 @@ export function OpportunityCreateDtoToJSON(
     description: value.description,
     locationName: value.locationName,
     indoorsOrOutdoors: value.indoorsOrOutdoors,
-    contactEmail: value.contactEmail,
     contactPhone: value.contactPhone,
     criminalRecordCheckRequired: value.criminalRecordCheckRequired,
     idealVolunteer: value.idealVolunteer,

@@ -18,7 +18,6 @@ const exampleOpp1 = {
   description: "volunteering",
   locationName: "my shed",
   indoorsOrOutdoors: "indoors",
-  contactEmail: "test@email.com",
   contactPhone: "1234567890",
   criminalRecordCheckRequired: false,
   idealVolunteer: "large",
@@ -152,12 +151,12 @@ describe(path, () => {
 
   it("PUT and DELETE require authorization", async () => {
     auth.userId = "other";
-    await api.delete(`${path}/${oppId}`).set(auth.authHeaders()).expect(401);
+    await api.delete(`${path}/${oppId}`).set(auth.authHeaders()).expect(403);
     await api
       .put(`${path}/${oppId}`)
       .set(auth.authHeaders())
       .send(exampleOpp1)
-      .expect(401);
+      .expect(403);
     auth.makeAdmin();
     await api
       .put(`${path}/${oppId}`)
@@ -208,7 +207,6 @@ describe(path, () => {
       .send({
         title: "",
         contactName: "",
-        contactEmail: "test@email.com",
         requiredPeopleCount: 2,
         occursDate: "2022-11-24",
         occursTime: "",
@@ -247,7 +245,7 @@ describe(path, () => {
     const starting = await api.get(path).expect(200);
     expect(starting.body.length).toBeGreaterThan(0);
 
-    await api.delete(path).set(headers).expect(401);
+    await api.delete(path).set(headers).expect(403);
     await api.delete(path).set(auth.authHeaders()).expect(200);
     const final = await api.get(path).expect(200);
     expect(final.body.length).toBe(0);

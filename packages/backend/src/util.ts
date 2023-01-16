@@ -1,6 +1,4 @@
-import { HttpException, HttpStatus, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { HttpException, HttpStatus } from "@nestjs/common";
 import { ClassConstructor, plainToInstance } from "class-transformer";
 import { validateOrReject, ValidatorOptions } from "class-validator";
 import { nanoid } from "nanoid";
@@ -64,17 +62,6 @@ export function nullToUndefined(target: any): any {
     }
   }
   return result;
-}
-
-export function RequireAuth(): MethodDecorator {
-  return <T>(
-    target: Object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<T>
-  ) => {
-    UseGuards(AuthGuard("jwt"))(target, propertyKey, descriptor);
-    ApiBearerAuth()(target, propertyKey, descriptor);
-  };
 }
 
 /**

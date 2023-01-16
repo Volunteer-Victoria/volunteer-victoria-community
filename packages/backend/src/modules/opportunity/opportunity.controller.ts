@@ -2,17 +2,17 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   Param,
   Post,
   Put,
   Query,
-  UnauthorizedException,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse } from "@nestjs/swagger";
-import { CustomNotFoundException, RequireAuth } from "../../util";
-import { User, UserInfo } from "../auth/auth.module";
+import { CustomNotFoundException } from "../../util";
+import { RequireAuth, User, UserInfo } from "../auth/auth.module";
 import {
   OpportunityCreateDto,
   OpportunityResponseDto,
@@ -102,7 +102,7 @@ export class OpportunityController {
   @RequireAuth()
   async deleteAll(@User() user: UserInfo): Promise<void> {
     if (!user.isAdmin) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
     await this.service.deleteAll();
   }

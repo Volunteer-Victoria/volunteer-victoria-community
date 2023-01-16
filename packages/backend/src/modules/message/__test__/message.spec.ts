@@ -32,7 +32,8 @@ const transportTestService = {
 const posterUser: UserInfo = new UserInfo(
   "test-poster",
   ["admin"],
-  "poster@mail.com"
+  "poster@mail.com",
+  true
 );
 
 const path = "/message";
@@ -47,8 +48,6 @@ function generateRawEmail(fromAddress: string, toAddress: string): Source {
     .replaceAll("test@mail.com", fromAddress)
     .replaceAll("testemail@dev.community.volunteervictoria.bc.ca", toAddress);
 }
-
-// TODO test the format of a reply to make sure we strip the previous messages
 
 describe(path, () => {
   let headers: Record<string, string>;
@@ -109,7 +108,7 @@ describe(path, () => {
     expect(email.text).toBe(message);
     expect(email.to).toEqual({
       name: opportunity.contactName,
-      address: opportunity.contactEmail,
+      address: posterUser.email,
     });
     expect(email.from).toEqual({
       name: applicantName,
@@ -204,7 +203,7 @@ describe(path, () => {
     expect(reply2.subject).toBe(opportunity.title);
     expect(reply2.to).toEqual({
       name: opportunity.contactName,
-      address: opportunity.contactEmail,
+      address: posterUser.email,
     });
     expect(reply2.from).toEqual({
       name: thread.applicantName,
