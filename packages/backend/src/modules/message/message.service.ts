@@ -236,7 +236,6 @@ export class MessageService {
   async receiveMail(raw: Source): Promise<void> {
     const parsed = await parseRawMail(raw);
     assert(parsed.to.length > 0);
-    console.dir(parsed);
 
     // Try to find the recipient if there are more than one in the "To" field
     const to = parsed.to.find((addr) => addr.endsWith(this.email.domain));

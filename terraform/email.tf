@@ -15,7 +15,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "emails_received" {
   bucket = aws_s3_bucket.emails_received.bucket
 
   rule {
-    id     = "log"
+    id     = "expiry"
     status = "Enabled"
     expiration {
       days = 14
@@ -65,6 +65,8 @@ resource "aws_lambda_function" "emails_received" {
 
   environment {
     variables = {
+      EMAIL_DOMAIN = var.domain
+
       DB_DATABASE = "api"
       DB_USERNAME = "api"
       DB_PORT     = "26257"
