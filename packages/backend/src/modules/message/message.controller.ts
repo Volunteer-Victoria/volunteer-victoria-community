@@ -1,8 +1,7 @@
 import { Body, Controller, Post, Query, Res } from "@nestjs/common";
 import { ApiQuery, ApiResponse } from "@nestjs/swagger";
 import type { Response } from "express";
-import { RequireAuth } from "../../util";
-import { User, UserInfo } from "../auth/auth.module";
+import { RequireAuth, User, UserInfo } from "../auth/auth.module";
 import { ThreadStartDto } from "./message.dto";
 import { MessageService } from "./message.service";
 

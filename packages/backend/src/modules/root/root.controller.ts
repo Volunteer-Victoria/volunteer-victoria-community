@@ -1,13 +1,12 @@
 import {
   Controller,
+  ForbiddenException,
   Get,
   HttpException,
   Query,
-  UnauthorizedException,
 } from "@nestjs/common";
 import { ApiOperation, ApiQuery } from "@nestjs/swagger";
-import { RequireAuth } from "../../util";
-import { User, UserInfo } from "../auth/auth.module";
+import { User, UserInfo, RequireAuth } from "../auth/auth.module";
 
 @Controller()
 export class RootController {
@@ -23,7 +22,7 @@ export class RootController {
   @RequireAuth()
   debug(@Query("statusCode") statusCode: number, @User() user: UserInfo): void {
     if (!user.isAdmin) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
     if (statusCode >= 600) {
       // Throw non-HttpExceptions to test generic exception handling

@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {
   IsBoolean,
-  IsEmail,
   IsEnum,
   IsISO8601,
   IsNumber,
@@ -9,7 +8,6 @@ import {
   IsString,
   Length,
 } from "class-validator";
-import { Entity, Column, PrimaryColumn } from "typeorm";
 
 enum IndoorsOrOutdoors {
   Indoors = "indoors",
@@ -53,10 +51,6 @@ class OpportunityBase {
   @ApiProperty({ enum: IndoorsOrOutdoors })
   @IsEnum(IndoorsOrOutdoors)
   indoorsOrOutdoors!: string;
-
-  @ApiProperty({ required: true, example: "person@email.com" })
-  @IsEmail()
-  contactEmail!: string;
 
   @ApiProperty({ required: false })
   @IsString()

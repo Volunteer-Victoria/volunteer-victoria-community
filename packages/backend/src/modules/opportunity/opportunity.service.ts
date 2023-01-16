@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Duration, Instant, LocalDate } from "@js-joda/core";
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import random from "random";
 import type { Repository } from "typeorm";
@@ -20,7 +20,7 @@ import { OpportunityEntity } from "./opportunity.entity";
 
 function assertCanEdit(opp: OpportunityEntity, user: UserInfo): void {
   if (!user.isAdmin && opp.postedByUserId !== user.id) {
-    throw new UnauthorizedException();
+    throw new ForbiddenException();
   }
 }
 
@@ -68,12 +68,13 @@ export class OpportunityService {
   ): Promise<OpportunityResponseDto> {
     const opp = {
       ...values,
+      contactEmail: user.email,
       opportunityId: uniqueId(),
       postedTime: Instant.now().epochSecond(),
       postedByUserId: user.id,
     };
     const resp = await transformAndValidate(OpportunityResponseDto, opp);
-    await this.opportunities.insert(resp);
+    await this.opportunities.insert(opp);
     return resp;
   }
 
@@ -87,21 +88,20 @@ export class OpportunityService {
       return null;
     } else {
       assertCanEdit(opp, user);
-      const { postedTime, opportunityId, postedByUserId } = opp;
-      const updated = await transformAndValidate(
-        OpportunityResponseDto,
-        nullToUndefined({
-          ...values,
-          postedTime,
-          opportunityId,
-          postedByUserId,
-        })
-      );
+      const { postedTime, opportunityId, postedByUserId, contactEmail } = opp;
+      const updated = nullToUndefined({
+        ...values,
+        postedTime,
+        opportunityId,
+        postedByUserId,
+        contactEmail,
+      });
 
+      const resp = await transformAndValidate(OpportunityResponseDto, updated);
       const updatedForDb = undefinedToNull(opp, updated);
       await this.opportunities.update({ opportunityId }, updatedForDb);
 
-      return updated;
+      return resp;
     }
   }
 
@@ -126,7 +126,7 @@ export class OpportunityService {
 
   async createFake(user: UserInfo): Promise<OpportunityResponseDto> {
     if (!user.isAdmin) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
 
     const startTime = Instant.now().plus(Duration.ofDays(random.int(-10, 10)));
@@ -142,7 +142,6 @@ export class OpportunityService {
       description: faker.lorem.paragraphs(random.int(1, 3)),
       locationName: faker.address.streetAddress(),
       indoorsOrOutdoors: ["indoors", "outdoors"][random.int(0, 1)]!,
-      contactEmail: faker.internet.email(),
       contactPhone: faker.phone.number(),
       criminalRecordCheckRequired: random.bool(),
       idealVolunteer: faker.lorem.sentences(random.int(0, 4)),

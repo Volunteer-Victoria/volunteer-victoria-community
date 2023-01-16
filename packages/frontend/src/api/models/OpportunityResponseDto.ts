@@ -72,12 +72,6 @@ export interface OpportunityResponseDto {
    * @type {string}
    * @memberof OpportunityResponseDto
    */
-  contactEmail: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OpportunityResponseDto
-   */
   contactPhone?: string;
   /**
    *
@@ -140,7 +134,6 @@ export function instanceOfOpportunityResponseDto(value: object): boolean {
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
   isInstance = isInstance && "indoorsOrOutdoors" in value;
-  isInstance = isInstance && "contactEmail" in value;
   isInstance = isInstance && "criminalRecordCheckRequired" in value;
   isInstance = isInstance && "opportunityId" in value;
   isInstance = isInstance && "postedTime" in value;
@@ -171,7 +164,6 @@ export function OpportunityResponseDtoFromJSONTyped(
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
-    contactEmail: json["contactEmail"],
     contactPhone: !exists(json, "contactPhone")
       ? undefined
       : json["contactPhone"],
@@ -206,7 +198,6 @@ export function OpportunityResponseDtoToJSON(
     description: value.description,
     locationName: value.locationName,
     indoorsOrOutdoors: value.indoorsOrOutdoors,
-    contactEmail: value.contactEmail,
     contactPhone: value.contactPhone,
     criminalRecordCheckRequired: value.criminalRecordCheckRequired,
     idealVolunteer: value.idealVolunteer,
