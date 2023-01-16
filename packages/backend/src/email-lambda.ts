@@ -36,7 +36,7 @@ export const handler: S3Handler = async (event: S3Event): Promise<void> => {
         .promise();
       assert(obj.Body !== undefined);
       assert(obj.Body instanceof Stream || obj.Body instanceof Buffer);
-      console.dir(obj.Body);
+      console.dir(obj.Body.toString());
       await messages.receiveMail(obj.Body);
     }
   } catch (ex) {

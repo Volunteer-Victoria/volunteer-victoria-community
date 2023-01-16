@@ -47,7 +47,7 @@ From: Will S <test@mail.com>
 Date: Sat, 14 Jan 2023 13:42:24 -0800
 Message-ID: <CALp8K5AtKUsFUU25nCBa1OsqU7FKZ+J=k1osmfGjcPy_9nPK8g@mail.gmail.com>
 Subject: Test Subject
-To: testemail@dev.community.volunteervictoria.bc.ca
+To: Test Recipient <testemail@dev.community.volunteervictoria.bc.ca>
 Content-Type: multipart/related; boundary="0000000000000c64f205f2403a2c"
 
 --0000000000000c64f205f2403a2c
