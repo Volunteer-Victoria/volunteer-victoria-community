@@ -135,6 +135,14 @@ resource "aws_iam_role_policy" "emails_received_lambda" {
       {
         Effect = "Allow"
         Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "s3:GetObject"
         ]
         Resource = "${aws_s3_bucket.emails_received.arn}/*"
