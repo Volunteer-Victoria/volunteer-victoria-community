@@ -11,6 +11,18 @@ resource "aws_s3_bucket_acl" "emails_received" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "emails_received" {
+  bucket = aws_s3_bucket.emails_received.bucket
+
+  rule {
+    id     = "log"
+    status = "Enabled"
+    expiration {
+      days = 14
+    }
+  }
+}
+
 resource "aws_s3_bucket_policy" "emails_received" {
   bucket = aws_s3_bucket.emails_received.id
   policy = jsonencode({
