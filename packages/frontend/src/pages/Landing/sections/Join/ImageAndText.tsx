@@ -1,10 +1,10 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 type ImageAndTextProps = React.PropsWithChildren<{
   img: string;
   alt: string;
   title: string;
-  reverse?: boolean;
+  action: React.ReactNode;
 }>;
 
 export const ImageAndText = ({
@@ -12,33 +12,25 @@ export const ImageAndText = ({
   alt,
   title,
   children,
-  reverse = false,
+  action,
 }: ImageAndTextProps) => {
   return (
-    <Box>
-      <Grid
-        container
-        direction={reverse ? { xs: "row", lg: "row-reverse" } : {}}
-      >
-        <Grid item xs={12} md={6}>
-          <Box
-            component="img"
-            src={img}
-            alt={alt}
-            sx={{
-              height: { xs: 200, md: "auto" },
-              display: "block",
-              margin: "auto",
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} md={6} my={{ xs: 3, md: 0 }}>
-          <Typography variant="h2" mb={{ xs: 2, md: 5 }}>
-            {title}
-          </Typography>
-          {children}
-        </Grid>
-      </Grid>
+    <Box sx={{ textAlign: "center", height: "100%" }}>
+      <Stack spacing={{ xs: 1.5, md: 6 }} sx={{ height: "100%" }}>
+        <Box
+          component="img"
+          src={img}
+          alt={alt}
+          sx={{
+            height: { xs: 130, md: 220 },
+          }}
+        />
+        <Typography variant="h3" mb={{ xs: 2, md: 5 }}>
+          {title}
+        </Typography>
+        <Box>{children}</Box>
+        <Box>{action}</Box>
+      </Stack>
     </Box>
   );
 };

@@ -6,9 +6,9 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import LandingBannerWriting from "../../../assets/landing-banner-writing.png";
+import LandingBannerApplying from "../../../assets/landing-banner-applying.png";
+import LandingBannerPosting from "../../../assets/landing-banner-posting.png";
 import LandingBannerPlanting from "../../../assets/landing-banner-planting.png";
-import LandingBannerWalking from "../../../assets/landing-banner-walking.png";
 import { Container } from "@mui/system";
 
 interface DescribedImage {
@@ -17,16 +17,16 @@ interface DescribedImage {
 }
 const BANNER_IMAGES: DescribedImage[] = [
   {
-    img: LandingBannerWriting,
-    title: "TODO title",
+    img: LandingBannerPosting,
+    title: "Someone in need posting an opportunity",
   },
   {
     img: LandingBannerPlanting,
-    title: "TODO title",
+    title: "People working together to plant a tree",
   },
   {
-    img: LandingBannerWalking,
-    title: "TODO title",
+    img: LandingBannerApplying,
+    title: "Someone who can help applying to an opportunity",
   },
 ];
 
@@ -42,12 +42,7 @@ export const BannerSection = () => {
       >
         {BANNER_IMAGES.map((item) => (
           <ImageListItem key={item.img}>
-            <img
-              src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-              srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-              alt={item.title}
-              loading="lazy"
-            />
+            <img src={`${item.img}`} alt={item.title} loading="lazy" />
           </ImageListItem>
         ))}
       </ImageList>

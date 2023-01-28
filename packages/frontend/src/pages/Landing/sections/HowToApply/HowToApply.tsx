@@ -19,40 +19,6 @@ export const HowToApplySection = () => {
             color="primary"
             textAlign="center"
           >
-            How To Apply For Opportunities
-          </Typography>
-          <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={{ xs: 2, md: 5, lg: 10 }}
-            divider={<Divider flexItem />}
-          >
-            <Step Icon={PersonOutlined} title="CREATE YOUR ACCOUNT">
-              <Typography variant="subtitle1">
-                Select ‘Sign Up’ to apply for available volunteering roles.
-              </Typography>
-            </Step>
-            <Step Icon={VolunteerActivismOutlined} title="VIEW OPPORTUNITIES">
-              <Typography variant="subtitle1">
-                Explore different ways to support your community based on your
-                interests/skills.
-              </Typography>
-            </Step>
-            <Step Icon={ListAltOutlined} title="APPLY TO AN OPPORTUNITY">
-              <Typography variant="subtitle1">
-                Apply for a specific role by selecting ‘Express Interest’ and
-                submitting your application form.
-              </Typography>
-            </Step>
-          </Stack>
-        </Box>
-        <Box>
-          <Typography
-            variant="h2"
-            mb={{ xs: 2, md: 7 }}
-            gutterBottom
-            color="primary"
-            textAlign="center"
-          >
             How To Post Opportunities
           </Typography>
           <Stack
@@ -75,6 +41,40 @@ export const HowToApplySection = () => {
               <Typography variant="subtitle1">
                 Fill out the form and select ‘Post’ to make the opportunity live
                 on the platform.
+              </Typography>
+            </Step>
+          </Stack>
+        </Box>
+        <Box>
+          <Typography
+            variant="h2"
+            mb={{ xs: 2, md: 7 }}
+            gutterBottom
+            color="primary"
+            textAlign="center"
+          >
+            How To Apply For Opportunities
+          </Typography>
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={{ xs: 2, md: 5, lg: 10 }}
+            divider={<Divider flexItem />}
+          >
+            <Step Icon={PersonOutlined} title="CREATE YOUR ACCOUNT">
+              <Typography variant="subtitle1">
+                Select ‘Sign Up’ to apply for available volunteering roles.
+              </Typography>
+            </Step>
+            <Step Icon={VolunteerActivismOutlined} title="VIEW OPPORTUNITIES">
+              <Typography variant="subtitle1">
+                Explore different ways to support your community based on your
+                interests/skills.
+              </Typography>
+            </Step>
+            <Step Icon={ListAltOutlined} title="APPLY TO AN OPPORTUNITY">
+              <Typography variant="subtitle1">
+                Apply for a specific role by selecting ‘Express Interest’ and
+                submitting your application form.
               </Typography>
             </Step>
           </Stack>
