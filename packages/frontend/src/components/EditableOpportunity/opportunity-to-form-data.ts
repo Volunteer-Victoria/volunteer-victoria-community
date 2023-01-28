@@ -27,7 +27,6 @@ export const opportunityToFormData = (
     idealVolunteer: opportunity.idealVolunteer ?? "",
     additionalInformation: opportunity.additionalInformation ?? "",
     contactName: opportunity.contactName,
-    contactEmail: opportunity.contactEmail ?? "",
     contactPhone: opportunity.contactPhone ?? "",
     guidelines: false,
     liability: false,

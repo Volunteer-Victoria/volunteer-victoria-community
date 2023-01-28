@@ -8,11 +8,13 @@ import { opportunityToFormData } from "./opportunity-to-form-data";
 interface EditableOpportunityProps {
   opportunity?: OpportunityResponseDto;
   onSubmit: (opportunity: OpportunityCreateDto) => void;
+  submitting: boolean;
 }
 
 export const EditableOpportunity = ({
   opportunity,
   onSubmit,
+  submitting,
 }: EditableOpportunityProps) => {
   const initialValues = useMemo(
     () => {
@@ -35,6 +37,7 @@ export const EditableOpportunity = ({
     <EditableOpportunityForm
       initialValues={initialValues}
       onSubmit={transformAndSubmit}
+      submitting={submitting}
     />
   );
 };

@@ -107,7 +107,6 @@ export const OpportunityPage = () => {
         onClose={() => setDialogOpen(false)}
         name={opportunity.contactName}
         phoneNumber={opportunity.contactPhone}
-        email={opportunity.contactEmail}
       />
     </ReturnableLayout>
   );

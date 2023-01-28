@@ -1,4 +1,6 @@
 import { Box, Card, Divider, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
 import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
 import { OpportunityCreateDto, OpportunityResponseDto } from "../../api";
 import { canManageOpportunity } from "../../common";
@@ -12,6 +14,8 @@ export const EditOpportunityPage = () => {
   const navigate = useNavigate();
   const api = useApi();
   const user = useUser();
+  const { enqueueSnackbar } = useSnackbar();
+  const [submitting, setSubmitting] = useState(false);
 
   const canManage = canManageOpportunity(user, opportunity);
 
@@ -20,15 +24,22 @@ export const EditOpportunityPage = () => {
   }
 
   const onSubmit = async (updatedOpportunity: OpportunityCreateDto) => {
+    setSubmitting(true);
     try {
       await api.opportunityControllerPutId({
         id: opportunity.opportunityId,
         opportunityCreateDto: updatedOpportunity,
       });
 
+      enqueueSnackbar("Opportunity edited!", { variant: "success" });
+
       navigate(`/opportunity/${opportunity.opportunityId}`);
     } catch (e) {
+      enqueueSnackbar("Error adding opportunity.  Try again later.", {
+        variant: "error",
+      });
       console.error(e);
+      setSubmitting(false);
     }
   };
 
@@ -47,6 +58,7 @@ export const EditOpportunityPage = () => {
             <EditableOpportunity
               onSubmit={onSubmit}
               opportunity={opportunity}
+              submitting={submitting}
             />
           </Box>
         </Card>

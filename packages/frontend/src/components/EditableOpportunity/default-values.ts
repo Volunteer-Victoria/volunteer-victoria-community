@@ -12,7 +12,6 @@ export const defaultValues = {
   idealVolunteer: "",
   additionalInformation: "",
   contactName: "",
-  contactEmail: "",
   contactPhone: "",
   guidelines: false,
   liability: false,
