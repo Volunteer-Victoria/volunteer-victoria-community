@@ -7,6 +7,7 @@ import { App } from "./App";
 import { AuthProvider } from "./components/AuthProvider";
 import { ApiProvider } from "./components/ApiProvider/ApiProvider";
 import { UserProvider } from "./components/UserDataProvider/UserProvider";
+import { SnackbarProvider } from "notistack";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,7 +18,9 @@ root.render(
       <UserProvider>
         <ApiProvider>
           <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <App />
+            <SnackbarProvider maxSnack={3}>
+              <App />
+            </SnackbarProvider>
           </LocalizationProvider>
         </ApiProvider>
       </UserProvider>

@@ -25,7 +25,6 @@ export const formDataToOpportunity = (
     description: formData.description,
     locationName: formData.locationName,
     indoorsOrOutdoors,
-    contactEmail: formData.contactEmail,
     contactPhone: formData.contactPhone,
     criminalRecordCheckRequired: formData.criminalRecordCheckRequired === "yes",
     idealVolunteer: formData.idealVolunteer,

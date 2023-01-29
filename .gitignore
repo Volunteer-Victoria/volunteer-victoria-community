@@ -11,3 +11,4 @@ node_modules
 yarn-error.log
 openapi.yml
 .vscode
+.DS_Store

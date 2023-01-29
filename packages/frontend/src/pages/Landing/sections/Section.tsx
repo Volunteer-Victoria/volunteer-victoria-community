@@ -10,7 +10,7 @@ export const Section = ({ background, children, maxWidth }: SectionProps) => {
   return (
     <Box
       sx={{
-        backgroundColor: background === "white" ? "white" : "#e5e5e5",
+        backgroundColor: background === "white" ? "white" : "#F5F5F5",
         py: { xs: 3, md: 6, lg: 12 },
       }}
     >

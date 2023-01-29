@@ -14,7 +14,6 @@ import { DefinitionItem } from "./DefinitionItem";
 interface InterestDialogProps extends DialogProps {
   name: string;
   phoneNumber?: string;
-  email?: string;
   onOk: () => void;
 }
 
@@ -24,7 +23,6 @@ export const InterestDialog = ({
   open,
   name,
   phoneNumber,
-  email,
 }: InterestDialogProps) => {
   return (
     <Dialog onClose={onClose} open={open}>
@@ -34,7 +32,6 @@ export const InterestDialog = ({
         <Stack component="dl" spacing={2}>
           <DefinitionItem title="Organizer" details={name} />
           <DefinitionItem title="Phone Number" details={phoneNumber ?? ""} />
-          <DefinitionItem title="Email" details={email ?? ""} />
         </Stack>
         <Alert severity="info">
           Volunteer Victoria is not responsible for the contents of this post.

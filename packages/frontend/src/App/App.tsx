@@ -17,6 +17,7 @@ import {
   OpportunityPage,
   EditOpportunityPage,
   LandingPage,
+  ExpressInterestPage,
 } from "../pages";
 import { appTheme } from "../themes";
 
@@ -61,6 +62,16 @@ function App() {
               });
             }}
             element={<OpportunityPage />}
+            errorElement={<ErrorPage />}
+          />
+          <Route
+            path="opportunity/:opportunityId/apply"
+            loader={({ params }) => {
+              return api.opportunityControllerGetId({
+                id: params.opportunityId ?? "",
+              });
+            }}
+            element={<ExpressInterestPage />}
             errorElement={<ErrorPage />}
           />
           <Route path="*" element={<Navigate to="/" replace={true} />} />

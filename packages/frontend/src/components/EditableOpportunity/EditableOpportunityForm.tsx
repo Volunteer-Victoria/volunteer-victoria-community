@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Divider,
   FormControl,
   FormControlLabel,
@@ -23,21 +24,39 @@ import { LocationSelector } from "../LocationSelector";
 import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
+import { useMemo } from "react";
 
 interface EditableOpportunityFormProps {
   initialValues: Partial<FormData>;
   onSubmit: (opportunity: FormData) => void;
+  submitting: boolean;
 }
 
 export const EditableOpportunityForm = ({
   initialValues,
   onSubmit,
+  submitting,
 }: EditableOpportunityFormProps) => {
   const formik = useFormik<typeof defaultValues>({
     initialValues: { ...defaultValues, ...initialValues },
     validationSchema: schema,
     onSubmit,
   });
+
+  const buttonLabel = useMemo(() => {
+    if (initialValues.title) {
+      if (submitting) {
+        return "Saving...";
+      }
+      return "Save";
+    }
+
+    if (submitting) {
+      return "Posting...";
+    }
+
+    return "Post";
+  }, [initialValues.title, submitting]);
 
   return (
     <Stack component="form" onSubmit={formik.handleSubmit} spacing={5}>
@@ -152,12 +171,6 @@ export const EditableOpportunityForm = ({
           <TextField label="Name" {...mapFormik(formik, "contactName")} />
           <TextField
             fullWidth
-            label="Email"
-            type="email"
-            {...mapFormik(formik, "contactEmail")}
-          />
-          <TextField
-            fullWidth
             label="Phone Number"
             type="tel"
             {...mapFormik(formik, "contactPhone")}
@@ -230,8 +243,11 @@ export const EditableOpportunityForm = ({
         </Stack>
       </Stack>
       <Box display="flex" justifyContent="flex-end">
-        <Button variant="contained" type="submit">
-          {initialValues.title ? "Save" : "Post"}
+        <Button variant="contained" type="submit" disabled={submitting}>
+          {buttonLabel}
+          {submitting && (
+            <CircularProgress sx={{ ml: 2 }} size={18} color="inherit" />
+          )}
         </Button>
       </Box>
     </Stack>

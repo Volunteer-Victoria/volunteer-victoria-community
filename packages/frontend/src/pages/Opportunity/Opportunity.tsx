@@ -7,19 +7,17 @@ import {
   Stack,
   Button,
 } from "@mui/material";
-import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
 import { formatYMD } from "../../common";
 import { ManageOpportunity } from "../../components/ManageOpportunity/ManageOpportunity";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
+import { useUser } from "../../components/UserDataProvider/use-user";
 import { DefinitionItem } from "./DefinitionItem";
-import { InterestDialog } from "./InterestDialog";
 
 export const OpportunityPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
-
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const user = useUser();
 
   return (
     <ReturnableLayout>
@@ -47,12 +45,20 @@ export const OpportunityPage = () => {
                   <div>
                     <ManageOpportunity opportunity={opportunity} />
                   </div>
-                  <Button
-                    variant="contained"
-                    onClick={() => setDialogOpen(true)}
-                  >
-                    Express interest
-                  </Button>
+                  {user.data ? (
+                    <Button
+                      variant="contained"
+                      component={Link}
+                      to="apply"
+                      relative="route"
+                    >
+                      CONTACT
+                    </Button>
+                  ) : (
+                    <Button variant="contained" component={Link} to="/login">
+                      LOG IN
+                    </Button>
+                  )}
                 </Stack>
               </Grid>
             </Grid>
@@ -101,14 +107,6 @@ export const OpportunityPage = () => {
           </Box>
         </Card>
       </Box>
-      <InterestDialog
-        open={dialogOpen}
-        onOk={() => setDialogOpen(false)}
-        onClose={() => setDialogOpen(false)}
-        name={opportunity.contactName}
-        phoneNumber={opportunity.contactPhone}
-        email={opportunity.contactEmail}
-      />
     </ReturnableLayout>
   );
 };

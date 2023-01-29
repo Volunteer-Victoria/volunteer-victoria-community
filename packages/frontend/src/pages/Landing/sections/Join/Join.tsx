@@ -1,5 +1,4 @@
-import { Button, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Button, Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import LandingJoinGroceries from "../../../../assets/landing-join-groceries.svg";
 import LandingJoinList from "../../../../assets/landing-join-list.svg";
@@ -17,54 +16,54 @@ export const JoinSection = () => {
       >
         Join Our Volunteer Community
       </Typography>
-      <Stack spacing={{ xs: 2, md: 13, lg: 26 }}>
-        <ImageAndText
-          img={LandingJoinGroceries}
-          alt="Volunteer helping carry groceries"
-          title="FIND OPPORTUNITIES"
-        >
-          <Typography variant="body2" mb={{ xs: 2, md: 5 }}>
-            We help Victoria’s volunteers serve the local community by providing
-            real-time opportunities for meaningful contributions.
-          </Typography>
-
-          <Typography variant="body2" mb={{ xs: 2, md: 5 }}>
-            Join to make an impact.
-          </Typography>
-          <Button
-            variant="outlined"
-            component={Link}
-            to="opportunities"
-            relative="route"
+      <Grid container justifyContent="space-between" spacing={{ xs: 4, lg: 0 }}>
+        <Grid item xs={12} lg="auto" sx={{ width: { lg: 424 } }}>
+          <ImageAndText
+            img={LandingJoinList}
+            alt="Person posting volunteer opportunities on a board"
+            title="POST OPPORTUNITIES"
+            action={
+              <Button
+                variant="outlined"
+                component={Link}
+                to="opportunities/create"
+                relative="route"
+              >
+                POST AN OPPORTUNITY
+              </Button>
+            }
           >
-            FIND OPPORTUNITIES
-          </Button>
-        </ImageAndText>
-        <ImageAndText
-          img={LandingJoinList}
-          alt="Person posting volunteer opportunities on a board"
-          title="SHARE OPPORTUNITIES"
-          reverse
-        >
-          <Typography variant="body2" mb={{ xs: 2, md: 5 }}>
-            Get the help and support you need.
-          </Typography>
-
-          <Typography variant="body2" mb={{ xs: 2, md: 5 }}>
-            Provide task-related information and requirements to find truly
-            interested and rightly skilled volunteers for your upcoming needs.
-          </Typography>
-
-          <Button
-            variant="outlined"
-            component={Link}
-            to="opportunities/create"
-            relative="route"
+            <Typography variant="body2">
+              Get the help and support you need. Provide task-related
+              information and requirements to find truly interested and rightly
+              skilled volunteers for your upcoming needs.
+            </Typography>
+          </ImageAndText>
+        </Grid>
+        <Grid item xs={12} lg="auto" sx={{ width: { lg: 424 } }}>
+          <ImageAndText
+            img={LandingJoinGroceries}
+            alt="Volunteer helping carry groceries"
+            title="FIND OPPORTUNITIES"
+            action={
+              <Button
+                variant="outlined"
+                component={Link}
+                to="opportunities"
+                relative="route"
+              >
+                VIEW OPPORTUNITIES
+              </Button>
+            }
           >
-            POST AN OPPORTUNITY
-          </Button>
-        </ImageAndText>
-      </Stack>
+            <Typography variant="body2" mb={{ xs: 2, md: 5 }}>
+              We help Victoria’s volunteers serve the local community by
+              providing real-time opportunities for meaningful contributions.
+              Join to make an impact.
+            </Typography>
+          </ImageAndText>
+        </Grid>
+      </Grid>
     </Section>
   );
 };
