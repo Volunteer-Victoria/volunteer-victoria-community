@@ -41,4 +41,4 @@ jobs:
         run: make backend-test
 
       - name: Make sure the backend builds
-        run: make backend-test
+        run: make backend-build
