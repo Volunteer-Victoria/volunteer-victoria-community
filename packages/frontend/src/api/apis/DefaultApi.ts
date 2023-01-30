@@ -555,4 +555,34 @@ export class DefaultApi extends runtime.BaseAPI {
   ): Promise<void> {
     await this.rootControllerDebugRaw(requestParameters, initOverrides);
   }
+
+  /**
+   */
+  async rootControllerHelloRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/api/v1/hello`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async rootControllerHello(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.rootControllerHelloRaw(initOverrides);
+  }
 }

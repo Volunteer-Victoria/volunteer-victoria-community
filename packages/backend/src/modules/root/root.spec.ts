@@ -24,6 +24,10 @@ describe("/", () => {
     headers = auth.authHeaders();
   });
 
+  it("GET /hello returns an empty 200", async () => {
+    await api.get("/hello").expect(200);
+  });
+
   it("GET /debug requires admin", async () => {
     await api.get("/debug?statusCode=500").expect(401);
   });

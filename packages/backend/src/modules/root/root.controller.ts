@@ -31,4 +31,7 @@ export class RootController {
       throw new HttpException({ message: "debug status code" }, statusCode);
     }
   }
+
+  @Get("hello")
+  hello(): void {}
 }
