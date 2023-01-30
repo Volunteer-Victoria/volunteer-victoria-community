@@ -5,10 +5,10 @@ assert(process.env["NODE_ENV"] === "development");
 dotenv.config({ path: ".local.env" });
 
 import { createNestApp } from "./app";
-import { VVCModule } from "./modules/vvc.module";
+import { AppModule } from "./modules/app.module";
 
 async function bootstrap() {
-  const { nestApp } = await createNestApp(VVCModule);
+  const { nestApp } = await createNestApp(AppModule);
   nestApp.listen(3000);
 }
 bootstrap();

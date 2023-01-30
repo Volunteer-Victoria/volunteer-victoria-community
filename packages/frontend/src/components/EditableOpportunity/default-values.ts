@@ -1,16 +1,17 @@
+import { DateTime } from "luxon";
+
 export const defaultValues = {
   title: "",
   description: "",
   locationName: "",
   requiredPeopleCount: "",
-  date: "",
+  date: DateTime.now(),
   time: "",
   indoorsOrOutdoors: "",
   criminalRecordCheckRequired: "",
   idealVolunteer: "",
   additionalInformation: "",
   contactName: "",
-  contactEmail: "",
   contactPhone: "",
   guidelines: false,
   liability: false,

@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import {
   IsBoolean,
-  IsEmail,
   IsEnum,
   IsISO8601,
   IsNumber,
@@ -53,11 +52,6 @@ class OpportunityBase {
   @IsEnum(IndoorsOrOutdoors)
   indoorsOrOutdoors!: string;
 
-  @ApiProperty({ required: false, example: "person@email.com" })
-  @IsEmail()
-  @IsOptional()
-  contactEmail?: string;
-
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -70,7 +64,7 @@ class OpportunityBase {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
-  idealVolunteer!: string;
+  idealVolunteer?: string;
 
   @ApiProperty({ required: false })
   @IsString()

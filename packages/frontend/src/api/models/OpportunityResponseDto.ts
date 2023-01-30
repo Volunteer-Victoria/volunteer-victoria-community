@@ -72,12 +72,6 @@ export interface OpportunityResponseDto {
    * @type {string}
    * @memberof OpportunityResponseDto
    */
-  contactEmail?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OpportunityResponseDto
-   */
   contactPhone?: string;
   /**
    *
@@ -170,9 +164,6 @@ export function OpportunityResponseDtoFromJSONTyped(
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
-    contactEmail: !exists(json, "contactEmail")
-      ? undefined
-      : json["contactEmail"],
     contactPhone: !exists(json, "contactPhone")
       ? undefined
       : json["contactPhone"],
@@ -207,7 +198,6 @@ export function OpportunityResponseDtoToJSON(
     description: value.description,
     locationName: value.locationName,
     indoorsOrOutdoors: value.indoorsOrOutdoors,
-    contactEmail: value.contactEmail,
     contactPhone: value.contactPhone,
     criminalRecordCheckRequired: value.criminalRecordCheckRequired,
     idealVolunteer: value.idealVolunteer,

@@ -1,2 +1,2 @@
-.localstack
+.cockroach-data
 coverage

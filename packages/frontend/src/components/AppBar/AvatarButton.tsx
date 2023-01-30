@@ -11,7 +11,10 @@ export const AvatarButton = ({ onClick }: AvatarButtonProps) => {
 
   return (
     <IconButton onClick={onClick} aria-label="Toggle user menu">
-      <Avatar src={user?.data?.picture} aria-label="">
+      <Avatar
+        src={user?.data?.picture}
+        alt={user?.data?.name ?? "User profile picture"}
+      >
         {initial}
       </Avatar>
     </IconButton>

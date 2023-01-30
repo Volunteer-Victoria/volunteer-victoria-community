@@ -16,6 +16,8 @@ export const formDataToOpportunity = (
       ? OpportunityCreateDtoIndoorsOrOutdoorsEnum.Indoors
       : OpportunityCreateDtoIndoorsOrOutdoorsEnum.Outdoors;
 
+  const occursDate = formData.date.toFormat("yyyy-MM-dd");
+
   return {
     title: formData.title,
     contactName: formData.contactName,
@@ -23,12 +25,11 @@ export const formDataToOpportunity = (
     description: formData.description,
     locationName: formData.locationName,
     indoorsOrOutdoors,
-    contactEmail: formData.contactEmail,
     contactPhone: formData.contactPhone,
     criminalRecordCheckRequired: formData.criminalRecordCheckRequired === "yes",
     idealVolunteer: formData.idealVolunteer,
     additionalInformation: formData.additionalInformation,
-    occursDate: formData.date,
+    occursDate,
     occursTime: formData.time,
   };
 };

@@ -1,37 +1,52 @@
-import { Entity } from "dynamodb-toolbox";
-import { Injectable } from "@nestjs/common";
-import { DynamoDBService } from "../ddb/ddb.service";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
-export const DUMMY_VALUES = { sk: "dummy" };
-
-@Injectable()
+@Entity({ name: "opportunity" })
 export class OpportunityEntity {
-  readonly value;
+  @PrimaryColumn()
+  opportunityId!: string;
 
-  constructor(ddb: DynamoDBService) {
-    this.value = new Entity({
-      name: "Opportunity",
-      attributes: {
-        opportunityId: { type: "string", partitionKey: true },
-        sk: { type: "string", sortKey: true },
+  @Column()
+  title!: string;
 
-        title: "string",
-        contactName: "string",
-        requiredPeopleCount: "number",
-        occursDate: "string",
-        occursTime: "string",
-        postedTime: "number",
-        description: "string",
-        locationName: "string",
-        indoorsOrOutdoors: "string",
-        contactEmail: "string",
-        contactPhone: "string",
-        criminalRecordCheckRequired: "boolean",
-        idealVolunteer: "string",
-        additionalInformation: "string",
-        postedByUserId: "string",
-      },
-      table: ddb.table,
-    } as const);
-  }
+  @Column()
+  contactName!: string;
+
+  @Column()
+  requiredPeopleCount!: number;
+
+  @Column({ type: String, nullable: true })
+  occursDate!: string | null;
+
+  @Column({ type: String, nullable: true })
+  occursTime!: string | null;
+
+  @Column()
+  description!: string;
+
+  @Column()
+  locationName!: string;
+
+  @Column()
+  indoorsOrOutdoors!: string;
+
+  @Column({ type: String })
+  contactEmail!: string;
+
+  @Column({ type: String, nullable: true })
+  contactPhone!: string | null;
+
+  @Column()
+  criminalRecordCheckRequired!: boolean;
+
+  @Column({ type: String, nullable: true })
+  idealVolunteer!: string | null;
+
+  @Column({ type: String, nullable: true })
+  additionalInformation!: string | null;
+
+  @Column()
+  postedTime!: number;
+
+  @Column()
+  postedByUserId!: string;
 }

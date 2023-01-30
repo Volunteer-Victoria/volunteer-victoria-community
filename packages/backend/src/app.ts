@@ -5,7 +5,8 @@ import {
   NestExpressApplication,
 } from "@nestjs/platform-express";
 import { SwaggerModule, DocumentBuilder, OpenAPIObject } from "@nestjs/swagger";
-import { ValidationPipe } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { GenericExceptionFilter } from "./modules/exception.filter";
 
 const API_PREFIX = "/api/v1";
 
@@ -13,6 +14,19 @@ interface App {
   expressApp: express.Express;
   nestApp: NestExpressApplication;
   openapiDocument: OpenAPIObject;
+}
+
+/**
+ * Just the bits we need for e2e testing
+ */
+export function setupNestApp(app: INestApplication): void {
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    })
+  );
+  app.useGlobalFilters(new GenericExceptionFilter());
 }
 
 export async function createNestApp(
@@ -26,14 +40,9 @@ export async function createNestApp(
     new ExpressAdapter(expressApp)
   );
 
-  nestApp.setGlobalPrefix(urlPrefix);
+  setupNestApp(nestApp);
 
-  nestApp.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-    })
-  );
+  nestApp.setGlobalPrefix(urlPrefix);
 
   nestApp.enableCors({
     origin: "http://localhost:3000",

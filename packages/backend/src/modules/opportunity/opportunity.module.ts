@@ -1,12 +1,13 @@
 import { Module } from "@nestjs/common";
-import { DynamoDBModule } from "../ddb/ddb.module";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { OpportunityController } from "./opportunity.controller";
 import { OpportunityEntity } from "./opportunity.entity";
 import { OpportunityService } from "./opportunity.service";
 
 @Module({
-  imports: [DynamoDBModule],
+  imports: [TypeOrmModule.forFeature([OpportunityEntity])],
   controllers: [OpportunityController],
-  providers: [OpportunityService, OpportunityEntity],
+  providers: [OpportunityService],
+  exports: [OpportunityService],
 })
 export class OpportunityModule {}

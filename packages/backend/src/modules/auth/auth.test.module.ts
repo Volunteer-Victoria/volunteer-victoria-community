@@ -1,7 +1,7 @@
 import { Injectable, Module, OnModuleDestroy } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
-import { JwtStrategy } from "./jwt.strategy";
 import createJWKSMock, { JWKSMock } from "mock-jwks";
+import { JwtStrategy } from "./jwt.strategy";
 
 const MOCK_ISSUER_URL = "https://mock.us.auth0.com/";
 const MOCK_AUDIENCE = "https://localhost/api";
@@ -11,6 +11,8 @@ export class MockJwksProvider implements OnModuleDestroy {
   private readonly jwks: JWKSMock;
   userId: string = "test-user";
   permissions: string[] = [];
+  email: string = "test@mail.com";
+  emailVerified: boolean = true;
 
   constructor() {
     process.env["AUTH0_ISSUER_URL"] = MOCK_ISSUER_URL;
@@ -35,6 +37,8 @@ export class MockJwksProvider implements OnModuleDestroy {
       iss: MOCK_ISSUER_URL,
       sub: this.userId,
       permissions: this.permissions,
+      email: this.email,
+      email_verified: this.emailVerified,
     });
   }
 

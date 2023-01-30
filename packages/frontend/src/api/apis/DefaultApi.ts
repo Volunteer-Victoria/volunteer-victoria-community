@@ -13,13 +13,24 @@
  */
 
 import * as runtime from "../runtime";
-import type { OpportunityCreateDto, OpportunityResponseDto } from "../models";
+import type {
+  OpportunityCreateDto,
+  OpportunityResponseDto,
+  ThreadStartDto,
+} from "../models";
 import {
   OpportunityCreateDtoFromJSON,
   OpportunityCreateDtoToJSON,
   OpportunityResponseDtoFromJSON,
   OpportunityResponseDtoToJSON,
+  ThreadStartDtoFromJSON,
+  ThreadStartDtoToJSON,
 } from "../models";
+
+export interface MessageControllerPostRequest {
+  opportunityId: string;
+  threadStartDto: ThreadStartDto;
+}
 
 export interface OpportunityControllerDeleteIdRequest {
   id: string;
@@ -54,6 +65,73 @@ export interface RootControllerDebugRequest {
  *
  */
 export class DefaultApi extends runtime.BaseAPI {
+  /**
+   */
+  async messageControllerPostRaw(
+    requestParameters: MessageControllerPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (
+      requestParameters.opportunityId === null ||
+      requestParameters.opportunityId === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "opportunityId",
+        "Required parameter requestParameters.opportunityId was null or undefined when calling messageControllerPost."
+      );
+    }
+
+    if (
+      requestParameters.threadStartDto === null ||
+      requestParameters.threadStartDto === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "threadStartDto",
+        "Required parameter requestParameters.threadStartDto was null or undefined when calling messageControllerPost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.opportunityId !== undefined) {
+      queryParameters["opportunityId"] = requestParameters.opportunityId;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    if (this.configuration && this.configuration.accessToken) {
+      // oauth required
+      headerParameters["Authorization"] = await this.configuration.accessToken(
+        "bearer",
+        []
+      );
+    }
+
+    const response = await this.request(
+      {
+        path: `/api/v1/message`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: ThreadStartDtoToJSON(requestParameters.threadStartDto),
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async messageControllerPost(
+    requestParameters: MessageControllerPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.messageControllerPostRaw(requestParameters, initOverrides);
+  }
+
   /**
    * Delete all opportunities
    */

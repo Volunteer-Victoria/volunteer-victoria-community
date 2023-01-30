@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Divider,
   FormControl,
   FormControlLabel,
@@ -12,28 +13,50 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
 import { Stack } from "@mui/system";
 import { useFormik } from "formik";
-import { mapFormik, todayYMD } from "../../common";
+import { DateTime } from "luxon";
+
+import { mapFormik } from "../../common";
+import { LocationSelector } from "../LocationSelector";
 import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
+import { useMemo } from "react";
 
 interface EditableOpportunityFormProps {
   initialValues: Partial<FormData>;
   onSubmit: (opportunity: FormData) => void;
+  submitting: boolean;
 }
 
 export const EditableOpportunityForm = ({
   initialValues,
   onSubmit,
+  submitting,
 }: EditableOpportunityFormProps) => {
   const formik = useFormik<typeof defaultValues>({
     initialValues: { ...defaultValues, ...initialValues },
     validationSchema: schema,
     onSubmit,
   });
+
+  const buttonLabel = useMemo(() => {
+    if (initialValues.title) {
+      if (submitting) {
+        return "Saving...";
+      }
+      return "Save";
+    }
+
+    if (submitting) {
+      return "Posting...";
+    }
+
+    return "Post";
+  }, [initialValues.title, submitting]);
 
   return (
     <Stack component="form" onSubmit={formik.handleSubmit} spacing={5}>
@@ -50,25 +73,20 @@ export const EditableOpportunityForm = ({
       </Fieldset>
       <Fieldset title="Details">
         <Stack spacing={{ xs: 2, lg: 4 }}>
-          <TextField
-            fullWidth
-            label="Location"
-            {...mapFormik(formik, "locationName")}
-          />
+          <LocationSelector {...mapFormik(formik, "locationName")} />
           <TextField
             fullWidth
             label="Number of people required"
             {...mapFormik(formik, "requiredPeopleCount")}
           />
-          <TextField
-            fullWidth
-            InputLabelProps={{ shrink: true }}
+          <DatePicker
             label="Date"
-            type="date"
-            inputProps={{
-              min: todayYMD(),
-            }}
-            {...mapFormik(formik, "date")}
+            disableMaskedInput
+            {...mapFormik(formik, "date", ["onChange"])}
+            onChange={(date) => formik.setFieldValue("date", date)}
+            minDate={DateTime.now()}
+            maxDate={DateTime.now().plus({ weeks: 4 })}
+            renderInput={(params) => <TextField {...params} />}
           />
           <TextField
             fullWidth
@@ -84,11 +102,11 @@ export const EditableOpportunityForm = ({
               Boolean(formik.errors.indoorsOrOutdoors)
             }
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel id="indoor-outdoors-group-label">
               Is your opportunity indoors or outdoors?
             </FormLabel>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
+              aria-labelledby="indoor-outdoors-group-label"
               row
               {...mapFormik(formik, "indoorsOrOutdoors", [
                 "helperText",
@@ -118,11 +136,11 @@ export const EditableOpportunityForm = ({
               Boolean(formik.errors.criminalRecordCheckRequired)
             }
           >
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel id="criminal-check-group-label">
               Criminal Record Check Required?
             </FormLabel>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
+              aria-labelledby="criminal-check-group-label"
               row
               {...mapFormik(formik, "criminalRecordCheckRequired", [
                 "helperText",
@@ -151,12 +169,6 @@ export const EditableOpportunityForm = ({
       <Fieldset title="Your Contact Information">
         <Stack spacing={{ xs: 2, lg: 4 }}>
           <TextField label="Name" {...mapFormik(formik, "contactName")} />
-          <TextField
-            fullWidth
-            label="Email"
-            type="email"
-            {...mapFormik(formik, "contactEmail")}
-          />
           <TextField
             fullWidth
             label="Phone Number"
@@ -231,8 +243,11 @@ export const EditableOpportunityForm = ({
         </Stack>
       </Stack>
       <Box display="flex" justifyContent="flex-end">
-        <Button variant="contained" type="submit">
-          {initialValues.title ? "Save" : "Post"}
+        <Button variant="contained" type="submit" disabled={submitting}>
+          {buttonLabel}
+          {submitting && (
+            <CircularProgress sx={{ ml: 2 }} size={18} color="inherit" />
+          )}
         </Button>
       </Box>
     </Stack>

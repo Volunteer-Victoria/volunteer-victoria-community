@@ -1,0 +1,17 @@
+export const locations = [
+  "Central Saanich",
+  "Colwood",
+  "Esquimalt",
+  "Highlands",
+  "Juan de Fuca EA",
+  "Langford",
+  "Metchosin",
+  "North Saanich",
+  "Oak Bay",
+  "Online",
+  "Saanich",
+  "Sidney",
+  "Sooke",
+  "Victoria",
+  "View Royal",
+];

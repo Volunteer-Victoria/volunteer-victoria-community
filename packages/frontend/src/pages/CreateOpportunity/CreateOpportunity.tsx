@@ -1,4 +1,6 @@
 import { Box, Card, Divider, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { OpportunityCreateDto } from "../../api";
 import { useApi } from "../../components/ApiProvider";
@@ -8,16 +10,23 @@ import { ReturnableLayout } from "../../components/ReturnableLayout";
 export const CreateOpportunityPage = () => {
   const navigate = useNavigate();
   const api = useApi();
+  const { enqueueSnackbar } = useSnackbar();
+  const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = async (opportunity: OpportunityCreateDto) => {
+    setSubmitting(true);
     try {
       const result = await api.opportunityControllerPost({
         opportunityCreateDto: opportunity,
       });
-
+      enqueueSnackbar("Opportunity added!", { variant: "success" });
       navigate(`/opportunity/${result.opportunityId}`);
     } catch (e) {
+      enqueueSnackbar("Error adding opportunity.  Try again later.", {
+        variant: "error",
+      });
       console.error(e);
+      setSubmitting(false);
     }
   };
 
@@ -33,7 +42,7 @@ export const CreateOpportunityPage = () => {
               All fields are required unless marked as 'optional'
             </Typography>
             <Divider sx={{ my: 3 }} />
-            <EditableOpportunity onSubmit={onSubmit} />
+            <EditableOpportunity onSubmit={onSubmit} submitting={submitting} />
           </Box>
         </Card>
       </Box>

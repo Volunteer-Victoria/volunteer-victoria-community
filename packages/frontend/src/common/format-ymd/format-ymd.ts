@@ -1,10 +1,6 @@
-import { convert, LocalDate } from "@js-joda/core";
+import { DateTime } from "luxon";
 
 export const formatYMD = (ymd: string, locale = "en-CA") => {
-  const localDate = LocalDate.parse(ymd);
-  return convert(localDate).toDate().toLocaleDateString(locale, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  const localDate = DateTime.fromFormat(ymd, "yyyy-MM-dd", { zone: "local" });
+  return localDate.toLocaleString(DateTime.DATE_MED);
 };

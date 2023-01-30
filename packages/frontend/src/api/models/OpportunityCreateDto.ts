@@ -72,12 +72,6 @@ export interface OpportunityCreateDto {
    * @type {string}
    * @memberof OpportunityCreateDto
    */
-  contactEmail?: string;
-  /**
-   *
-   * @type {string}
-   * @memberof OpportunityCreateDto
-   */
   contactPhone?: string;
   /**
    *
@@ -147,9 +141,6 @@ export function OpportunityCreateDtoFromJSONTyped(
     description: json["description"],
     locationName: json["locationName"],
     indoorsOrOutdoors: json["indoorsOrOutdoors"],
-    contactEmail: !exists(json, "contactEmail")
-      ? undefined
-      : json["contactEmail"],
     contactPhone: !exists(json, "contactPhone")
       ? undefined
       : json["contactPhone"],
@@ -181,7 +172,6 @@ export function OpportunityCreateDtoToJSON(
     description: value.description,
     locationName: value.locationName,
     indoorsOrOutdoors: value.indoorsOrOutdoors,
-    contactEmail: value.contactEmail,
     contactPhone: value.contactPhone,
     criminalRecordCheckRequired: value.criminalRecordCheckRequired,
     idealVolunteer: value.idealVolunteer,
