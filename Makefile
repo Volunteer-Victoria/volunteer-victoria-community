@@ -30,12 +30,13 @@ endif
 AUTH0_ISSUER_URL = https://$(AUTH0_DOMAIN)/
 
 # Front-end build parameters
-define FRONTEND_ENV
+define FRONTEND_ENV_DATA
 REACT_APP_AUTH0_AUDIENCE="$(AUTH0_AUDIENCE)"
 REACT_APP_API_BASE_PATH="https://$(DOMAIN)"
 REACT_APP_AUTH0_DOMAIN="$(AUTH0_DOMAIN)"
 REACT_APP_AUTH0_CLIENTID="$(AUTH0_CLIENT_ID)"
 endef
+export FRONTEND_ENV_DATA
 
 define TFVARS_DATA
 env_name = "$(ENV_NAME)"
@@ -76,7 +77,7 @@ backend-coverage:
 	yarn workspace $(BACKEND_WORKSPACE) test:cov
 
 frontend-write-env:
-	@echo "$$FRONTEND_ENV" > $(FRONTEND_DIR)/.env
+	@echo "$$FRONTEND_ENV_DATA" > $(FRONTEND_DIR)/.env
 
 frontend-build: frontend-write-env
 	rm -r $(FRONTEND_BUILD_DIR) || true
