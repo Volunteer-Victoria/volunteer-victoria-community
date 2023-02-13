@@ -12,10 +12,7 @@ APP_SRC_BUCKET = $(NAMESPACE)-app-dist
 TARGET_ARCH = arm64
 CERT_DOMAIN = community.volunteervictoria.bc.ca
 DOMAIN = $(ENV_NAME).$(CERT_DOMAIN)
-
-AUTH0_ISSUER_URL = https://dev-71ee1qantl30gloi.us.auth0.com/
 AUTH0_AUDIENCE = https://$(DOMAIN)/api
-AUTH0_CLIENT_ID = gWVmaB2m8JYW7QeJeLgAscP0SWdLgKj6
 
 # Front-end build parameters
 export REACT_APP_AUTH0_AUDIENCE = $(AUTH0_AUDIENCE)
@@ -23,10 +20,14 @@ export REACT_APP_API_BASE_PATH = https://$(DOMAIN)
 
 ifeq ($(ENV_NAME), dev)
 CLOUDFRONT_ID = E2V91EEXG7I3BC
+AUTH0_CLIENT_ID = gWVmaB2m8JYW7QeJeLgAscP0SWdLgKj6
+AUTH0_ISSUER_URL = https://dev-71ee1qantl30gloi.us.auth0.com/
 endif
 
 ifeq ($(ENV_NAME), test)
 CLOUDFRONT_ID = E2DCH2Y2F2YP49
+AUTH0_CLIENT_ID = QG9VBSu3MhlybYfIGhqaQMqozyS2kbpF
+AUTH0_ISSUER_URL = https://volunteer-victoria-community.us.auth0.com/
 endif
 
 define TFVARS_DATA
