@@ -18,6 +18,7 @@ import {
   EditOpportunityPage,
   LandingPage,
   ExpressInterestPage,
+  TermsAndConditionsPage,
 } from "../pages";
 import { appTheme } from "../themes";
 
@@ -30,6 +31,10 @@ function App() {
         <Route path="" element={<LandingPage />} />
         <Route element={<MainLayout />}>
           <Route path="login" element={<LoginPage />} />
+          <Route
+            path="terms-and-conditions"
+            element={<TermsAndConditionsPage />}
+          />
           <Route
             path="opportunities/create"
             element={<CreateOpportunityPage />}
