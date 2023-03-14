@@ -20,6 +20,7 @@ import {
   ExpressInterestPage,
   TermsAndConditionsPage,
   PrivacyPolicyPage,
+  ThanksForSharingPage,
 } from "../pages";
 import { appTheme } from "../themes";
 
@@ -70,6 +71,15 @@ function App() {
             }}
             element={<OpportunityPage />}
             errorElement={<ErrorPage />}
+          />
+          <Route
+            path="opportunity/:opportunityId/thanks"
+            loader={({ params }) => {
+              return api.opportunityControllerGetId({
+                id: params.opportunityId ?? "",
+              });
+            }}
+            element={<ThanksForSharingPage />}
           />
           <Route
             path="opportunity/:opportunityId/apply"

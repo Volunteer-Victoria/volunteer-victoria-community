@@ -20,7 +20,7 @@ export const CreateOpportunityPage = () => {
         opportunityCreateDto: opportunity,
       });
       enqueueSnackbar("Opportunity added!", { variant: "success" });
-      navigate(`/opportunity/${result.opportunityId}`);
+      navigate(`/opportunity/${result.opportunityId}/thanks`);
     } catch (e) {
       enqueueSnackbar("Error adding opportunity.  Try again later.", {
         variant: "error",
