@@ -4,7 +4,7 @@ import { ReturnableLayout } from "../../components/ReturnableLayout";
 export const PrivacyPolicyPage = () => {
   return (
     <Container maxWidth="md">
-      <ReturnableLayout label="Back">
+      <ReturnableLayout label="Back" to="/">
         <Box pb={4}>
           <Card>
             <Box px={{ xs: 3, lg: 4 }} py={{ xs: 2, lg: 3 }}>

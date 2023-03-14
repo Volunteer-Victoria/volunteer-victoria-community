@@ -51,6 +51,21 @@ export const FooterSection = () => {
                 </Typography>
               </Link>
             </Box>
+            <Box
+              component="li"
+              p={0}
+              m={0}
+              pl="4px"
+              sx={{
+                listStyleType: '">"',
+                color: "white",
+                fontSize: "22px",
+              }}
+            >
+              <Link to="/privacy-policy" style={{ color: "white" }}>
+                <Typography variant="subtitle2">Privacy Policy</Typography>
+              </Link>
+            </Box>
           </Box>
         </Box>
         <Box>
