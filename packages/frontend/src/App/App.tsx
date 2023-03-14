@@ -21,6 +21,7 @@ import {
   TermsAndConditionsPage,
   PrivacyPolicyPage,
   ThanksForSharingPage,
+  ThanksForApplyingPage,
 } from "../pages";
 import { appTheme } from "../themes";
 
@@ -90,6 +91,15 @@ function App() {
             }}
             element={<ExpressInterestPage />}
             errorElement={<ErrorPage />}
+          />
+          <Route
+            path="opportunity/:opportunityId/apply/thanks"
+            loader={({ params }) => {
+              return api.opportunityControllerGetId({
+                id: params.opportunityId ?? "",
+              });
+            }}
+            element={<ThanksForApplyingPage />}
           />
           <Route path="*" element={<Navigate to="/" replace={true} />} />
         </Route>

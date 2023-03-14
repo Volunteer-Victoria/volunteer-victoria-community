@@ -19,4 +19,5 @@ export * from "./Opportunities";
 export * from "./Opportunity";
 export * from "./PrivacyPolicy";
 export * from "./TermsAndConditions";
+export * from "./ThanksForApplying";
 export * from "./ThanksForSharing";
