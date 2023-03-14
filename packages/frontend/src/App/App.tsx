@@ -19,6 +19,7 @@ import {
   LandingPage,
   ExpressInterestPage,
   TermsAndConditionsPage,
+  PrivacyPolicyPage,
 } from "../pages";
 import { appTheme } from "../themes";
 
@@ -35,6 +36,7 @@ function App() {
             path="terms-and-conditions"
             element={<TermsAndConditionsPage />}
           />
+          <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
           <Route
             path="opportunities/create"
             element={<CreateOpportunityPage />}

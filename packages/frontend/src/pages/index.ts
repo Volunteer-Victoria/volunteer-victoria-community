@@ -7,3 +7,4 @@ export * from "./Login";
 export * from "./Opportunities";
 export * from "./Opportunity";
 export * from "./TermsAndConditions";
+export * from "./PrivacyPolicy";
