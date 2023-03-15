@@ -10,6 +10,8 @@ import type { Response } from "express";
 @Catch()
 export class GenericExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
+    console.error(exception);
+
     const res = host.switchToHttp().getResponse<Response>();
     if (exception instanceof HttpException) {
       let response;
@@ -20,7 +22,6 @@ export class GenericExceptionFilter implements ExceptionFilter {
       }
       res.status(exception.getStatus()).json(response);
     } else {
-      console.error(exception);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).end();
     }
   }

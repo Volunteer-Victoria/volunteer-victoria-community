@@ -51,7 +51,7 @@ export const ExpressInterestPage = () => {
 
       enqueueSnackbar("Message sent!", { variant: "success" });
 
-      navigate(`/opportunity/${opportunity.opportunityId}`);
+      navigate(`/opportunity/${opportunity.opportunityId}/apply/thanks`);
     } catch (e) {
       enqueueSnackbar("Error sending message.  Try again later.", {
         variant: "error",

@@ -18,6 +18,10 @@ import {
   EditOpportunityPage,
   LandingPage,
   ExpressInterestPage,
+  TermsAndConditionsPage,
+  PrivacyPolicyPage,
+  ThanksForSharingPage,
+  ThanksForApplyingPage,
 } from "../pages";
 import { appTheme } from "../themes";
 
@@ -30,6 +34,11 @@ function App() {
         <Route path="" element={<LandingPage />} />
         <Route element={<MainLayout />}>
           <Route path="login" element={<LoginPage />} />
+          <Route
+            path="terms-and-conditions"
+            element={<TermsAndConditionsPage />}
+          />
+          <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
           <Route
             path="opportunities/create"
             element={<CreateOpportunityPage />}
@@ -65,6 +74,15 @@ function App() {
             errorElement={<ErrorPage />}
           />
           <Route
+            path="opportunity/:opportunityId/thanks"
+            loader={({ params }) => {
+              return api.opportunityControllerGetId({
+                id: params.opportunityId ?? "",
+              });
+            }}
+            element={<ThanksForSharingPage />}
+          />
+          <Route
             path="opportunity/:opportunityId/apply"
             loader={({ params }) => {
               return api.opportunityControllerGetId({
@@ -73,6 +91,15 @@ function App() {
             }}
             element={<ExpressInterestPage />}
             errorElement={<ErrorPage />}
+          />
+          <Route
+            path="opportunity/:opportunityId/apply/thanks"
+            loader={({ params }) => {
+              return api.opportunityControllerGetId({
+                id: params.opportunityId ?? "",
+              });
+            }}
+            element={<ThanksForApplyingPage />}
           />
           <Route path="*" element={<Navigate to="/" replace={true} />} />
         </Route>
