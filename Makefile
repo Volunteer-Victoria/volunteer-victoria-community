@@ -12,21 +12,29 @@ FRONTEND_BUILD_DIR = "$(FRONTEND_DIR)/dist"
 APP_SRC_BUCKET = $(NAMESPACE)-app-dist
 TARGET_ARCH = arm64
 CERT_DOMAIN = community.volunteervictoria.bc.ca
-DOMAIN = $(ENV_NAME).$(CERT_DOMAIN)
-AUTH0_AUDIENCE = https://$(DOMAIN)/api
 
 ifeq ($(ENV_NAME), dev)
+DOMAIN = $(ENV_NAME).$(CERT_DOMAIN)
 CLOUDFRONT_ID = E2V91EEXG7I3BC
 AUTH0_CLIENT_ID = gWVmaB2m8JYW7QeJeLgAscP0SWdLgKj6
 AUTH0_DOMAIN = dev-71ee1qantl30gloi.us.auth0.com
 endif
 
 ifeq ($(ENV_NAME), test)
+DOMAIN = $(ENV_NAME).$(CERT_DOMAIN)
 CLOUDFRONT_ID = E2DCH2Y2F2YP49
 AUTH0_CLIENT_ID = QG9VBSu3MhlybYfIGhqaQMqozyS2kbpF
 AUTH0_DOMAIN = volunteer-victoria-community.us.auth0.com
 endif
 
+ifeq ($(ENV_NAME), prod)
+DOMAIN = $(CERT_DOMAIN)
+CLOUDFRONT_ID = E2DCH2Y2F2YP49
+AUTH0_CLIENT_ID = QG9VBSu3MhlybYfIGhqaQMqozyS2kbpF
+AUTH0_DOMAIN = volunteer-victoria-community.us.auth0.com
+endif
+
+AUTH0_AUDIENCE = https://$(DOMAIN)/api
 AUTH0_ISSUER_URL = https://$(AUTH0_DOMAIN)/
 
 # Front-end build parameters
