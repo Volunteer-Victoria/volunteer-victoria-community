@@ -5,6 +5,7 @@ import { MessageThreadEntity } from "../message/thread.entity";
 import { OpportunityEntity } from "../opportunity/opportunity.entity";
 import { CreateOpportunityTable1672450383070 } from "./migrations/1672450383070-CreateOpportunityTable";
 import { CreateMessageTables1673051031712 } from "./migrations/1673051031712-CreateMessageTables";
+import { IndoorsOrOutdoorsMultiChoice1678925103136 } from "./migrations/1678925103136-IndoorsOrOutdoorsMultiChoice";
 
 const dbInMemory = process.env["DB_INMEMORY"] !== undefined;
 
@@ -13,6 +14,7 @@ const entities = [OpportunityEntity, MessageEntity, MessageThreadEntity];
 const migrations = [
   CreateOpportunityTable1672450383070,
   CreateMessageTables1673051031712,
+  IndoorsOrOutdoorsMultiChoice1678925103136,
 ];
 
 export const CockroachDbModule = TypeOrmModule.forRootAsync({

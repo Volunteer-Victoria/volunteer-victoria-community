@@ -63,10 +63,10 @@ export interface OpportunityResponseDto {
   locationName: string;
   /**
    *
-   * @type {string}
+   * @type {Array<string>}
    * @memberof OpportunityResponseDto
    */
-  indoorsOrOutdoors: OpportunityResponseDtoIndoorsOrOutdoorsEnum;
+  indoorsOutdoorsOnline: Array<string>;
   /**
    *
    * @type {string}
@@ -112,16 +112,6 @@ export interface OpportunityResponseDto {
 }
 
 /**
- * @export
- */
-export const OpportunityResponseDtoIndoorsOrOutdoorsEnum = {
-  Indoors: "indoors",
-  Outdoors: "outdoors",
-} as const;
-export type OpportunityResponseDtoIndoorsOrOutdoorsEnum =
-  typeof OpportunityResponseDtoIndoorsOrOutdoorsEnum[keyof typeof OpportunityResponseDtoIndoorsOrOutdoorsEnum];
-
-/**
  * Check if a given object implements the OpportunityResponseDto interface.
  */
 export function instanceOfOpportunityResponseDto(value: object): boolean {
@@ -133,7 +123,7 @@ export function instanceOfOpportunityResponseDto(value: object): boolean {
   isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
-  isInstance = isInstance && "indoorsOrOutdoors" in value;
+  isInstance = isInstance && "indoorsOutdoorsOnline" in value;
   isInstance = isInstance && "criminalRecordCheckRequired" in value;
   isInstance = isInstance && "opportunityId" in value;
   isInstance = isInstance && "postedTime" in value;
@@ -163,7 +153,7 @@ export function OpportunityResponseDtoFromJSONTyped(
     occursTime: json["occursTime"],
     description: json["description"],
     locationName: json["locationName"],
-    indoorsOrOutdoors: json["indoorsOrOutdoors"],
+    indoorsOutdoorsOnline: json["indoorsOutdoorsOnline"],
     contactPhone: !exists(json, "contactPhone")
       ? undefined
       : json["contactPhone"],
@@ -197,7 +187,7 @@ export function OpportunityResponseDtoToJSON(
     occursTime: value.occursTime,
     description: value.description,
     locationName: value.locationName,
-    indoorsOrOutdoors: value.indoorsOrOutdoors,
+    indoorsOutdoorsOnline: value.indoorsOutdoorsOnline,
     contactPhone: value.contactPhone,
     criminalRecordCheckRequired: value.criminalRecordCheckRequired,
     idealVolunteer: value.idealVolunteer,
