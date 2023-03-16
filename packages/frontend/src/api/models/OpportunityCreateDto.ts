@@ -66,7 +66,7 @@ export interface OpportunityCreateDto {
    * @type {Array<string>}
    * @memberof OpportunityCreateDto
    */
-  indoorsOutdoorsOnline: Array<string>;
+  indoorsOutdoorsOnline: Array<OpportunityCreateDtoIndoorsOutdoorsOnlineEnum>;
   /**
    *
    * @type {string}
@@ -92,6 +92,17 @@ export interface OpportunityCreateDto {
    */
   additionalInformation?: string;
 }
+
+/**
+ * @export
+ */
+export const OpportunityCreateDtoIndoorsOutdoorsOnlineEnum = {
+  Indoors: "indoors",
+  Outdoors: "outdoors",
+  Online: "online",
+} as const;
+export type OpportunityCreateDtoIndoorsOutdoorsOnlineEnum =
+  typeof OpportunityCreateDtoIndoorsOutdoorsOnlineEnum[keyof typeof OpportunityCreateDtoIndoorsOutdoorsOnlineEnum];
 
 /**
  * Check if a given object implements the OpportunityCreateDto interface.

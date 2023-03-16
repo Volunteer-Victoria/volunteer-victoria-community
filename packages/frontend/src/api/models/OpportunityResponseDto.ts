@@ -66,7 +66,7 @@ export interface OpportunityResponseDto {
    * @type {Array<string>}
    * @memberof OpportunityResponseDto
    */
-  indoorsOutdoorsOnline: Array<string>;
+  indoorsOutdoorsOnline: Array<OpportunityResponseDtoIndoorsOutdoorsOnlineEnum>;
   /**
    *
    * @type {string}
@@ -110,6 +110,17 @@ export interface OpportunityResponseDto {
    */
   postedByUserId: string;
 }
+
+/**
+ * @export
+ */
+export const OpportunityResponseDtoIndoorsOutdoorsOnlineEnum = {
+  Indoors: "indoors",
+  Outdoors: "outdoors",
+  Online: "online",
+} as const;
+export type OpportunityResponseDtoIndoorsOutdoorsOnlineEnum =
+  typeof OpportunityResponseDtoIndoorsOutdoorsOnlineEnum[keyof typeof OpportunityResponseDtoIndoorsOutdoorsOnlineEnum];
 
 /**
  * Check if a given object implements the OpportunityResponseDto interface.
