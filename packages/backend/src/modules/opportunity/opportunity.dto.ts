@@ -49,7 +49,9 @@ class OpportunityBase {
   @IsString()
   locationName!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: '["indoors", "outdoors", "online"]',
+  })
   @IsEnum(IndoorsOutdoorsOnline, { each: true })
   indoorsOutdoorsOnline!: IndoorsOutdoorsOnline[];
 
