@@ -17,7 +17,7 @@ const exampleOpp1 = {
   occursTime: "in the evening - just go into the shed and find out",
   description: "volunteering",
   locationName: "my shed",
-  indoorsOrOutdoors: "indoors",
+  indoorsOutdoorsOnline: ["indoors"],
   contactPhone: "1234567890",
   criminalRecordCheckRequired: false,
   idealVolunteer: "large",
@@ -72,7 +72,7 @@ describe(path, () => {
     expect(typeof postBody.postedTime).toBe("number");
     expect(postBody.postedByUserId).toBeDefined();
     for (const [k, v] of Object.entries(exampleOpp1)) {
-      expect(postBody[k]).toBe(v);
+      expect(postBody[k]).toEqual(v);
     }
 
     const getResp = await api.get(path).expect(200);
@@ -85,7 +85,7 @@ describe(path, () => {
     const getIdResp = await api.get(`/opportunity/${oppId}`).expect(200);
     const opp = getIdResp.body;
     for (const [k, v] of Object.entries(postBody)) {
-      expect(opp[k]).toBe(v);
+      expect(opp[k]).toEqual(v);
     }
   });
 
@@ -212,7 +212,7 @@ describe(path, () => {
         occursTime: "",
         description: "",
         locationName: "",
-        indoorsOrOutdoors: "indoors",
+        indoorsOutdoorsOnline: [],
         criminalRecordCheckRequired: false,
       })
       .expect(201);

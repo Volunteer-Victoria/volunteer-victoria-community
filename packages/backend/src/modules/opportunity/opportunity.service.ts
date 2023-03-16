@@ -5,23 +5,57 @@ import { InjectRepository } from "@nestjs/typeorm";
 import random from "random";
 import type { Repository } from "typeorm";
 import { MoreThanOrEqual } from "typeorm";
-import {
-  nullToUndefined,
-  transformAndValidate,
-  undefinedToNull,
-  uniqueId,
-} from "../../util";
+import { nullToUndefined, transformAndValidate, uniqueId } from "../../util";
 import type { UserInfo } from "../auth/auth.module";
 import {
+  IndoorsOutdoorsOnline,
   OpportunityCreateDto,
   OpportunityResponseDto,
 } from "./opportunity.dto";
 import { OpportunityEntity } from "./opportunity.entity";
 
+const { Indoors, Outdoors, Online } = IndoorsOutdoorsOnline;
+
 function assertCanEdit(opp: OpportunityEntity, user: UserInfo): void {
   if (!user.isAdmin && opp.postedByUserId !== user.id) {
     throw new ForbiddenException();
   }
+}
+
+async function entityToDto(
+  opp: OpportunityEntity
+): Promise<OpportunityResponseDto> {
+  return transformAndValidate(OpportunityResponseDto, {
+    ...nullToUndefined(opp),
+    indoorsOutdoorsOnline: [
+      ...(opp.isIndoors ? [Indoors] : []),
+      ...(opp.isOutdoors ? [Outdoors] : []),
+      ...(opp.isOnline ? [Online] : []),
+    ],
+  });
+}
+
+function dtoToEntity(
+  values: OpportunityResponseDto & { contactEmail: string }
+): OpportunityEntity {
+  const {
+    indoorsOutdoorsOnline,
+    occursTime,
+    contactPhone,
+    idealVolunteer,
+    additionalInformation,
+    ...rest
+  } = values;
+  return {
+    ...rest,
+    occursTime: occursTime ?? null,
+    contactPhone: contactPhone ?? null,
+    idealVolunteer: idealVolunteer ?? null,
+    additionalInformation: additionalInformation ?? null,
+    isIndoors: indoorsOutdoorsOnline.includes(Indoors),
+    isOutdoors: indoorsOutdoorsOnline.includes(Outdoors),
+    isOnline: indoorsOutdoorsOnline.includes(Online),
+  };
 }
 
 @Injectable()
@@ -50,7 +84,7 @@ export class OpportunityService {
         occursDate: MoreThanOrEqual(minOccursDate),
       });
     }
-    return transformAndValidate(OpportunityResponseDto, items);
+    return Promise.all(items.map((entity) => entityToDto(entity)));
   }
 
   async findOne(id: string): Promise<OpportunityResponseDto | null> {
@@ -58,7 +92,7 @@ export class OpportunityService {
     if (opp === null) {
       return null;
     } else {
-      return transformAndValidate(OpportunityResponseDto, nullToUndefined(opp));
+      return entityToDto(opp);
     }
   }
 
@@ -66,14 +100,14 @@ export class OpportunityService {
     values: OpportunityCreateDto,
     user: UserInfo
   ): Promise<OpportunityResponseDto> {
-    const opp = {
+    const opp = dtoToEntity({
       ...values,
       contactEmail: user.email,
       opportunityId: uniqueId(),
       postedTime: Instant.now().epochSecond(),
       postedByUserId: user.id,
-    };
-    const resp = await transformAndValidate(OpportunityResponseDto, opp);
+    });
+    const resp = await entityToDto(opp);
     await this.opportunities.insert(opp);
     return resp;
   }
@@ -89,7 +123,7 @@ export class OpportunityService {
     } else {
       assertCanEdit(opp, user);
       const { postedTime, opportunityId, postedByUserId, contactEmail } = opp;
-      const updated = nullToUndefined({
+      const updated = dtoToEntity({
         ...values,
         postedTime,
         opportunityId,
@@ -97,9 +131,8 @@ export class OpportunityService {
         contactEmail,
       });
 
-      const resp = await transformAndValidate(OpportunityResponseDto, updated);
-      const updatedForDb = undefinedToNull(opp, updated);
-      await this.opportunities.update({ opportunityId }, updatedForDb);
+      const resp = await entityToDto(updated);
+      await this.opportunities.update({ opportunityId }, updated);
 
       return resp;
     }
@@ -115,7 +148,7 @@ export class OpportunityService {
     } else {
       assertCanEdit(opp, user);
       await this.opportunities.delete({ opportunityId });
-      return transformAndValidate(OpportunityResponseDto, nullToUndefined(opp));
+      return entityToDto(opp);
     }
   }
 
@@ -141,7 +174,11 @@ export class OpportunityService {
       occursTime: faker.lorem.sentences(random.int(0, 1)),
       description: faker.lorem.paragraphs(random.int(1, 3)),
       locationName: faker.address.streetAddress(),
-      indoorsOrOutdoors: ["indoors", "outdoors"][random.int(0, 1)]!,
+      indoorsOutdoorsOnline: [
+        ...(random.bool() ? [Indoors] : []),
+        ...(random.bool() ? [Outdoors] : []),
+        ...(random.bool() ? [Online] : []),
+      ] as IndoorsOutdoorsOnline[],
       contactPhone: faker.phone.number(),
       criminalRecordCheckRequired: random.bool(),
       idealVolunteer: faker.lorem.sentences(random.int(0, 4)),
