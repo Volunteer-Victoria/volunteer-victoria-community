@@ -12,6 +12,9 @@ export class IndoorsOrOutdoorsMultiChoice1678925103136 extends UnrevertableMigra
       UPDATE "opportunity"
       SET "isIndoors" = ("indoorsOrOutdoors" = 'indoors'),
           "isOutdoors" = ("indoorsOrOutdoors" = 'outdoors');
+
+      ALTER TABLE "opportunity"
+      DROP COLUMN "indoorsOrOutdoors";
     `);
   }
 }

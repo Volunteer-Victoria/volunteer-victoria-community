@@ -63,10 +63,10 @@ export interface OpportunityCreateDto {
   locationName: string;
   /**
    *
-   * @type {string}
+   * @type {Array<string>}
    * @memberof OpportunityCreateDto
    */
-  indoorsOrOutdoors: OpportunityCreateDtoIndoorsOrOutdoorsEnum;
+  indoorsOutdoorsOnline: Array<string>;
   /**
    *
    * @type {string}
@@ -94,16 +94,6 @@ export interface OpportunityCreateDto {
 }
 
 /**
- * @export
- */
-export const OpportunityCreateDtoIndoorsOrOutdoorsEnum = {
-  Indoors: "indoors",
-  Outdoors: "outdoors",
-} as const;
-export type OpportunityCreateDtoIndoorsOrOutdoorsEnum =
-  typeof OpportunityCreateDtoIndoorsOrOutdoorsEnum[keyof typeof OpportunityCreateDtoIndoorsOrOutdoorsEnum];
-
-/**
  * Check if a given object implements the OpportunityCreateDto interface.
  */
 export function instanceOfOpportunityCreateDto(value: object): boolean {
@@ -115,7 +105,7 @@ export function instanceOfOpportunityCreateDto(value: object): boolean {
   isInstance = isInstance && "occursTime" in value;
   isInstance = isInstance && "description" in value;
   isInstance = isInstance && "locationName" in value;
-  isInstance = isInstance && "indoorsOrOutdoors" in value;
+  isInstance = isInstance && "indoorsOutdoorsOnline" in value;
   isInstance = isInstance && "criminalRecordCheckRequired" in value;
 
   return isInstance;
@@ -140,7 +130,7 @@ export function OpportunityCreateDtoFromJSONTyped(
     occursTime: json["occursTime"],
     description: json["description"],
     locationName: json["locationName"],
-    indoorsOrOutdoors: json["indoorsOrOutdoors"],
+    indoorsOutdoorsOnline: json["indoorsOutdoorsOnline"],
     contactPhone: !exists(json, "contactPhone")
       ? undefined
       : json["contactPhone"],
@@ -171,7 +161,7 @@ export function OpportunityCreateDtoToJSON(
     occursTime: value.occursTime,
     description: value.description,
     locationName: value.locationName,
-    indoorsOrOutdoors: value.indoorsOrOutdoors,
+    indoorsOutdoorsOnline: value.indoorsOutdoorsOnline,
     contactPhone: value.contactPhone,
     criminalRecordCheckRequired: value.criminalRecordCheckRequired,
     idealVolunteer: value.idealVolunteer,
