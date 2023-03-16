@@ -9,6 +9,8 @@ export class IndoorsOrOutdoorsMultiChoice1678925103136 extends UnrevertableMigra
       ADD "isOutdoors" boolean NOT NULL DEFAULT false,
       ADD "isOnline" boolean NOT NULL DEFAULT false;
 
+      COMMIT;
+
       UPDATE "opportunity"
       SET "isIndoors" = ("indoorsOrOutdoors" = 'indoors'),
           "isOutdoors" = ("indoorsOrOutdoors" = 'outdoors');
