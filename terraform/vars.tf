@@ -22,4 +22,5 @@ variable "auth0_client_id" {}
 locals {
   namespace = "${var.project_name}-${var.env_name}"
   aws_account_id = data.aws_caller_identity.current.account_id
+  is_prod = var.env_name == "prod"
 }
