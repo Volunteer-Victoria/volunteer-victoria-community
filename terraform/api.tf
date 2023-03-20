@@ -13,6 +13,7 @@ resource "aws_lambda_function" "api" {
   memory_size      = 1024
   timeout          = 10
   architectures    = [var.target_arch]
+  publish          = true
 
   depends_on = [
     aws_cloudwatch_log_group.api_lambda,
