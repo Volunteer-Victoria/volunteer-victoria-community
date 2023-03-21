@@ -25,6 +25,7 @@ import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
 import { useMemo } from "react";
+import { IndoorsOutdoorsOnline } from "./Fields/IndoorsOutdoorsOnline";
 
 interface EditableOpportunityFormProps {
   initialValues: Partial<FormData>;
@@ -95,67 +96,42 @@ export const EditableOpportunityForm = ({
             placeholder="10am, Afternoon, etc."
             {...mapFormik(formik, "time")}
           />
-          <FormControl
-            fullWidth
-            error={
-              formik.touched.indoorsOrOutdoors &&
-              Boolean(formik.errors.indoorsOrOutdoors)
-            }
-          >
-            <FormLabel id="indoor-outdoors-group-label">
-              Is your opportunity indoors or outdoors?
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="indoor-outdoors-group-label"
-              row
-              {...mapFormik(formik, "indoorsOrOutdoors", [
-                "helperText",
-                "error",
-              ])}
+          <Stack direction={{ xs: "column", lg: "row" }}>
+            <IndoorsOutdoorsOnline
+              value={formik.values.indoorsOutdoorsOnline}
+              error={formik.errors.indoorsOutdoorsOnline as string}
+              touched={Boolean(formik.touched.indoorsOutdoorsOnline)}
+              onChange={(value) =>
+                formik.setFieldValue("indoorsOutdoorsOnline", value)
+              }
+            />
+            <FormControl
+              fullWidth
+              error={
+                formik.touched.criminalRecordCheckRequired &&
+                Boolean(formik.errors.criminalRecordCheckRequired)
+              }
             >
-              <FormControlLabel
-                value="indoors"
-                control={<Radio />}
-                label="Indoors"
-              />
-              <FormControlLabel
-                value="outdoors"
-                control={<Radio />}
-                label="Outdoors"
-              />
-            </RadioGroup>
-            <FormHelperText>
-              {formik.touched.indoorsOrOutdoors &&
-                (formik.errors.indoorsOrOutdoors as string)}
-            </FormHelperText>
-          </FormControl>
-          <FormControl
-            fullWidth
-            error={
-              formik.touched.criminalRecordCheckRequired &&
-              Boolean(formik.errors.criminalRecordCheckRequired)
-            }
-          >
-            <FormLabel id="criminal-check-group-label">
-              Criminal Record Check Required?
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="criminal-check-group-label"
-              row
-              {...mapFormik(formik, "criminalRecordCheckRequired", [
-                "helperText",
-                "error",
-              ])}
-            >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
-            </RadioGroup>
-            <FormHelperText>
-              {formik.touched.criminalRecordCheckRequired &&
-                (formik.errors.criminalRecordCheckRequired as string)}
-            </FormHelperText>
-          </FormControl>
-
+              <FormLabel id="criminal-check-group-label">
+                Criminal Record Check Required?
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="criminal-check-group-label"
+                row
+                {...mapFormik(formik, "criminalRecordCheckRequired", [
+                  "helperText",
+                  "error",
+                ])}
+              >
+                <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                <FormControlLabel value="no" control={<Radio />} label="No" />
+              </RadioGroup>
+              <FormHelperText>
+                {formik.touched.criminalRecordCheckRequired &&
+                  (formik.errors.criminalRecordCheckRequired as string)}
+              </FormHelperText>
+            </FormControl>
+          </Stack>
           <TextField
             label="Ideal Volunteer (optional)"
             {...mapFormik(formik, "idealVolunteer")}

@@ -37,10 +37,5 @@ export const mapFormik = <T extends FormikValues>(
     delete fields[field];
   }
 
-  if (name === "date") {
-    // fields.value="2022-11-29" as any;
-    console.log("Formik date", fields);
-  }
-
   return fields;
 };

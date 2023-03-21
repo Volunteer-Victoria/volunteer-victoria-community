@@ -1,7 +1,4 @@
-import {
-  OpportunityCreateDto,
-  OpportunityCreateDtoIndoorsOrOutdoorsEnum,
-} from "../../api";
+import { OpportunityCreateDto } from "../../api";
 import { FormData } from "./default-values";
 
 /**
@@ -11,11 +8,6 @@ import { FormData } from "./default-values";
 export const formDataToOpportunity = (
   formData: FormData
 ): OpportunityCreateDto => {
-  const indoorsOrOutdoors =
-    formData.indoorsOrOutdoors === "indoors"
-      ? OpportunityCreateDtoIndoorsOrOutdoorsEnum.Indoors
-      : OpportunityCreateDtoIndoorsOrOutdoorsEnum.Outdoors;
-
   const occursDate = formData.date.toFormat("yyyy-MM-dd");
 
   return {
@@ -24,7 +16,7 @@ export const formDataToOpportunity = (
     requiredPeopleCount: parseInt(formData.requiredPeopleCount),
     description: formData.description,
     locationName: formData.locationName,
-    indoorsOrOutdoors,
+    indoorsOutdoorsOnline: formData.indoorsOutdoorsOnline,
     contactPhone: formData.contactPhone,
     criminalRecordCheckRequired: formData.criminalRecordCheckRequired === "yes",
     idealVolunteer: formData.idealVolunteer,

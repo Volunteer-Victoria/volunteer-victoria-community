@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Link, useLoaderData } from "react-router-dom";
 import { OpportunityResponseDto } from "../../api";
-import { formatYMD } from "../../common";
+import { formatIndoorsOutdoorsOnline, formatYMD } from "../../common";
 import { ManageOpportunity } from "../../components/ManageOpportunity/ManageOpportunity";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
 import { useUser } from "../../components/UserDataProvider/use-user";
@@ -89,7 +89,9 @@ export const OpportunityPage = () => {
                   />
                   <DefinitionItem
                     title="Environment"
-                    details={opportunity.indoorsOrOutdoors}
+                    details={formatIndoorsOutdoorsOnline(
+                      opportunity.indoorsOutdoorsOnline
+                    )}
                   />
                   <DefinitionItem
                     title="Criminal Record Check required"

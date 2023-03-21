@@ -20,7 +20,7 @@ export const opportunityToFormData = (
     requiredPeopleCount: opportunity.requiredPeopleCount.toString(),
     date,
     time: opportunity.occursTime ?? "",
-    indoorsOrOutdoors: opportunity.indoorsOrOutdoors,
+    indoorsOutdoorsOnline: opportunity.indoorsOutdoorsOnline,
     criminalRecordCheckRequired: opportunity.criminalRecordCheckRequired
       ? "yes"
       : "no",
