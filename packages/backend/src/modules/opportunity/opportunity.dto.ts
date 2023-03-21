@@ -9,9 +9,10 @@ import {
   Length,
 } from "class-validator";
 
-enum IndoorsOrOutdoors {
+export enum IndoorsOutdoorsOnline {
   Indoors = "indoors",
   Outdoors = "outdoors",
+  Online = "online",
 }
 
 class OpportunityBase {
@@ -32,7 +33,7 @@ class OpportunityBase {
   @ApiProperty({
     example: "2022-11-24",
   })
-  occursDate?: string;
+  occursDate!: string;
 
   @IsString()
   @ApiProperty({
@@ -48,9 +49,12 @@ class OpportunityBase {
   @IsString()
   locationName!: string;
 
-  @ApiProperty({ enum: IndoorsOrOutdoors })
-  @IsEnum(IndoorsOrOutdoors)
-  indoorsOrOutdoors!: string;
+  @ApiProperty({
+    enum: IndoorsOutdoorsOnline,
+    isArray: true,
+  })
+  @IsEnum(IndoorsOutdoorsOnline, { each: true })
+  indoorsOutdoorsOnline!: IndoorsOutdoorsOnline[];
 
   @ApiProperty({ required: false })
   @IsString()

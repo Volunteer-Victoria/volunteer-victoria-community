@@ -25,6 +25,8 @@ import { defaultValues, FormData } from "./default-values";
 import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
 import { useMemo } from "react";
+import { IndoorsOutdoorsOnline } from "./Fields/IndoorsOutdoorsOnline";
+import { Link } from "react-router-dom";
 
 interface EditableOpportunityFormProps {
   initialValues: Partial<FormData>;
@@ -95,67 +97,42 @@ export const EditableOpportunityForm = ({
             placeholder="10am, Afternoon, etc."
             {...mapFormik(formik, "time")}
           />
-          <FormControl
-            fullWidth
-            error={
-              formik.touched.indoorsOrOutdoors &&
-              Boolean(formik.errors.indoorsOrOutdoors)
-            }
-          >
-            <FormLabel id="indoor-outdoors-group-label">
-              Is your opportunity indoors or outdoors?
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="indoor-outdoors-group-label"
-              row
-              {...mapFormik(formik, "indoorsOrOutdoors", [
-                "helperText",
-                "error",
-              ])}
+          <Stack direction={{ xs: "column", lg: "row" }}>
+            <IndoorsOutdoorsOnline
+              value={formik.values.indoorsOutdoorsOnline}
+              error={formik.errors.indoorsOutdoorsOnline as string}
+              touched={Boolean(formik.touched.indoorsOutdoorsOnline)}
+              onChange={(value) =>
+                formik.setFieldValue("indoorsOutdoorsOnline", value)
+              }
+            />
+            <FormControl
+              fullWidth
+              error={
+                formik.touched.criminalRecordCheckRequired &&
+                Boolean(formik.errors.criminalRecordCheckRequired)
+              }
             >
-              <FormControlLabel
-                value="indoors"
-                control={<Radio />}
-                label="Indoors"
-              />
-              <FormControlLabel
-                value="outdoors"
-                control={<Radio />}
-                label="Outdoors"
-              />
-            </RadioGroup>
-            <FormHelperText>
-              {formik.touched.indoorsOrOutdoors &&
-                (formik.errors.indoorsOrOutdoors as string)}
-            </FormHelperText>
-          </FormControl>
-          <FormControl
-            fullWidth
-            error={
-              formik.touched.criminalRecordCheckRequired &&
-              Boolean(formik.errors.criminalRecordCheckRequired)
-            }
-          >
-            <FormLabel id="criminal-check-group-label">
-              Criminal Record Check Required?
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="criminal-check-group-label"
-              row
-              {...mapFormik(formik, "criminalRecordCheckRequired", [
-                "helperText",
-                "error",
-              ])}
-            >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
-            </RadioGroup>
-            <FormHelperText>
-              {formik.touched.criminalRecordCheckRequired &&
-                (formik.errors.criminalRecordCheckRequired as string)}
-            </FormHelperText>
-          </FormControl>
-
+              <FormLabel id="criminal-check-group-label">
+                Criminal Record Check Required?
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="criminal-check-group-label"
+                row
+                {...mapFormik(formik, "criminalRecordCheckRequired", [
+                  "helperText",
+                  "error",
+                ])}
+              >
+                <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                <FormControlLabel value="no" control={<Radio />} label="No" />
+              </RadioGroup>
+              <FormHelperText>
+                {formik.touched.criminalRecordCheckRequired &&
+                  (formik.errors.criminalRecordCheckRequired as string)}
+              </FormHelperText>
+            </FormControl>
+          </Stack>
           <TextField
             label="Ideal Volunteer (optional)"
             {...mapFormik(formik, "idealVolunteer")}
@@ -180,14 +157,6 @@ export const EditableOpportunityForm = ({
       <Divider />
       <Stack spacing={2}>
         <Alert severity="info">
-          General Guidelines
-          <Box component="ul" sx={{ pl: 2 }}>
-            <li>Guideline 1</li>
-            <li>Guideline 2</li>
-            <li>Guideline 3</li>
-          </Box>
-        </Alert>
-        <Alert severity="info">
           Liability Notice
           <Box component="ul" sx={{ pl: 2 }}>
             <li>
@@ -206,24 +175,6 @@ export const EditableOpportunityForm = ({
         </Alert>
         <Stack spacing={0}>
           <FormControl
-            error={!!(formik.touched.guidelines && formik.errors.guidelines)}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="guidelines"
-                  checked={formik.values.guidelines}
-                  onChange={formik.handleChange}
-                />
-              }
-              label="I have read, understand and agree to the general guidelines"
-            />
-            <FormHelperText>
-              {formik.touched.guidelines &&
-                (formik.errors.guidelines as string)}
-            </FormHelperText>
-          </FormControl>
-          <FormControl
             error={!!(formik.touched.liability && formik.errors.liability)}
           >
             <FormControlLabel
@@ -238,6 +189,29 @@ export const EditableOpportunityForm = ({
             />
             <FormHelperText>
               {formik.touched.liability && (formik.errors.liability as string)}
+            </FormHelperText>
+          </FormControl>
+          <FormControl
+            error={!!(formik.touched.guidelines && formik.errors.guidelines)}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="guidelines"
+                  checked={formik.values.guidelines}
+                  onChange={formik.handleChange}
+                />
+              }
+              label="I have read, understand and agree to the terms and conditions"
+            />
+            <FormHelperText>
+              <Link to="/terms-and-conditions" target="_blank">
+                Volunteer Victoria's Terms and Conditions
+              </Link>
+            </FormHelperText>
+            <FormHelperText>
+              {formik.touched.guidelines &&
+                (formik.errors.guidelines as string)}
             </FormHelperText>
           </FormControl>
         </Stack>

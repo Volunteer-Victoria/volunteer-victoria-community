@@ -17,10 +17,10 @@ export const schema = yup.object().shape<SchemaFields>({
     .required("Required"),
   date: yup.string().required("Required"),
   time: yup.string().required("Required"),
-  indoorsOrOutdoors: yup
-    .string()
-    .oneOf(["indoors", "outdoors"])
-    .required("Required"),
+  indoorsOutdoorsOnline: yup
+    .array()
+    .required("Required")
+    .min(1, "Select at least one option"),
   criminalRecordCheckRequired: yup
     .string()
     .oneOf(["yes", "no"])

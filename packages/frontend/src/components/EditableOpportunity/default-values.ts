@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { OpportunityCreateDtoIndoorsOutdoorsOnlineEnum } from "../../api";
 
 export const defaultValues = {
   title: "",
@@ -7,7 +8,7 @@ export const defaultValues = {
   requiredPeopleCount: "",
   date: DateTime.now(),
   time: "",
-  indoorsOrOutdoors: "",
+  indoorsOutdoorsOnline: [] as OpportunityCreateDtoIndoorsOutdoorsOnlineEnum[],
   criminalRecordCheckRequired: "",
   idealVolunteer: "",
   additionalInformation: "",

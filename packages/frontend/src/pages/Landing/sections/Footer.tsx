@@ -45,6 +45,24 @@ export const FooterSection = () => {
                 fontSize: "22px",
               }}
             >
+              <a
+                href="https://volunteer-victoria-community.canny.io/feature-requests"
+                style={{ color: "white" }}
+              >
+                <Typography variant="subtitle2">Share Feedback</Typography>
+              </a>
+            </Box>
+            <Box
+              component="li"
+              p={0}
+              m={0}
+              pl="4px"
+              sx={{
+                listStyleType: '">"',
+                color: "white",
+                fontSize: "22px",
+              }}
+            >
               <Link to="/terms-and-conditions" style={{ color: "white" }}>
                 <Typography variant="subtitle2">
                   Terms and Conditions
