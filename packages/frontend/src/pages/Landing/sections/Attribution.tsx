@@ -1,5 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Grid, Typography } from "@mui/material";
 import { Section } from "./Section";
 import GovCanada from "../../../assets/gov-canada.png";
 
