@@ -26,6 +26,7 @@ import { Fieldset } from "./Fieldset";
 import { schema } from "./schema";
 import { useMemo } from "react";
 import { IndoorsOutdoorsOnline } from "./Fields/IndoorsOutdoorsOnline";
+import { Link } from "react-router-dom";
 
 interface EditableOpportunityFormProps {
   initialValues: Partial<FormData>;
@@ -156,14 +157,6 @@ export const EditableOpportunityForm = ({
       <Divider />
       <Stack spacing={2}>
         <Alert severity="info">
-          General Guidelines
-          <Box component="ul" sx={{ pl: 2 }}>
-            <li>Guideline 1</li>
-            <li>Guideline 2</li>
-            <li>Guideline 3</li>
-          </Box>
-        </Alert>
-        <Alert severity="info">
           Liability Notice
           <Box component="ul" sx={{ pl: 2 }}>
             <li>
@@ -182,24 +175,6 @@ export const EditableOpportunityForm = ({
         </Alert>
         <Stack spacing={0}>
           <FormControl
-            error={!!(formik.touched.guidelines && formik.errors.guidelines)}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="guidelines"
-                  checked={formik.values.guidelines}
-                  onChange={formik.handleChange}
-                />
-              }
-              label="I have read, understand and agree to the general guidelines"
-            />
-            <FormHelperText>
-              {formik.touched.guidelines &&
-                (formik.errors.guidelines as string)}
-            </FormHelperText>
-          </FormControl>
-          <FormControl
             error={!!(formik.touched.liability && formik.errors.liability)}
           >
             <FormControlLabel
@@ -214,6 +189,29 @@ export const EditableOpportunityForm = ({
             />
             <FormHelperText>
               {formik.touched.liability && (formik.errors.liability as string)}
+            </FormHelperText>
+          </FormControl>
+          <FormControl
+            error={!!(formik.touched.guidelines && formik.errors.guidelines)}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="guidelines"
+                  checked={formik.values.guidelines}
+                  onChange={formik.handleChange}
+                />
+              }
+              label="I have read, understand and agree to the terms and conditions"
+            />
+            <FormHelperText>
+              <Link to="/terms-and-conditions" target="_blank">
+                Volunteer Victoria's Terms and Conditions
+              </Link>
+            </FormHelperText>
+            <FormHelperText>
+              {formik.touched.guidelines &&
+                (formik.errors.guidelines as string)}
             </FormHelperText>
           </FormControl>
         </Stack>
