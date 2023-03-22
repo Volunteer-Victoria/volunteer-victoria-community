@@ -48,9 +48,9 @@ resource "aws_lambda_alias" "api" {
 
 resource "aws_lambda_provisioned_concurrency_config" "api" {
   # count = local.is_prod ? 1 : 0
-  function_name = aws_lambda_alias.api.function_name
+  function_name = aws_lambda_function.api.function_name
   provisioned_concurrent_executions = 1
-  qualifier     = aws_lambda_alias.api.name
+  qualifier = aws_lambda_alias.api.name
 }
 
 data "aws_ssm_parameter" "cdb_host" {
