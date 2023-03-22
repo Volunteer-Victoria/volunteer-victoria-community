@@ -4,6 +4,7 @@ on:
     branches:
       - dev
       - test
+      - prod
     paths:
       - "terraform/**"
   workflow_dispatch:
