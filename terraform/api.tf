@@ -82,7 +82,7 @@ resource "aws_apigatewayv2_integration" "api" {
   connection_type    = "INTERNET"
   description        = local.api_name
   integration_method = "POST"
-  integration_uri    = aws_lambda_alias.api.arn
+  integration_uri    = aws_lambda_alias.api.invoke_arn
 }
 
 resource "aws_apigatewayv2_route" "api" {
