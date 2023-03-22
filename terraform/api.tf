@@ -49,7 +49,7 @@ resource "aws_lambda_alias" "api" {
 resource "aws_lambda_provisioned_concurrency_config" "api" {
   # count = local.is_prod ? 1 : 0
 
-  function_name = aws_lambda_alias.api.function_name
+  function_name = aws_lambda_function.api.function_name
   qualifier     = aws_lambda_alias.api.name
   
   provisioned_concurrent_executions = 1
