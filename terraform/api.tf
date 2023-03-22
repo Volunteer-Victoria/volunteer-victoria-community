@@ -41,7 +41,7 @@ resource "aws_lambda_function" "api" {
 }
 
 resource "aws_lambda_alias" "api" {
-  name             = "${local.api_name}-latest"
+  name             = "latest"
   function_name    = aws_lambda_function.api.arn
   function_version = aws_lambda_function.api.version
 }
@@ -84,7 +84,7 @@ resource "aws_apigatewayv2_integration" "api" {
   connection_type    = "INTERNET"
   description        = local.api_name
   integration_method = "POST"
-  integration_uri    = "${aws_lambda_function.api.invoke_arn}:latest"
+  integration_uri    = "${aws_lambda_function.api.invoke_arn}:${aws_lambda_alias.api.name}"
 }
 
 resource "aws_apigatewayv2_route" "api" {
