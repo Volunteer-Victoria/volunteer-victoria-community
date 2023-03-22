@@ -41,7 +41,7 @@ resource "aws_lambda_function" "api" {
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "api" {
-  count = local.is_prod ? 1 : 0
+  # count = local.is_prod ? 1 : 0
 
   function_name                     = aws_lambda_function.api.function_name
   provisioned_concurrent_executions = 1
@@ -77,7 +77,7 @@ resource "aws_apigatewayv2_integration" "api" {
   connection_type    = "INTERNET"
   description        = local.api_name
   integration_method = "POST"
-  integration_uri    = aws_lambda_function.api.invoke_arn
+  integration_uri    = replace(aws_lambda_function.api.invoke_arn, aws_lambda_function.api.arn, aws_lambda_function.api.qualified_arn)
 }
 
 resource "aws_apigatewayv2_route" "api" {
