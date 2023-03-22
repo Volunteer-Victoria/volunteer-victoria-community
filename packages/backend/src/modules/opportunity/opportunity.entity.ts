@@ -14,8 +14,8 @@ export class OpportunityEntity {
   @Column()
   requiredPeopleCount!: number;
 
-  @Column({ type: String, nullable: true })
-  occursDate!: string | null;
+  @Column({ type: String })
+  occursDate!: string;
 
   @Column({ type: String, nullable: true })
   occursTime!: string | null;
@@ -27,9 +27,15 @@ export class OpportunityEntity {
   locationName!: string;
 
   @Column()
-  indoorsOrOutdoors!: string;
+  isIndoors!: boolean;
 
-  @Column({ type: String })
+  @Column()
+  isOutdoors!: boolean;
+
+  @Column()
+  isOnline!: boolean;
+
+  @Column()
   contactEmail!: string;
 
   @Column({ type: String, nullable: true })

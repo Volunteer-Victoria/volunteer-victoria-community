@@ -30,7 +30,7 @@
     "importsNotUsedAsValues": "error",
     "checkJs": true
   },
-  "exclude": ["dist", "test"],
+  "exclude": ["dist", "test", "**/*.mjs"],
   "include": ["**/*.ts"],
   "references": [{ "path": "../common" }]
 }

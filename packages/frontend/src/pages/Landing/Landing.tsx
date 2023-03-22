@@ -2,6 +2,7 @@ import { ThemeProvider } from "@mui/material";
 import { AppBar } from "../../components/AppBar";
 import { marketingTheme } from "../../themes";
 import { AcknowedgementSection } from "./sections/Acknowedgement";
+import { AttributionSection } from "./sections/Attribution";
 import { BannerSection } from "./sections/Banner";
 import { FooterSection } from "./sections/Footer";
 import { HowToApplySection } from "./sections/HowToApply/HowToApply";
@@ -20,6 +21,7 @@ export const LandingPage = () => {
         <HowToApplySection />
         <QuerySection />
         <AcknowedgementSection />
+        <AttributionSection />
         <FooterSection />
       </ThemeProvider>
     </>

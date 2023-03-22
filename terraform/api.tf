@@ -10,7 +10,7 @@ resource "aws_lambda_function" "api" {
   filename         = "api-lambda.zip"
   source_code_hash = filebase64sha256("api-lambda.zip")
   handler          = "api-lambda.handler"
-  memory_size      = 1024
+  memory_size      = 768
   timeout          = 10
   architectures    = [var.target_arch]
   publish          = true
@@ -40,12 +40,17 @@ resource "aws_lambda_function" "api" {
   }
 }
 
+resource "aws_lambda_alias" "api" {
+  name             = "latest"
+  function_name    = aws_lambda_function.api.arn
+  function_version = aws_lambda_function.api.version
+}
+
 resource "aws_lambda_provisioned_concurrency_config" "api" {
   count = local.is_prod ? 1 : 0
-
-  function_name                     = aws_lambda_function.api.function_name
+  function_name = aws_lambda_function.api.function_name
   provisioned_concurrent_executions = 1
-  qualifier                         = aws_lambda_function.api.version
+  qualifier = aws_lambda_alias.api.name
 }
 
 data "aws_ssm_parameter" "cdb_host" {
@@ -77,7 +82,7 @@ resource "aws_apigatewayv2_integration" "api" {
   connection_type    = "INTERNET"
   description        = local.api_name
   integration_method = "POST"
-  integration_uri    = aws_lambda_function.api.invoke_arn
+  integration_uri    = aws_lambda_alias.api.invoke_arn
 }
 
 resource "aws_apigatewayv2_route" "api" {
@@ -116,7 +121,8 @@ resource "aws_apigatewayv2_stage" "api" {
 
 resource "aws_lambda_permission" "api_allow_gateway" {
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.api.function_name
+  function_name = aws_lambda_alias.api.function_name
+  qualifier     = aws_lambda_alias.api.name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_stage.api.execution_arn}/*"
 }
