@@ -10,7 +10,7 @@ resource "aws_lambda_function" "api" {
   filename         = "api-lambda.zip"
   source_code_hash = filebase64sha256("api-lambda.zip")
   handler          = "api-lambda.handler"
-  memory_size      = 1024
+  memory_size      = 512
   timeout          = 10
   architectures    = [var.target_arch]
   publish          = true
