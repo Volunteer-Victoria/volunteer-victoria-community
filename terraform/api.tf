@@ -10,7 +10,7 @@ resource "aws_lambda_function" "api" {
   filename         = "api-lambda.zip"
   source_code_hash = filebase64sha256("api-lambda.zip")
   handler          = "api-lambda.handler"
-  memory_size      = 512
+  memory_size      = 768
   timeout          = 10
   architectures    = [var.target_arch]
   publish          = true
@@ -47,7 +47,7 @@ resource "aws_lambda_alias" "api" {
 }
 
 resource "aws_lambda_provisioned_concurrency_config" "api" {
-  # count = local.is_prod ? 1 : 0
+  count = local.is_prod ? 1 : 0
   function_name = aws_lambda_function.api.function_name
   provisioned_concurrent_executions = 1
   qualifier = aws_lambda_alias.api.name
