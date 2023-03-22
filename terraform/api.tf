@@ -121,7 +121,8 @@ resource "aws_apigatewayv2_stage" "api" {
 
 resource "aws_lambda_permission" "api_allow_gateway" {
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.api.function_name
+  function_name = aws_lambda_alias.api.function_name
+  qualifier     = aws_lambda_alias.api.name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_stage.api.execution_arn}/*"
 }
