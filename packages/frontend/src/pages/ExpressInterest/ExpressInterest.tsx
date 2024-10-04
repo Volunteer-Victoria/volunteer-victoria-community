@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
 import { useMemo, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { OpportunityResponseDto } from "../../api";
+import { OpportunityResponseDto, ResponseError } from "../../api";
 import { mapFormik } from "../../common";
 import { useApi } from "../../components/ApiProvider";
 import { RequireAuth } from "../../components/RequireAuth";
@@ -23,6 +23,7 @@ import { Note } from "./Note";
 import { schema } from "./schema";
 import { SubmitButton } from "./SubmitButton";
 import { Title } from "./Title";
+import { isEmailUnverifiedError } from "../../common/api-error-handling";
 
 export const ExpressInterestPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
@@ -53,9 +54,15 @@ export const ExpressInterestPage = () => {
 
       navigate(`/opportunity/${opportunity.opportunityId}/apply/thanks`);
     } catch (e) {
-      enqueueSnackbar("Error sending message.  Try again later.", {
-        variant: "error",
-      });
+      if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
+        enqueueSnackbar("Please verify your email address and try again.", {
+          variant: "error",
+        });
+      } else {
+        enqueueSnackbar("Error sending message.  Try again later.", {
+          variant: "error",
+        });
+      }
       console.error(e);
       setSubmitting(false);
     }

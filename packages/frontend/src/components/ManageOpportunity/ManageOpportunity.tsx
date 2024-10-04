@@ -3,12 +3,13 @@ import { Link, useMatch, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { OpportunityResponseDto } from "../../api";
+import { OpportunityResponseDto, ResponseError } from "../../api";
 import { canManageOpportunity } from "../../common";
 import { useApi } from "../ApiProvider";
 import { useUser } from "../UserDataProvider/use-user";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
+import { isEmailUnverifiedError } from "../../common/api-error-handling";
 
 interface ManageOpportunityProps {
   opportunity: OpportunityResponseDto;
@@ -41,9 +42,15 @@ export const ManageOpportunity = ({ opportunity }: ManageOpportunityProps) => {
       // });
       // setSubmitting(false);
     } catch (e) {
-      enqueueSnackbar("Error deleting opportunity.  Try again later.", {
-        variant: "error",
-      });
+      if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
+        enqueueSnackbar("Please verify your email address and try again.", {
+          variant: "error",
+        });
+      } else {
+        enqueueSnackbar("Error deleting opportunity.  Try again later.", {
+          variant: "error",
+        });
+      }
       setSubmitting(false);
       return;
     }
