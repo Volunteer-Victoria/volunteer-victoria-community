@@ -6,7 +6,10 @@ import { OpportunityCreateDto, ResponseError } from "../../api";
 import { useApi } from "../../components/ApiProvider";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
-import { isEmailUnverifiedError } from "../../common/api-error-handling";
+import {
+  EMAIL_UNVERIFIED_MESSAGE,
+  isEmailUnverifiedError,
+} from "../../common/api-error-handling";
 
 export const CreateOpportunityPage = () => {
   const navigate = useNavigate();
@@ -24,7 +27,7 @@ export const CreateOpportunityPage = () => {
       navigate(`/opportunity/${result.opportunityId}/thanks`);
     } catch (e) {
       if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
-        enqueueSnackbar("Please verify your email address and try again.", {
+        enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
           variant: "error",
         });
       } else {

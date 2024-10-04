@@ -9,7 +9,10 @@ import { useApi } from "../ApiProvider";
 import { useUser } from "../UserDataProvider/use-user";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
-import { isEmailUnverifiedError } from "../../common/api-error-handling";
+import {
+  EMAIL_UNVERIFIED_MESSAGE,
+  isEmailUnverifiedError,
+} from "../../common/api-error-handling";
 
 interface ManageOpportunityProps {
   opportunity: OpportunityResponseDto;
@@ -43,7 +46,7 @@ export const ManageOpportunity = ({ opportunity }: ManageOpportunityProps) => {
       // setSubmitting(false);
     } catch (e) {
       if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
-        enqueueSnackbar("Please verify your email address and try again.", {
+        enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
           variant: "error",
         });
       } else {

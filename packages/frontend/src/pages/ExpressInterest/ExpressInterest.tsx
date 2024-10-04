@@ -23,7 +23,10 @@ import { Note } from "./Note";
 import { schema } from "./schema";
 import { SubmitButton } from "./SubmitButton";
 import { Title } from "./Title";
-import { isEmailUnverifiedError } from "../../common/api-error-handling";
+import {
+  EMAIL_UNVERIFIED_MESSAGE,
+  isEmailUnverifiedError,
+} from "../../common/api-error-handling";
 
 export const ExpressInterestPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
@@ -55,7 +58,7 @@ export const ExpressInterestPage = () => {
       navigate(`/opportunity/${opportunity.opportunityId}/apply/thanks`);
     } catch (e) {
       if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
-        enqueueSnackbar("Please verify your email address and try again.", {
+        enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
           variant: "error",
         });
       } else {

@@ -12,3 +12,6 @@ export const isEmailUnverifiedError = async (
 ): Promise<boolean> => {
   return (await getErrorCode(error)) === EMAIL_UNVERIFIED;
 };
+
+export const EMAIL_UNVERIFIED_MESSAGE =
+  "Please verify your email address, log out, and log back in. Sorry.";
