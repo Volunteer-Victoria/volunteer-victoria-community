@@ -18,7 +18,7 @@ root.render(
       <UserProvider>
         <ApiProvider>
           <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <SnackbarProvider maxSnack={3} autoHideDuration={10000}>
+            <SnackbarProvider maxSnack={3}>
               <App />
             </SnackbarProvider>
           </LocalizationProvider>

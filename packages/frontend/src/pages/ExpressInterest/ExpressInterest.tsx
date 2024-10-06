@@ -10,7 +10,7 @@ import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
 import { useMemo, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { OpportunityResponseDto, ResponseError } from "../../api";
+import { OpportunityResponseDto } from "../../api";
 import { mapFormik } from "../../common";
 import { useApi } from "../../components/ApiProvider";
 import { RequireAuth } from "../../components/RequireAuth";
@@ -23,10 +23,7 @@ import { Note } from "./Note";
 import { schema } from "./schema";
 import { SubmitButton } from "./SubmitButton";
 import { Title } from "./Title";
-import {
-  EMAIL_UNVERIFIED_MESSAGE,
-  isEmailUnverifiedError,
-} from "../../common/api-error-handling";
+import { useResponseErrorHandler } from "../../common/api-error-handling";
 
 export const ExpressInterestPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
@@ -34,6 +31,7 @@ export const ExpressInterestPage = () => {
   const user = useUser();
   const [submitting, setSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const responseErrorHandler = useResponseErrorHandler("sending message");
   const navigate = useNavigate();
 
   const onSubmit = async ({
@@ -52,21 +50,10 @@ export const ExpressInterestPage = () => {
           message,
         },
       });
-
       enqueueSnackbar("Message sent!", { variant: "success" });
-
       navigate(`/opportunity/${opportunity.opportunityId}/apply/thanks`);
     } catch (e) {
-      if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
-        enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
-          variant: "error",
-        });
-      } else {
-        enqueueSnackbar("Error sending message.  Try again later.", {
-          variant: "error",
-        });
-      }
-      console.error(e);
+      responseErrorHandler(e);
       setSubmitting(false);
     }
   };

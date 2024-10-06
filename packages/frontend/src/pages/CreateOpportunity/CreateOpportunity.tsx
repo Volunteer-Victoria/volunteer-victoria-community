@@ -2,19 +2,17 @@ import { Box, Card, Divider, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { OpportunityCreateDto, ResponseError } from "../../api";
+import { OpportunityCreateDto } from "../../api";
 import { useApi } from "../../components/ApiProvider";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
-import {
-  EMAIL_UNVERIFIED_MESSAGE,
-  isEmailUnverifiedError,
-} from "../../common/api-error-handling";
+import { useResponseErrorHandler } from "../../common/api-error-handling";
 
 export const CreateOpportunityPage = () => {
   const navigate = useNavigate();
   const api = useApi();
   const { enqueueSnackbar } = useSnackbar();
+  const responseErrorHandler = useResponseErrorHandler("adding opportunity");
   const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = async (opportunity: OpportunityCreateDto) => {
@@ -26,16 +24,7 @@ export const CreateOpportunityPage = () => {
       enqueueSnackbar("Opportunity added!", { variant: "success" });
       navigate(`/opportunity/${result.opportunityId}/thanks`);
     } catch (e) {
-      if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
-        enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
-          variant: "error",
-        });
-      } else {
-        enqueueSnackbar("Error adding opportunity.  Try again later.", {
-          variant: "error",
-        });
-      }
-      console.error(e);
+      responseErrorHandler(e);
       setSubmitting(false);
     }
   };

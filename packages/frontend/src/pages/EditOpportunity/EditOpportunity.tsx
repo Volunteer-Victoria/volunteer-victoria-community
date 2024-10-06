@@ -2,20 +2,13 @@ import { Box, Card, Divider, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useState } from "react";
 import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
-import {
-  OpportunityCreateDto,
-  OpportunityResponseDto,
-  ResponseError,
-} from "../../api";
+import { OpportunityCreateDto, OpportunityResponseDto } from "../../api";
 import { canManageOpportunity } from "../../common";
 import { useApi } from "../../components/ApiProvider";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
 import { useUser } from "../../components/UserDataProvider/use-user";
-import {
-  EMAIL_UNVERIFIED_MESSAGE,
-  isEmailUnverifiedError,
-} from "../../common/api-error-handling";
+import {} from "../../common/api-error-handling";
 
 export const EditOpportunityPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
@@ -23,6 +16,7 @@ export const EditOpportunityPage = () => {
   const api = useApi();
   const user = useUser();
   const { enqueueSnackbar } = useSnackbar();
+  const responseErrorHandler = useResponseErrorHandler("editing opportunity");
   const [submitting, setSubmitting] = useState(false);
 
   const canManage = canManageOpportunity(user, opportunity);
@@ -38,21 +32,10 @@ export const EditOpportunityPage = () => {
         id: opportunity.opportunityId,
         opportunityCreateDto: updatedOpportunity,
       });
-
       enqueueSnackbar("Opportunity edited!", { variant: "success" });
-
       navigate(`/opportunity/${opportunity.opportunityId}`);
     } catch (e) {
-      if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
-        enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
-          variant: "error",
-        });
-      } else {
-        enqueueSnackbar("Error editing opportunity.  Try again later.", {
-          variant: "error",
-        });
-      }
-      console.error(e);
+      responseErrorHandler(e);
       setSubmitting(false);
     }
   };

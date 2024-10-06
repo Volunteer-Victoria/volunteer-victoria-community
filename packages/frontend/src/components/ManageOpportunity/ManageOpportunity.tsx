@@ -3,16 +3,12 @@ import { Link, useMatch, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { OpportunityResponseDto, ResponseError } from "../../api";
+import { OpportunityResponseDto } from "../../api";
 import { canManageOpportunity } from "../../common";
 import { useApi } from "../ApiProvider";
 import { useUser } from "../UserDataProvider/use-user";
-import { useSnackbar } from "notistack";
 import { useState } from "react";
-import {
-  EMAIL_UNVERIFIED_MESSAGE,
-  isEmailUnverifiedError,
-} from "../../common/api-error-handling";
+import { useResponseErrorHandler } from "../../common/api-error-handling";
 
 interface ManageOpportunityProps {
   opportunity: OpportunityResponseDto;
@@ -23,7 +19,7 @@ export const ManageOpportunity = ({ opportunity }: ManageOpportunityProps) => {
   const user = useUser();
   const navigate = useNavigate();
   const isOpportunityList = useMatch("/opportunities");
-  const { enqueueSnackbar } = useSnackbar();
+  const responseErrorHandler = useResponseErrorHandler("deleting opportunity");
   const [submitting, setSubmitting] = useState(false);
 
   if (!user) return null;
@@ -45,15 +41,7 @@ export const ManageOpportunity = ({ opportunity }: ManageOpportunityProps) => {
       // });
       // setSubmitting(false);
     } catch (e) {
-      if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
-        enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
-          variant: "error",
-        });
-      } else {
-        enqueueSnackbar("Error deleting opportunity.  Try again later.", {
-          variant: "error",
-        });
-      }
+      responseErrorHandler(e);
       setSubmitting(false);
       return;
     }
