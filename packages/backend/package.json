@@ -57,7 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "aws-sdk": "^2.1295.0",
-    "better-sqlite3": "^8.0.1",
+    "better-sqlite3": "^11.3.0",
     "concurrently": "^7.5.0",
     "dotenv": "^16.0.3",
     "jest": "28.1.3",

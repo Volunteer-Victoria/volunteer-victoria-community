@@ -8,6 +8,7 @@ import { useApi } from "../../components/ApiProvider";
 import { EditableOpportunity } from "../../components/EditableOpportunity/EditableOpportunity";
 import { ReturnableLayout } from "../../components/ReturnableLayout";
 import { useUser } from "../../components/UserDataProvider/use-user";
+import {} from "../../common/api-error-handling";
 
 export const EditOpportunityPage = () => {
   const opportunity = useLoaderData() as OpportunityResponseDto;
@@ -15,6 +16,7 @@ export const EditOpportunityPage = () => {
   const api = useApi();
   const user = useUser();
   const { enqueueSnackbar } = useSnackbar();
+  const responseErrorHandler = useResponseErrorHandler("editing opportunity");
   const [submitting, setSubmitting] = useState(false);
 
   const canManage = canManageOpportunity(user, opportunity);
@@ -30,15 +32,10 @@ export const EditOpportunityPage = () => {
         id: opportunity.opportunityId,
         opportunityCreateDto: updatedOpportunity,
       });
-
       enqueueSnackbar("Opportunity edited!", { variant: "success" });
-
       navigate(`/opportunity/${opportunity.opportunityId}`);
     } catch (e) {
-      enqueueSnackbar("Error adding opportunity.  Try again later.", {
-        variant: "error",
-      });
-      console.error(e);
+      responseErrorHandler(e);
       setSubmitting(false);
     }
   };
