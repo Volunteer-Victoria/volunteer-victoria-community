@@ -19,7 +19,7 @@ const isEmailUnverifiedError = async (
 
 export const useResponseErrorHandler = (taskSummary: string) => {
   const { enqueueSnackbar } = useSnackbar();
-  return async (e: any) => {
+  return async (e: unknown) => {
     if (e instanceof ResponseError && (await isEmailUnverifiedError(e))) {
       enqueueSnackbar(EMAIL_UNVERIFIED_MESSAGE, {
         variant: "error",
